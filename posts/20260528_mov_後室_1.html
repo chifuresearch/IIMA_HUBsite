@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>從均質網格到心理拓樸：《後室》的空間生產、影像機制與棲居危機</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            /* 強制所有中文字型使用黑體 (無襯線體) */
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-en), var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3 { 
+            font-family: var(--font-en), var(--font-zh); 
+            font-weight: 700;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography & Structure */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* Abstract Box */
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 50px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* Language-specific block styling */
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Dynamic Visibility Modes */
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        /* Image Styling */
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Footnotes & References */
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="index.html" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">從均質網格到心理拓樸：《後室》</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">從均質網格到心理拓樸：《後室》的空間生產、影像機制與棲居危機</h1>
+            <div class="subtitle">From Homogeneous Grid to Psychological Topology: Spatial Production, Visual Mechanism, and the Crisis of Dwelling in The Backrooms</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">摘要</div>
+            <div class="abstract-text zh">
+                Kane Parsons 的《後室(The Backrooms)》電影版本標誌著一個關鍵轉向：從早期網路影像中以均質重複為特徵的「空間異常」，轉化為一種可被理解為「心理拓樸機器(psychotopological apparatus)」的動態空間系統。此一轉變不僅涉及敘事尺度的擴張，更牽動空間本體論、影像語法與主體性之間的重新編碼。本文主張，《後室》應被視為晚期資本主義條件下的「空間裝置(spatial dispositif)」，其關鍵不在迷宮式結構本身，而在於空間、記憶與影像之間的耦合運作，並最終導向「棲居不可能性」的存在論命題。
+            </div>
+
+            <div class="abstract-title en">Abstract</div>
+            <div class="abstract-text en">
+                Kane Parsons' film adaptation of <em>The Backrooms</em> marks a critical turn: transitioning from the "spatial anomaly" characterized by homogeneous repetition in early internet videos to a dynamic spatial system that can be understood as a "psychotopological apparatus." This transformation involves not only an expansion in narrative scale but also a recoding among spatial ontology, visual grammar, and subjectivity. This paper argues that <em>The Backrooms</em> should be viewed as a "spatial dispositif" under the condition of late capitalism. Its crux lies not in the labyrinthine structure itself, but in the coupled operation of space, memory, and moving images, ultimately leading to the ontological proposition of the "impossibility of dwelling."
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://pimg.1px.tw/blog/h9230669/post/900381126901113679/900394536401381542.png" alt="The Backrooms original image">
+            <div class="caption caption-zh">2019 年 最初發布在 4chan 上的照片，拍攝的是一間裝修中的 HobbyTown 內部空間，出處：Wiki 後室 詞條。</div>
+            <div class="caption caption-en">Note: The original photograph of The Backrooms posted on 4chan in 2019 was actually taken inside a HobbyTown undergoing renovation (Source: Wikipedia entry for "The Backrooms").</div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、現代主義廢墟與閾限空間</span>
+                <span class="en-title">I. Modernist Ruins and Liminal Space</span>
+            </h2>
+            <div class="zh-content">
+                <p>《後室》電影版可被理解為對現代主義空間理想崩解的影像化回應。1960年代以降，現代主義建築所承諾的功能理性與社會進步，在資本加速運作下逐漸轉化為可被快速淘汰的空間產品。</p>
+                <p>貫串電影的女主角都市更新夢饜與男主角的傢俱商場，正體現此一「空間代謝」過程中的殘餘狀態。此類空間進一步轉化為「閾限空間(liminal space)」：其特徵在於功能模糊、時間懸置與身份不確定。</p>
+                <p>在此條件下，空間失去歷史與地方性，趨近於 Augé 所謂的「非場所(non-place)」，即缺乏關係性、歷史性與認同性的過渡空間。《後室》中無限延展的均質室內景觀，正是此種去脈絡化空間的極端化呈現<sup><a id="ref1" href="#fn1">1</a></sup>(Augé, 1995)。</p>
+            </div>
+            <div class="en-content">
+                <p>The film version of <em>The Backrooms</em> can be interpreted as a visualized response to the collapse of modernist spatial ideals. Since the 1960s, the functional rationality and social progress promised by modernist architecture have gradually transformed into rapidly obsolete spatial products under the accelerating operation of capital.</p>
+                <p>The heroine's nightmare of urban renewal and the furniture mall operated by the hero, which run through the film, precisely embody the residual state in this process of "spatial metabolism." Such spaces are further transformed into "liminal spaces," characterized by functional ambiguity, temporal suspension, and identity uncertainty. Under these conditions, the space loses its history and locality, approaching what Marc Augé calls "non-places"—transitional spaces lacking relationality, historicity, and identity. The infinitely extending, homogeneous interior landscape in <em>The Backrooms</em> is the radicalized manifestation of such decontextualized space<sup><a href="#fn1">1</a></sup>.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、從均質網格到拓樸空間</span>
+                <span class="en-title">II. From Homogeneous Grid to Topological Space</span>
+            </h2>
+            <div class="zh-content">
+                <p>YouTube 版本中的《後室》，可被視為一種笛卡兒式均質空間：其正交結構、尺度穩定性與視覺重複性，使其仍屬於「度量幾何(metric geometry)」的範疇。恐怖效果來自差異的消除與方向感的喪失，對應於福特主義生產邏輯下的空間均質化。</p>
+                <p>然而，電影版本引入了一種質變：空間不再維持正交秩序，而轉向非歐幾何式的扭曲與重組。此處空間的關鍵不再是距離，而是連通性與可變形性，即「拓樸性(topology)」。空間的結構開始依附於主體經驗，呈現出記憶與創傷的幾何化。</p>
+                <p>因此，《後室》中的空間應被理解為一種「操作性拓樸(operative topology)」：其形態並非預先存在，而是在主體—空間互動中持續生成。</p>
+            </div>
+            <div class="en-content">
+                <p><em>The Backrooms</em> in its YouTube version can be seen as a Cartesian homogeneous space: its orthogonal structure, scale stability, and visual repetition keep it within the realm of "metric geometry." The effect of horror stems from the elimination of difference and the loss of directional sense, corresponding to spatial homogenization under the logic of Fordist production.</p>
+                <p>However, the film version introduces a qualitative change: space no longer maintains an orthogonal order but shifts toward non-Euclidean distortion and reorganization. The key to space here is no longer distance, but connectivity and deformability—that is, "topology." The structure of space begins to depend on subjective experience, presenting a geometricization of memory and trauma. Therefore, the space in <em>The Backrooms</em> should be understood as an "operative topology": its form is not pre-existing, but is continuously generated through the interaction between the subject and the space.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、鏡頭語法與拓樸運算</span>
+                <span class="en-title">III. Camera Grammar and Topological Operations</span>
+            </h2>
+            <div class="zh-content">
+                <p>電影的影像語法並非僅是再現既有空間，而是作為空間本身的生成條件。在此，鏡頭可被視為一種「拓樸運算子(topological operator)」。首先，手持攝影的晃動與不穩定軌跡，削弱了觀者對絕對參考系的依賴，使空間判讀由客觀的幾何定位，轉向主觀的身體感知。其次，「延遲揭示」的鏡頭策略系統性地解構了空間連續性，使物理上的空間轉折不再保證拓樸的一致性，進而引發局部斷裂。最後，淺景深的運用雖限縮了清晰的可視範圍，卻保留了主體背景的幽微層次，將其從完整可測的物理場域，轉化為充滿不確定性的「潛勢場(potential field)」，反而賦予了虛化背景更深層的心理張力與關注。透過上述操作，影像不再只是空間的描述者，而是持續重寫其內部連接關係，使空間與角色動作成為一種共同運算的動態結果。</p>
+            </div>
+            <div class="en-content">
+                <p>The visual grammar in the film does not represent an existing space but constitutes the generative condition of the space itself. The camera here can be seen as a topological operator.</p>
+                <p>First, handheld cinematography and unstable camera movement weaken the fixed frame of reference, shifting the viewer's spatial interpretation from geometric positioning to bodily perception. Second, the camera strategy of "delayed revelation" systematically disrupts spatial continuity, ensuring that corners no longer guarantee topological consistency, thereby forming local ruptures. Furthermore, depth-of-field control limits the visible range of space, transforming it into a potential field rather than a fully measurable domain. Through these operations, the image not only describes the space but continuously rewrites its topological connections, making the space the result of real-time computation.</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、家的異化與記憶錨定</span>
+                <span class="en-title">IV. The Alienation of Home and Memory Anchoring</span>
+            </h2>
+            <div class="zh-content">
+                <p>Bachelard 將「家」視為內在性與想像力的庇護場所<sup><a id="ref2" href="#fn2">2</a></sup>(Bachelard, 1994)。然而，在《後室》中，幾段男女主角進行心理諮商的劇情中，家被轉化為資本與符號化的空間模組。傢俱商場中的樣品屋不再承載實際棲居，而成為記憶的觸發裝置。此種轉化導致「記憶錨定」機制的出現：主體被固定於某些情感殘留之中，而空間則不斷重複這些片段。原本應當提供庇護的各種角落，在《後室》的鏡頭語言中，則是不僅再作為躲藏的容器，而是因其與「家居型態」與「使用慣習」之間的斷裂，轉化為影片中潛在威脅的張力。</p>
+                <p>《後室》中各種詭異方式部署的傢俱，雖然保留了形式上的熟悉性，卻抽空了實際使用與身體操作的連結，使空間停留於「可辨識但不可棲居」的狀態。此種介於熟悉與失效之間的落差，構成了類似恐怖谷的空間效應，並進一步揭示空間內在性的崩解(Bachelard, 1994)。如同 Freud 所提出的「詭異(Das Unheimliche)」，源於熟悉事物的異化<sup><a id="ref3" href="#fn3">3</a></sup>(Freud, 1919/2001)。《後室》透過對日常空間元素的重複與去脈絡化，使熟悉性轉化為不安來源。</p>
+                <p>另一方面，從Heidegger 的觀點而言：「棲居」應當是人與世界之間的實用關係，一種「得心應手」的存在方式<sup><a id="ref4" href="#fn4">4</a></sup>(Heidegger, 1962)。然而，正如同劇中角色對家庭的失望，《後室》中的各種物件失去功能，空間失去指涉，主體無法建立意義連結，進而陷入「無家可歸」的存在狀態<sup><a id="ref5" href="#fn5">5</a></sup>(Heidegger, 1971)。此種無家可歸的情感並非通過劇情的平鋪直述傳達，而是編導基於空間語言與身體經驗的精密設計所得到的結構性結果。</p>
+            </div>
+            <div class="en-content">
+                <p>Gaston Bachelard views the "home" as a sanctuary of intimacy and imagination<sup><a href="#fn2">2</a></sup> (Bachelard, 1994). However, in several psychological counseling scenes involving the protagonists in <em>The Backrooms</em>, the home is transformed into a capitalized and symbolized spatial module. The model homes in the furniture mall no longer host actual dwelling but become trigger devices for memory.</p>
+                <p>This transformation leads to the emergence of a "memory anchoring" mechanism: subjects are fixed in certain emotional residues, and the space continuously repeats these fragments. The various corners that should have provided shelter are no longer mere containers for hiding in the lens language of <em>The Backrooms</em>; instead, due to their rupture with "domestic typology" and "usage habit," they transform into a tension of latent threat. The furniture, deployed in various uncanny ways in <em>The Backrooms</em>, retains formal familiarity but is emptied of any connection to practical use and bodily operation, leaving the space in a state of being "identifiable but uninhabitable."</p>
+                <p>This gap between familiarity and failure constitutes a spatial effect akin to the Uncanny Valley, further revealing the collapse of spatial intimacy<sup><a href="#fn2">2</a></sup> (Bachelard, 1994). As Sigmund Freud proposed, "The Uncanny" (<em>Das Unheimliche</em>) originates from the alienation of the familiar<sup><a href="#fn3">3</a></sup> (Freud, 1919/2001). Through the repetition and decontextualization of everyday spatial elements, <em>The Backrooms</em> turns familiarity into a source of unease.</p>
+                <p>On the on other hand, from Martin Heidegger's perspective, "dwelling" should be a practical relationship between human beings and the world, a "ready-to-hand" mode of being<sup><a href="#fn4">4</a></sup> (Heidegger, 1962). Yet, just like the characters' disillusionment with family in the film, the various objects in <em>The Backrooms</em> lose their function, space loses its reference, and the subject is unable to establish meaningful connections, consequently falling into an existential state of "homelessness"<sup><a href="#fn5">5</a></sup> (Heidegger, 1971). This feeling of homelessness is not conveyed through flat narrative exposition but is a structural result derived from the director's precise design based on spatial language and bodily experience.</p>
+            </div>
+        </section>
+
+        <section id="section5">
+            <h2>
+                <span class="zh-title">五、作為控制媒材的空間語法</span>
+                <span class="en-title">V. Spatial Grammar as a Medium of Control</span>
+            </h2>
+            <div class="zh-content">
+                <p>從 2022 年的 YouTube 系列到 2026 年的電影版本，《後室》所展現的空間邏輯可被理解為由「規訓空間」向「控制空間」的轉向。早期以均質重複為特徵的幾何結構，透過方向迷失與差異消除生成恐懼；而在電影版本中，恐懼機制則轉為一種內在化運作——空間不再只是被動容器，而是能夠感應、回應並重組主體經驗的動態系統。</p>
+                <p>在此條件下，空間不僅作為敘事場景存在，更成為一種被操作的「媒材(medium)」。它被編織進影像與敘事之中，作為一種可塑的拓樸介面：持續讀取角色的記憶結構，放大創傷經驗，並透過幾何變形與連通性重組加以回應。空間因此由承載意義的容器，轉化為主動生成經驗的機制。因此，《後室》的恐怖不再源於對未知的恐懼，而是來自一種更根本的斷裂：主體逐漸意識到自身與環境之間原本穩定的慣習關係已然瓦解。當空間不再回應身體操作，不再支持情感投射，亦不再提供記憶的穩定錨點時，人便失去在世界中定位自身的能力。</p>
+            </div>
+            <div class="en-content">
+                <p>From the 2022 YouTube series to the 2026 film version, the spatial logic demonstrated in <em>The Backrooms</em> can be understood as a shift from a "disciplinary space" to a "space of control." Early geometric structures characterized by homogeneous repetition generated terror through spatial disorientation and the erasure of difference; in the film version, however, the mechanism of
+<script src="post-widgets.js" defer></script>
+</body>
+</html>

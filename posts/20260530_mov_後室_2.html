@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空間拓樸、差異生成與網際非場所：從《後室》看當代空間感知與認知結構之重構</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            /* 強制所有中文字型使用黑體 (無襯線體) */
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography & Structure */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* Abstract Box */
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 50px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* Language-specific block styling */
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .en-content ul, .en-content ol,
+        .zh-content ul, .zh-content ol {
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        thead th, thead td {
+            background-color: var(--card-bg);
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .en-content table {
+            font-family: var(--font-en);
+            font-size: 0.9rem;
+        }
+
+        /* Dynamic Visibility Modes */
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        /* Image Styling */
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Footnotes & References */
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="index.html" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">空間拓樸、差異生成與網際非場所</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">空間拓樸、差異生成與網際非場所：從《後室》看當代空間感知與認知結構之重構</h1>
+            <div class="subtitle">Spatial Topology, Differential Generation, and Cyber Non-places: Reconstructing Contemporary Spatial Perception and Cognitive Structures through The Backrooms</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">摘要</div>
+            <div class="abstract-text zh">
+                感謝 threads 上網友 chengyin330 的深刻反饋 <sup><a id="ref1" href="#fn1">1</a></sup>，本文試圖在此進一步延續對《後室 (The Backrooms)》空間文本與當代知識焦慮的探討。本文以 Deleuze 「差異與重複」的概念為切面，論證《後室》影像版中的空間變異並非單純的幾何失序，而是體現了當代空間設計方法論 (spatial design methodology) 中，藉由「差異性摹本 (simulacra)」超越實體形態的拓樸操作脈絡。透過對比現代主義後期的句法操作與當代參數化流形，本文進一步探討在「奇觀式空間」與「去地方感」的交疊下，一種屬於當代的、跳躍式空間機制的浮現。隨著當代技術與空間操作典範的快速轉移，《後室》不僅是網際集體潛意識的存在主義式揭露，更是一場關於主體如何從「空間失根」走向「身體重塑」的激進實驗。最終，我們期待在當代網際非場所的荒漠中，透過建立專屬的「體現認知 (embodied cognition)」，開創出具身性的差異抵抗手段。
+            </div>
+
+            <div class="abstract-title en">Abstract</div>
+            <div class="abstract-text en">
+                Building upon the insightful feedback from Threads user chengyin330 <sup><a id="ref1" href="#fn1">1</a></sup>, this paper seeks to further the discourse on the spatial text of The Backrooms and contemporary epistemic anxiety. Utilizing Gilles Deleuze's concept of "Difference and Repetition" as a theoretical cross-section, this paper argues that the spatial mutations within the cinematic iterations of The Backrooms are not mere geometric disorders. Rather, they embody a topological operational trajectory within contemporary spatial design methodology—one that transcends physical form through "differential simulacra." By contrasting the syntactic operations of late-modernism with contemporary parametric manifolds, this paper further investigates the emergence of a contemporary, discontinuous spatial mechanism at the intersection of "spectacle space" and "placelessness." Rather than viewing The Backrooms merely as a metaphor for psychological horror or the anxiety of knowledge consumption, this paper asserts that its critical theoretical significance lies in exposing how the "mechanism of difference generation" operates between spatial environments and subjective cognition. As contemporary technologies and spatial operational paradigms rapidly shift, The Backrooms serves as more than an existential revelation of the internet's collective unconscious; it is a radical experiment exploring how the subject transitions from "spatial uprootedness" to "bodily reshaping." Ultimately, within the geometric desert of contemporary internet non-places, we anticipate that by establishing a uniquely subjective "embodied cognition," we can pioneer an embodied strategy of differential resistance.
+            </div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 認識論與媒介批判的交會：從認知基模到重複機制的退化</span>
+                <span class="en-title">I. The Intersection of Epistemology and Media Critique: From Cognitive Schemas to the Degeneration of Repetitive Mechanisms</span>
+            </h2>
+            <div class="zh-content">
+                <p>前文 <sup><a id="ref2" href="#fn2">2</a></sup> 基於認識論的立場，論證《後室》的恐懼並非源自實體怪物等「內容」，而是源自「認知結構的失效」。空間透過連通性、尺度與方向性等可操作拓樸維度的持續變異，介入感知主體的認知結構，撬動並瓦解了既有的心理基模 (schema)。主體在其中無法維持穩定的認知映射，進而產生深層的存在焦慮。另一方面，網友 chengyin330 將《後室》精準轉譯為當代知識環境的隱喻：在演算法篩選與去脈絡化資訊的包圍下，人類逐漸陷入一種「認知閾限狀態 (cognitive liminality)」。此觀點基於媒體批判立場，指出當代人對「懶人包」的依賴導致了認知的扁平化。</p>
+                <p>本文嘗試進一步引入 Deleuze 於 1968 年《差異與重複》中的概念，將「知識的扁平化」重新理解為「重複機制的退化」<sup><a id="ref3" href="#fn3">3</a></sup> (Deleuze, 1968/1994)。當資訊僅以高度同質化的摘要形式被再生產時，環境中的雜訊與差異被過濾，重複淪為純粹的複製，導致認知系統的收斂與僵化。這種因失去內部複雜度而導致的「模型崩潰」，正與早期網路版《後室》中那種令人窒息的均質空間，形成結構性的對應。</p>
+            </div>
+            <div class="en-content">
+                <p>Based on an epistemological standpoint <sup><a href="#fn2">2</a></sup>, previous discourse argued that the horror of The Backrooms stems not from tangible "content" (such as monsters), but from a "failure of cognitive structure." The space intervenes in the perceiving subject's cognitive framework through the continuous mutation of operable topological dimensions—such as connectivity, scale, and directionality—thereby leveraging and ultimately collapsing pre-existing psychological schemas. Within this environment, the subject is unable to maintain a stable cognitive mapping, engendering a profound existential anxiety. Concurrently, user chengyin330 astutely translates The Backrooms into a metaphor for our contemporary knowledge environment: besieged by algorithmic filtering and decontextualized information, humanity is gradually slipping into a state of "cognitive liminality." This perspective, rooted in media critique, points out that contemporary reliance on highly summarized, predigested information packets (so-called "lazy packs" or "TL;DRs") has led to a flattening of cognition.</p>
+                <p>This paper attempts to further introduce Deleuze’s (1994) concepts from his 1968 work Difference and Repetition <sup><a href="#fn3">3</a></sup>, reinterpreting this "flattening of knowledge" as the "degeneration of the mechanism of repetition." When information is reproduced solely in highly homogenized, summarized forms, the noise and variance within the environment are filtered out. Repetition is reduced to pure replication, leading to the convergence and rigidification of the cognitive system. This "model collapse"—caused by a loss of internal complexity—forms a perfect structural correspondence with the suffocating, homogeneous spaces seen in the early internet iterations of The Backrooms.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 基於 Deleuze 視角再詮釋：空間的重複與生成</span>
+                <span class="en-title">II. A Deleuzian Reinterpretation: The Repetition and Generation of Space</span>
+            </h2>
+            <div class="zh-content">
+                <p>為探究空間生成邏輯本身，本文藉由《後室》不同版本中「差異自身(difference in itself)」與「重複的生成性(productive repetition)」之理論切面，辨識出不同層級的重複機制。</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">空間版本</th>
+                            <th style="width: 20%;">重複機制</th>
+                            <th style="width: 30%;">空間表現特徵</th>
+                            <th style="width: 35%;">哲學意涵</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>早期網路版</strong></td>
+                            <td>同一性的重複<br> (Repetition of the same)</td>
+                            <td>笛卡兒式的正交網格、尺度的絕對穩定、無盡的黃色壁紙。</td>
+                            <td>透過幾何的一致性消解所有差異，形成封閉且僵化的均質迷宮。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>當代電影版</strong></td>
+                            <td>差異的重複<br> (Repetition of difference)</td>
+                            <td>空間不再被動複製單元，而是主動生成非線性拓樸場域。</td>
+                            <td>透過同型拓樸模式的並列與突變，不斷產生無法預測的空間差異。</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>在電影版《後室》中，這種「差異性空間」可具體辨識為三種動態操作：</p>
+                <ul>
+                    <li>
+                        <p><strong>物件離散部署 (Distributed repetition)：</strong> 散置於各空間、失去功能連結的傢俱殘片，成為無法定義場所的游離符號。</p>
+                    </li>
+                    <li>
+                        <p><strong>路徑上的序列複製 (Sequential repetition)：</strong> 沿著特定動線，不斷複製自身並逐漸隱沒至空間邊界的動態物件。</p>
+                    </li>
+                    <li>
+                        <p><strong>維度錯置與折疊 (Differential displacement)：</strong> 在空間扭曲中分裂的角色形象與物件，徹底打破物理空間的連續性。</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="en-content">
+                <p>To investigate the generative logic of the space itself, this paper uses the theoretical cross-sections of "difference in itself" and "productive repetition" across different iterations of <em>The Backrooms</em> to identify varying hierarchies of repetitive mechanisms:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Version</th>
+                            <th style="width: 20%;">Mechanism of Repetition</th>
+                            <th style="width: 30%;">Spatial Characteristics</th>
+                            <th style="width: 35%;">Philosophical Implication</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Internet Version</strong></td>
+                            <td>Repetition of the Same</td>
+                            <td>Cartesian orthogonal grids, absolute stability of scale, endless yellow wallpaper.</td>
+                            <td>Eradicates all difference through geometric consistency, forming a closed, rigid, and homogenized labyrinth.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cinematic Version</strong></td>
+                            <td>Repetition of Difference</td>
+                            <td>Space no longer passively replicates units; it actively generates non-linear topological fields.</td>
+                            <td>Continuously produces unpredictable spatial variations through the juxtaposition and mutation of isomorphic topological patterns.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>In the cinematic versions of <em>The Backrooms</em>, this "differential space" can be specifically identified through three dynamic operations:</p>
+                <ul>
+                    <li>
+                        <p><strong>Distributed repetition:</strong> Fragments of furniture, stripped of their functional connectivity, are scattered across rooms, becoming free-floating signifiers that fail to define a place.</p>
+                    </li>
+                    <li>
+                        <p><strong>Sequential repetition:</strong> Dynamic objects continually duplicate themselves along specific paths, gradually fading into the spatial boundaries.</p>
+                    </li>
+                    <li>
+                        <p><strong>Differential displacement:</strong> Character figures and objects fracture and distort within spatial folds, entirely shattering the continuity of physical space.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="image-container">
+            <img src="https://pimg.1px.tw/blog/h9230669/post/901149060103676693/901207575052692908.png" alt="Architecture conceptual diagrams">
+            
+            <div class="caption caption-zh">
+                <p><strong>左：</strong>Tschumi 在拉維萊特公園 (Parc de la Villette) 中，以紅色的 Folies 在網格系統上建立的離散事件系統，出處：Bernard Tschumi, Study for the folio La Case Vide, La Villette, #3 from the K Series, 1985. © Bernard Tschumi. From the Collection of the Alvin Boyarsky Archive。</p>
+                <p><strong>中：</strong>Lynn 在《動態形體》中藉由時間參數使形體沿著序列路徑產生連續的形變與演化，出處：Greg Lynn, Kleiburg Housing Block project, 2006 © Greg Lynn. the Greg Lynn FORM 2007。</p>
+                <p><strong>右：</strong>Libeskind 以斷裂與折疊的實體空間敘事，重現心理創傷的柏林猶太博物館，出處：Daniel Libeskind, The Jewish Museum Berlin Libeskind Building, 2001. © Jewish Museum Berlin building. From The Axis of Exile and the Axis of the Holocaust in the Libeskind Building Basement, photo: Martin Foddanu。</p>
+            </div>
+            
+            <div class="caption caption-en">
+                <p><strong>Left:</strong> A discrete system of events established by Bernard Tschumi using red Folies on a grid system in the Parc de la Villette. Source: Bernard Tschumi, Study for the folio La Case Vide, La Villette, #3 from the K Series, 1985. © Bernard Tschumi. From the Collection of the Alvin Boyarsky Archive.</p>
+                <p><strong>Middle:</strong> The continuous deformation and evolution of forms along a sequential path driven by time parameters, as explored by Greg Lynn in Animate Form. Source: Greg Lynn, Kleiburg Housing Block project, 2006. © Greg Lynn. the Greg Lynn FORM 2007.</p>
+                <p><strong>Right:</strong> The Jewish Museum Berlin by Daniel Libeskind, which recreates psychological trauma through a physical spatial narrative of fractures and folds. Source: Daniel Libeskind, The Jewish Museum Berlin Libeskind Building, 2001. © Jewish Museum Berlin building. From The Axis of Exile and the Axis of the Holocaust in the Libeskind Building Basement, photo: Martin Foddanu.</p>
+            </div>
+        </div>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 建築史脈絡中的差異建構：從現代主義到參數化運算</span>
+                <span class="en-title">III. The Construction of Difference in Architectural History: From Modernism to Parametric Computation</span>
+            </h2>
+            <div class="zh-content">
+                <p>上述「差異透過重複被建構」的空間生成策略，可於晚期現代主義至解構主義的建築史脈絡中，挖掘出清晰的發展軌跡：</p>
+                <ul>
+                    <li>
+                        <p><strong>離散部署生成 (Distribution)：</strong> Bernard Tschumi 在拉維萊特公園 (Parc de la Villette) 中，以紅色的 Folies 建立了一套序列性上的離散事件系統，在均質網格中植入差異 <sup><a id="ref4" href="#fn4">4</a></sup> (Tschumi, 1994)。</p>
+                    </li>
+                    <li>
+                        <p><strong>序列運動生成 (Loft)：</strong> Greg Lynn 在《動態形體 (Animate Form)》中所探討的拓樸幾何，藉由時間參數使形體沿著序列路徑產生連續的形變與演化 <sup><a id="ref5" href="#fn5">5</a></sup> (Lynn, 1999)。</p>
+                    </li>
+                    <li>
+                        <p><strong>同一擴延的維度錯置 (Folding)：</strong> Daniel Libeskind 的柏林猶太博物館，明確地以斷裂與折疊的實體空間敘事，重現了心理創傷的幾何化 <sup><a id="ref6" href="#fn6">6</a></sup> (Libeskind, 2001)。</p>
+                    </li>
+                </ul>
+                <p>《後室》影像版所呈現的拓樸空間，不僅承接了上述脈絡，更直接體現了當代「參數化設計(Parametricism)」所強調的「連續變異(Continuous Variation)」與「場域條件(Field Condition)」<sup><a id="ref7" href="#fn7">7</a></sup> (Schumacher, 2009)。這標誌著建築思維已從實體幾何，轉向由數據與演算法驅動的流體運算。</p>
+            </div>
+            <div class="en-content">
+                <p>The aforementioned spatial generative strategy of "constructing difference through repetition" reveals a clear developmental trajectory within the architectural history from late-modernism to deconstructivism:</p>
+                <ul>
+                    <li>
+                        <p><strong>Distribution (Distributed repetition):</strong> In the <em>Parc de la Villette</em>, Bernard Tschumi established a sequentially discrete system of events using red <em>Folies</em>, implanting difference into a homogeneous grid <sup><a href="#fn4">4</a></sup> (Tschumi, 1994).</p>
+                    </li>
+                    <li>
+                        <p><strong>Loft (Sequential repetition):</strong> The topological geometry explored by Greg Lynn in <em>Animate Form</em> utilizes time parameters to induce continuous deformation and evolution of forms along a sequential path <sup><a href="#fn5">5</a></sup> (Lynn, 1999).</p>
+                    </li>
+                    <li>
+                        <p><strong>Folding (Differential displacement):</strong> Daniel Libeskind’s Jewish Museum Berlin explicitly uses fractured and folded physical spatial narratives to recreate the geometricization of psychological trauma <sup><a href="#fn6">6</a></sup> (Libeskind, 2001).</p>
+                    </li>
+                </ul>
+                <p>The topological spaces presented in the cinematic <em>Backrooms</em> not only inherit these historical lineages but directly embody the principles of "Continuous Variation" and "Field Condition" emphasized by contemporary Parametricism <sup><a href="#fn7">7</a></sup> (Schumacher, 2009). This marks a fundamental shift in architectural thinking: from solid geometry to fluid computation driven by data and algorithms.</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 場所精神的失效：機能操弄與「被後室吞沒的當代城市」</span>
+                <span class="en-title">IV. The Failure of Genius Loci: Programmatic Manipulation and the City Swallowed by The Backrooms</span>
+            </h2>
+            <div class="zh-content">
+                <p>這種基於拓樸運算的空間型態，對過去 Norberg-Schulz 強調主體必須透過具體的地標與歷史紋理獲得「方向感」的「場所精神(Genius Loci)」<sup><a id="ref8" href="#fn8">8</a></sup> (Norberg-Schulz, 1979)，進而達成海德格意義上「棲居」的傳統建築現象學構成了根本的挑戰；《後室》的電影版正是在有計劃地操弄這種物件意義與空間載體的相互指涉關係。若將《後室》的三種空間操作與 Tschumi 在一系列《事件城市(Event Cities)》中的機能重組概念相互疊合 <sup><a id="ref9" href="#fn9">9</a></sup> (Tschumi, 1994-2024)，我們將可以清晰看見各種場所精神被支解重構的手段：</p>
+                <ul>
+                    <li>
+                        <p><strong>交叉程式 (Cross-programming) 的認知錯亂：</strong> 當失去脈絡的家居沙發被隨機置入無盡的辦公走廊，居家庇護與過渡空間發生異質交疊，摧毀了原有空間的單一性。</p>
+                    </li>
+                    <li>
+                        <p><strong>跨程式 (Trans-programming) 的無盡過渡：</strong> 沿著路徑不斷複製的物件，將靜態陳設與動態迷宮強行結合，使空間處於永遠無法完成機能定義的懸置狀態。</p>
+                    </li>
+                    <li>
+                        <p><strong>解程式 (Dis-programming) 的徹底瓦解：</strong> 空間折疊中扭曲的物件，直接瓦解了事物原有的幾何完整性與使用邏輯，「棲居」在空間與事件的斷裂處完全失效。</p>
+                    </li>
+                </ul>
+                <p>通過空間與理論脈絡的重構，本文認為《後室》反映的絕非不存在的幻想，只是 Koolhaas 在《譫狂紐約(Delirious New York: A Retroactive Manifesto for Manhattan)》中所描述「奇觀式都市」的都市傳說版本 <sup><a id="ref10" href="#fn10">10</a></sup> (Koolhaas, 1978)。事實上，我們的當代城市早已經被《後室》空間逐步吞沒。隨著都市化與演算法的擴張，實體城市被割裂為純粹的「事件載體」與「物流節點」；無處不在的地下道、均質的轉運站、高度複製的商場走廊，早已成為現實中的閾限空間。</p>
+            </div>
+            <div class="en-content">
+                <p>This topological, computationally-based spatial typology poses a fundamental challenge to traditional architectural phenomenology, particularly Christian Norberg-Schulz’s (1979) concept of <em>Genius Loci</em> (the spirit of place) <sup><a href="#fn8">8</a></sup>, which emphasizes that a subject must acquire a "sense of orientation" through concrete landmarks and historical textures to achieve Heideggerian "dwelling." The cinematic <em>Backrooms</em> systematically manipulates the referential relationship between object meaning and spatial carrier.</p>
+                <p>By superimposing the three spatial operations of <em>The Backrooms</em> onto the concepts of programmatic reorganization found in Tschumi's (1994-2014) <em>Event-Cities</em>, we can clearly observe how the spirit of place is dismembered and reconstructed <sup><a href="#fn9">9</a></sup>:</p>
+                <ul>
+                    <li>
+                        <p><strong>Cognitive Dislocation via Cross-programming:</strong> When a decontextualized domestic sofa is randomly placed into an endless office corridor, the event of domestic sanctuary heterogeneously overlaps with a transitional spatial carrier, destroying the singularity of the original space.</p>
+                    </li>
+                    <li>
+                        <p><strong>Endless Transition via Trans-programming:</strong> Objects duplicating along a path forcefully combine static furnishing functions with dynamic labyrinthine routes, suspending the space in a transitional state where programmatic definition can never be completed.</p>
+                    </li>
+                    <li>
+                        <p><strong>Complete Disintegration via Dis-programming:</strong> Objects distorted within spatial folds directly dismantle the original geometric integrity and utilitarian logic of things. "Dwelling" completely fails at the rupture between space and event.</p>
+                    </li>
+                </ul>
+                <p>Through this reconstruction of spatial and theoretical contexts, this paper argues that <em>The Backrooms</em> does not reflect a non-existent fantasy; rather, it is the urban legend equivalent of the "space of spectacle" described in Rem Koolhaas’s (1978) <em>Delirious New York</em> <sup><a href="#fn10">10</a></sup>. In reality, our contemporary cities have already been gradually swallowed by <em>The Backrooms</em>. Driven by urbanization and algorithmic expansion, the physical city has been fractured into pure "event carriers" and "logistical nodes." Omnipresent underground passages, homogeneous transit hubs, and highly replicated mall corridors have already become real-world liminal spaces.</p>
+            </div>
+        </section>
+
+        <section id="section5">
+            <h2>
+                <span class="zh-title">五、 穿模的拓樸學與再疆域化：從空間失根到身體實踐的差異重塑</span>
+                <span class="en-title">V. The Topology of "Clipping" and Reterritorialization: From Spatial Uprootedness to the Differential Reshaping of Embodied Practice</span>
+            </h2>
+            <div class="zh-content">
+                <p>然而，讓我們暫時懸置這種末世般的悲觀論調；這種絕對的失根與焦慮。《後室》不只是一則虛擬的網路怪談，它同時是網際空間的集體潛意識向現實世界發出的存在主義式宣告：在由參數、演算法與去地方化構成的當代世界中，我們確實早已失去了認知環境既有座標的能力。但從另一個維度來看，當我們跟隨《後室》的視角，體驗那種跌出地圖邊界、突破物理運算限制的「穿模快感」時，我們實際上正在經歷一場徹底的剝離：剝離了傳統「場所精神」強加於我們的歷史意義、文化符碼與地理的固著包袱。</p>
+                <p>或許這並非是一件壞事：當空間不再提供現成的意義，當世界不再告訴我們「這裡應該是什麼」時，我們才得以直面身體與空間之間那種強烈且難以名狀的「不對勁(uncanniness)」。這種不對勁的感受，不應只被視為心理恐怖的來源，更應被視為一種具生產性的抵抗。</p>
+                <p>我們必須固執地停留在這個錯位的縫隙中進行反思：正是因為外部空間的「容器」已經失效，我們才被迫收回對外寫標的依賴，真正回到「身體」本身；一種 Deleuze 從「去疆域化(de-territorialization)」走向「再疆域化(re-territorialization)」的主體實踐過程 <sup><a id="ref11" href="#fn11">11</a></sup> (Deleuze & Guattari, 1987)。</p>
+                <p>在沒有座標的《後室》或網際非場所中，唯有透過自己的肉身去觸碰、去迷失、去丈量，主體才能在毫無意義的幾何荒漠中，重新建立一套專屬於自己的「體現認知(embodied cognition)」。最終，《後室》的隱喻不再只是關於迷失，而是關於重塑。當我們不再被固定的場所意義所綁架，我們便能以一種游牧的姿態，用自己的身體去重新理解世界，並在這個被演算法與均質化吞噬的當代空間中，生長出、並創造出我們自己的差異性視角。</p>
+            </div>
+            <div class="en-content">
+                <p>However, we must temporarily suspend this apocalyptic pessimism—this absolute uprootedness and anxiety. <em>The Backrooms</em> is not merely a virtual internet ghost story; it is an existential declaration issued to the physical world by the collective unconscious of cyberspace. It acknowledges that in a contemporary world constituted by parameters, algorithms, and placelessness, we have indeed already lost the ability to cognitively map our environmental coordinates. Yet, viewed from another dimension, when we follow the perspective of <em>The Backrooms</em> and experience the thrill of "clipping" (glitching through map boundaries and breaching physical computational limits), we are actually undergoing a radical detachment: shedding the fixed baggage of historical meaning, cultural codes, and geography imposed upon us by the traditional <em>Genius Loci</em>.</p>
+                <p>Perhaps this is not a detriment. When space no longer provides ready-made meaning—when the world no longer dictates "what this place ought to be"—we are finally able to confront the intense and indescribable "uncanniness" between the body and space. This sense of uncanniness should not merely be viewed as a source of psychological horror, but rather as a form of productive resistance.</p>
+                <p>We must stubbornly dwell within this disjointed fissure to reflect: precisely because the "container" of external space has failed, we are forced to withdraw our reliance on external coordinates and return to the "body" itself. This mirrors the subjective practical process of moving from "de-territorialization" to "re-territorialization," as articulated <sup><a href="#fn11">11</a></sup> (Deleuze & Guattari, 1987).</p>
+                <p>In the coordinate-less <em>Backrooms</em> or the internet non-place, it is only by using one's own physical body to touch, to lose one's way, and to measure, that a subject can establish a uniquely personal "embodied cognition" within a meaningless geometric desert. Ultimately, the metaphor of <em>The Backrooms</em> is no longer just about being lost; it is about reshaping. When we are no longer held hostage by fixed locational meanings, we can adopt a nomadic posture, utilize our bodies to reinterpret the world, and generate our own differential perspectives within a contemporary space that has been devoured by algorithms and homogenization.</p>
+            </div>
+        </section>
+
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">threads上網友chengyin330先生的貼文串：<a href="https://www.threads.com/@chengyin330/post/DY6XSz9iXhk" target="_blank">https://www.threads.com/@chengyin330/post/DY6XSz9iXhk</a> . <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">前文：<em>〈從均質網格到心理拓樸：《後室》的空間生產、影像機制與棲居危機〉</em>，<a href="https://h9230669.pixnet.net/blog/posts/900381126901113679" target="_blank">https://h9230669.pixnet.net/blog/posts/900381126901113679</a>。<a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Deleuze, G. (1968/1994). <em>Difference and Repetition</em>.(P. Patton, Trans.). Columbia University Press. <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Tschumi, B. (1994). <em>Architecture and Disjunction</em>. MIT Press. <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Lynn, G. (1999). <em>Animate Form</em>. Princeton Architectural Press. <a href="#ref5" class="backref">↑</a></li>
+                <li id="fn6">Libeskind, D. (2001). <em>Difference and Repetition</em>.(P. Patton, Trans.). Columbia University Press. <a href="#ref6" class="backref">↑</a></li>
+                <li id="fn7">Schumacher, P. (2009). <em>Parametricism: A New Global Style for Architecture and Urban Design.</em>. Architectural Design, 79(4), 14-23. <a href="#ref7" class="backref">↑</a></li>
+                <li id="fn8">Norberg-Schulz, C. (1979). <em>Genius loci: Towards a phenomenology of architecture</em>. . Rizzoli. <a href="#ref8" class="backref">↑</a></li>
+                <li id="fn9">Tschumi, B. (1994-2024). <em>Event-Cities I-VI(Praxis)</em>. MIT Press. <a href="#ref9" class="backref">↑</a></li>
+                <li id="fn10">Koolhaas, R. (1978). <em>Delirious New York: A Retroactive Manifesto for Manhattan</em>. Oxford University Press. <a href="#ref10" class="backref">↑</a></li>
+                <li id="fn11">Deleuze, G., & Guattari, F. (1987). <em>A thousand plateaus: Capitalism and schizophrenia</em>. (B. Massumi, Trans.). University of Minnesota Press. <a href="#ref11" class="backref">↑</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function setMode(mode) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                // fallback detection
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            // Reset body classes
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            
+            // Apply new mode
+            document.body.classList.add('mode-' + mode);
+            
+            // Dynamic Header Adjustments
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "空間拓樸、差異生成與網際非場所";
+            } else if (mode === 'en') {
+                navTitle.textContent = "Spatial Topology, Differential Generation, and Cyber Non-places";
+            } else {
+                navTitle.textContent = "空間拓樸、差異生成與網際非場所";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>

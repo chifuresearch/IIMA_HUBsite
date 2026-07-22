@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>《穿著Prada的惡魔2》與時尚靈光的消亡史：從班雅明「拱廊街計畫」到機械時代的審美鄉愁</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            /* 強制所有中文字型使用黑體 (無襯線體) */
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-en), var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3 { 
+            font-family: var(--font-en), var(--font-zh); 
+            font-weight: 700;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography & Structure */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* Abstract Box */
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 50px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* Language-specific block styling */
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .en-content ul, .en-content ol {
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .zh-content ul, .zh-content ol {
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        /* Dynamic Visibility Modes */
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        /* Image Styling */
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Footnotes & References */
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="index.html" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">《穿著Prada的惡魔2》與時尚靈光的消亡史</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">《穿著Prada的惡魔2》與時尚靈光的消亡史：從班雅明「拱廊街計畫」到機械時代的審美鄉愁</h1>
+            <div class="subtitle">The Devil Wears Prada 2 and the Demise of Fashion’s Aura: From Benjamin’s Arcades Project to the Aesthetic Nostalgia in the Age of Mechanical Reproduction</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">摘要</div>
+            <div class="abstract-text zh">
+                本文以 Benjamin 的《拱廊街計畫》與《機械複製時代的藝術作品》為理論座標，代入《穿著Prada的惡魔2》的文本與影像符號中。我們在此目睹的，不僅是時尚產業權力結構的更迭，更是人類審美與主體性在「資本變現」與「數位演算法」夾擊下的全面退卻。這是一部從品味的絕對定義者，淪為服從片面價值的附庸史；更是一場古典權威在數位狂歡中，盛大而孤寂的葬禮。
+            </div>
+
+            <div class="abstract-title en">Abstract</div>
+            <div class="abstract-text en">
+                This paper utilizes Walter Benjamin's <em>The Arcades Project</em> and <em>The Work of Art in the Age of Mechanical Reproduction</em> as theoretical coordinates to analyze the textual and visual semiotics of <em>The Devil Wears Prada 2</em>. What we witness here is not merely a shift in the power structures of the fashion industry, but the comprehensive retreat of human aesthetics and subjectivity under the dual siege of "capital monetization" and "digital algorithms." This is the history of a transition from being the absolute definer of taste to becoming a vassal subordinated to one-dimensional values; furthermore, it is a grand, solitary funeral for classical authority amidst the digital carnival.
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://pimg.1px.tw/blog/h9230669/album/114997509/897860439921691076.png" alt="米蘭大教堂旁的艾曼紐二世迴廊">
+            <div class="caption caption-zh">米蘭大教堂旁的艾曼紐二世迴廊，出處：Wiki 埃馬努埃萊二世拱廊街 詞條。</div>
+            <div class="caption caption-en">Galleria Vittorio Emanuele II next to the Milan Cathedral. (Source: Wikipedia, "Galleria Vittorio Emanuele II")</div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 空蕩的拱廊街：階級幻夢的破滅與世代標籤化</span>
+                <span class="en-title">I. The Empty Arcade: The Shattering of Class Illusions and Generational Labeling</span>
+            </h2>
+            <div class="zh-content">
+                <p>電影中最令人震撼的一幕，莫過於 Miranda 獨自佇立於米蘭大教堂旁，空蕩蕩艾曼紐二世拱廊街(Galleria Vittorio Emanuele II)中的畫面。當曾經的煙霧繚繞與衣香鬢影被徹底抽乾，這個畫面精準地隱喻了當代對傳統時尚產業的「祛魅(Disenchantment)」。</p>
+                <p>一百年前，在班雅明筆下的《<strong>拱廊街計畫</strong><sup><a id="ref1" href="#fn1">1</a></sup><strong>(The Arcades Project)</strong>》中 (Benjamin, 1927/1977)，19世紀巴黎玻璃鐵件拱廊街，是當時新興中產階級的「<strong>夢幻世界(Phantasmagoria / dream city)</strong>」。在那裡，商品被拜物教化，櫥窗透著神聖的光芒；對當時的「<strong>漫遊者(Flâneur)</strong>」而言，拱廊街中瀰漫的雪茄煙霧與高級訂製服的香氣，都是「<strong>身分躍升(Upward Mobility)</strong>」<strong>的具象化象徵</strong>。時尚，曾是人們跨越階級、觸摸神聖的階梯。</p>
+                <p>然而，在Z世代與數位原住民眼中，傳統時尚不再是令人敬畏的殿堂，而是如同劇中描述地被貼上了「精英主義」、「不環保」甚至「階級傲慢」的標籤。當大眾拒絕再做這個階級躍升的夢，實體拱廊街的魔法便失效了， Miranda 所守護那份如同古典藝術作品的時尚「<strong>靈光<sup><a id="ref2" href="#fn2">2</a></sup>(Aura)</strong>」(Benjamin, 1936/1977) 也隨之在空蕩的迴廊中消散。</p>
+            </div>
+            <div class="en-content">
+                <p>The most striking scene in the film is undeniably Miranda standing alone in the desolate Galleria Vittorio Emanuele II next to the Milan Cathedral. As the once smoke-filled air and glamorous crowds are entirely drained away, this image accurately metaphorizes the contemporary "disenchantment" with the traditional fashion industry.</p>
+                <p>A century ago, in Benjamin’s <em>The Arcades Project</em><sup><a href="#fn1">1</a></sup> (Benjamin, 1927/1977), the glass-and-iron arcades of 19th-century Paris constituted a "phantasmagoria" (dream city) for the emerging middle class. There, commodities were fetishized, and shop windows emanated a divine glow. For the flâneur of the time, the cigar smoke and the scent of haute couture permeating the arcades were tangible symbols of "upward mobility." Fashion was once the ladder by which ordinary people crossed class boundaries to touch the sacred.</p>
+                <p>However, in the eyes of Generation Z and digital natives, traditional fashion is no longer a revered temple; instead, as depicted in the film, it has been labeled with tags such as "elitism," "environmentally unfriendly," and even "class arrogance." When the public refuses to continue dreaming this dream of class ascension, the spatial magic of the physical arcade fails. Consequently, the fashion "aura"<sup><a href="#fn2">2</a></sup> (Benjamin, 1936/1977), akin to that of a classical work of art—that Miranda fiercely guards dissipates within the empty corridors.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 空白與失語：網紅的缺席與敘事扁平化的雙重諷刺</span>
+                <span class="en-title">II. Blankness and Aphasia: The Absence of Influencers and the Dual Irony of Narrative Flattening</span>
+            </h2>
+            <div class="zh-content">
+                <p>隨著空間魔法的失效，電影在人物編排上展現了一個極具爭議的巧思：在當前這個「人人皆網紅」的流量時代，本片竟然<strong>完全抹除了網紅(Influencer / KOL)的角色存在</strong>。這種真正服裝使用者與當代發聲者的集體失語，構成了敘事上的巨大空白，我們可以從兩個極端的維度來解讀：</p>
+                <ul>
+                    <li>
+                        <p><strong>刻意的壓抑與嘲諷：</strong> 電影透過徹底抹除「數位土著」的存在，來反諷傳統時尚產業如同「沒落貴族」般的自大與頑固。編劇拒絕在敘事中為主理流量的網紅留置席位，試圖用一種鴕鳥式的傲慢，維持《Runway》最後的血統純潔性。這種刻意的壓抑，恰恰暴露出舊體制對當代「流量霸權」的深深恐懼。</p>
+                    </li>
+                    <li>
+                        <p><strong>現實對話的喪失：</strong>但從另一角度批判，這也造成了電影文本的極度扁平化。缺乏了網紅與傳統秩序的實質交鋒，本作錯失了探討「大眾如何參與價值再定義」的絕佳契機。當傳統精英美學與大眾民主化之間缺乏火花碰撞，電影便無法完成時代的辯證，最終淪為一場時尚產業內部的自我封閉與顧影自憐。</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="en-content">
+                <p>Following the collapse of this spatial magic, the film introduces a highly controversial narrative device regarding its character arrangement: in the current traffic-driven era where "everyone is an influencer," the film completely erases the existence of influencers (KOLs). This collective aphasia of the actual consumers of clothing and contemporary voices constitutes a massive narrative void, which can be interpreted from two extreme dimensions:</p>
+                <ul>
+                    <li>
+                        <p><strong>Deliberate Suppression and Mockery:</strong> The film employs the complete erasure of "digital natives" to satirize the traditional fashion industry's arrogance and stubbornness, likening it to a "declining aristocracy." The screenwriters refuse to reserve narrative space for the influencers who command digital traffic, attempting to maintain the ultimate pure bloodline of <em>Runway</em> through an ostrich-like arrogance. This deliberate suppression precisely exposes the old regime's deep-seated fear of contemporary "traffic hegemony."</p>
+                    </li>
+                    <li>
+                        <p><strong>The Loss of Realistic Dialogue:</strong> Conversely, from a critical standpoint, this results in extreme narrative flattening. By lacking a substantial confrontation between influencers and the traditional order, the work misses an excellent opportunity to explore "how the public participates in the redefinition of value." When the sparks of collision between traditional elite aesthetics and mass democratization are absent, the film fails to accomplish a dialectic of the times, ultimately devolving into a self-enclosed and narcissistic echo chamber within the fashion industry.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 儀式的抵抗：時裝周的本體論與「修復型鄉愁」</span>
+                <span class="en-title">III. Ritualistic Resistance: The Ontology of Fashion Week and "Restorative Nostalgia"</span>
+            </h2>
+            <div class="zh-content">
+                <p>電影後半段最後的高潮，也是本作最具符號學張力的場域，在於那些在米蘭古典建築場景中置入的時裝周大秀。這裡必須引入 Barthes 在《<strong>時尚系統<sup><a id="ref3" href="#fn3">3</a></sup>(The Fashion System)</strong>》中的核心概念：<strong>時尚的本質，從來就不是為了「穿著」，而是為了探尋「概念的可能性」</strong>(Barthes, 1967/1990)<strong>。</strong></p>
+                <p>伸展台是一個純粹的符號實驗室，設計師解構身體、重塑線條，是用布料進行哲學思辨。然而，在一切皆可被瞬間複製、解構並速食化的當代，時裝周執意回到古典場域，展示那些高度脫離日常的「極端服飾」，其實承載著深刻的時代隱喻，更是一場關於「<strong>美學鄉愁(Aesthetic Nostalgia)</strong>」的展演：</p>
+                <ol>
+                    <li>
+                        <p><strong>無聲崩塌的預言：</strong>當伸展台上的概念與真實世界的使用徹底斷裂，時尚便失去了與大眾生活的有機連結。那些華麗厚重的古典樑柱，映襯著台下日益冷清的買手與失焦的鎂光燈，形成強烈對比。時尚產業試圖汲取古典建築的「歷史重量」，來掩飾自身在數位時代的輕浮與根基不穩，這無疑是夕陽產業無聲崩塌的預言。</p>
+                    </li>
+                    <li>
+                        <p><strong>對抗演算法的「修復型(Restorative)」鄉愁：</strong>Boym 曾指出：「<strong>鄉愁(Nostalgia)</strong>」是對抗時間加速與歷史動盪的防禦機制<sup><a id="ref4" href="#fn4">4</a></sup> (Boym, 2001)。其中的「修復型鄉愁」試圖重建那座已經失落的家園。在 Benjamin 感嘆「機械複製」摧毀藝術靈光的一百年後， Miranda 面對的是更殘酷的「數位複製與演算法」。這種與現實脫節的純粹概念探索，本質上是時尚對「古典美學價值」的一場深刻鄉愁。在 Benjamin 經歷的機械複製時代之後一百年，一切商品皆可被瞬間複製、解構並速食化時，時裝周執意回到古典場域，展示那些不可穿、不可輕易複製的「概念藝術」，或許如同一場徒勞的招魂儀式：它試圖在一個實用主義與資本至上的世界裡，強行留住最後一絲高傲的「靈光」。</p>
+                    </li>
+                </ol>
+            </div>
+            <div class="en-content">
+                <p>The film's final climax, which serves as its most semiotically tense arena, lies in the Fashion Week runway shows set against the backdrop of classical Milanese architecture. Here, it is necessary to introduce Roland Barthes’s core concept from <em>The Fashion System</em><sup><a href="#fn3">3</a></sup>: the essence of fashion has never been about "wearing," but rather about exploring "conceptual possibilities" (Barthes, 1967/1990).</p>
+                <p>The runway is a pure semiotic laboratory; when designers deconstruct bodies and reshape silhouettes, they are engaging in philosophical speculation through fabric. However, in an era where everything can be instantly copied, deconstructed, and consumed like fast food, Fashion Week’s stubborn return to classical venues to display "extreme garments" that are highly detached from daily life carries profound temporal metaphors. Furthermore, it acts as an exhibition of "aesthetic nostalgia":</p>
+                <ol>
+                    <li>
+                        <p><strong>A Prophecy of Silent Collapse:</strong> When the concepts on the runway completely fracture from real-world utility, fashion loses its organic connection with public life. Those magnificent, heavy classical pillars starkly contrast with the increasingly sparse buyers and unfocused camera flashes below the stage. The fashion industry attempts to draw upon the "historical weight" of classical architecture to disguise its own frivolity and fundamental instability in the digital age. This is undoubtedly a prophecy of a sunset industry's silent collapse.</p>
+                    </li>
+                    <li>
+                        <p><strong>"Restorative" Nostalgia Against Algorithms:</strong> Svetlana Boym noted that nostalgia is a defense mechanism against accelerated time and historical upheavals<sup><a href="#fn4">4</a></sup> (Boym, 2001). Within this framework, "restorative nostalgia" attempts to rebuild a lost home. A century after Benjamin lamented that "mechanical reproduction" had destroyed the aura of art, Miranda faces the even crueler reality of "digital reproduction and algorithms." This pure conceptual exploration, detached from reality, is fundamentally a profound nostalgia for "classical aesthetic values" within fashion. When everything can be instantaneously replicated and fast-food-ified, the runway show’s insistence on returning to classical spaces to display unwearable, irreproducible conceptual art resembles a futile séance: it attempts to forcibly retain the last trace of haughty "aura" in a world dominated by pragmatism and capital.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">結語：數位荒原中的唐吉訶德</span>
+                <span class="en-title">Conclusion: A Don Quixote in the Digital Wasteland</span>
+            </h2>
+            <div class="zh-content">
+                <p>重新審視《穿著Prada的惡魔2》中 Miranda 的身影，我們瞥見當代藝術產業所懷抱的唐吉訶德式的崇高感。電影透過抹除網紅、放大小眾的「概念時尚」，將這座時尚帝國塑造成一個與世隔絕的孤島。</p>
+                <p>傳媒更迭的職場劇，更是一部關於「美學孤立主義」的當代啟示錄。在這個品味被數據量化、一切皆需變現的荒原中，那些在古典廢墟中上演的時裝大秀，最終成為獻給舊時代的一首輓歌<strong>。</strong></p>
+            </div>
+            <div class="en-content">
+                <p>Re-examining Miranda's figure in <em>The Devil Wears Prada 2</em>, one catches a glimpse of the Don Quixotic sense of sublimity harbored by the contemporary art industry. By erasing influencers and amplifying niche "conceptual fashion," the film molds this fashion empire into an isolated island.</p>
+                <p>More than merely a workplace drama about media transition, it is a contemporary apocalypse of "aesthetic isolationism." In this wasteland where taste is quantified by data and everything must be monetized, those fashion shows staged in classical ruins ultimately become an elegy dedicated to the old era.</p>
+            </div>
+        </section>
+
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Benjamin, W. (1927/1999). <em>The Arcades Project</em> (H. Eiland & K. McLaughlin, trans.) Cambridge, MA: Harvard University Press. <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Benjamin, W. (1936/1968). The Work of Art in the Age of Mechanical Reproduction. In H. Arendt (Ed.), <em>Illuminations</em> (H. Zohn, trans., pp. 217–251). New York, NY: Schocken Books. <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Barthes, R. (1967/1990). <em>The Fashion System</em> (R. Howard & M. Ward, trans.). New York, NY: Schocken Books. <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Boym, S. (2001). <em>The Future of Nostalgia</em>. New York, NY: Basic Books. <a href="#ref4" class="backref">↑</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function setMode(mode) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                // fallback detection
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            // Reset body classes
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            
+            // Apply new mode
+            document.body.classList.add('mode-' + mode);
+            
+            // Dynamic Header Adjustments
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "《穿著Prada的惡魔2》與時尚靈光的消亡史";
+            } else if (mode === 'en') {
+                navTitle.textContent = "The Devil Wears Prada 2 and the Demise of Fashion’s Aura";
+            } else {
+                navTitle.textContent = "《穿著Prada的惡魔2》與時尚靈光的消亡史";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>共振的對位賦格與動態崇高體驗：論羊之歌劇團《李爾王之歌》中的能量調頻</title>
+    <!-- 引入 Noto Sans TC 作為主要黑體字型 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            /* 強制所有中文字型使用黑體 (無襯線體) */
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-en), var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        h1, h2, h3 { 
+            font-family: var(--font-en), var(--font-zh); 
+            font-weight: 700;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography & Structure */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        /* Abstract Box */
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 50px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* Language-specific block styling */
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        .en-content ul, .en-content ol,
+        .zh-content ul, .zh-content ol {
+            padding-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        /* Dynamic Visibility Modes */
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        /* Image Styling */
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Footnotes & References */
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: left;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <!-- Sticky Navigation Control Bar -->
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="index.html" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">論羊之歌劇團《李爾王之歌》</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1 class="main-title">共振的對位賦格與動態崇高體驗：論羊之歌劇團《李爾王之歌》中的能量調頻</h1>
+            <div class="subtitle">Resonant Counterpoint Fugue and Dynamical Sublime Experience: Energy Tuning in "Songs of Lear"</div>
+        </header>
+
+        <!-- Abstract Box -->
+        <div class="abstract-section">
+            <div class="abstract-title zh">摘要</div>
+            <div class="abstract-text zh">
+                羊之歌劇團(Song of the Goat Theatre)的《李爾王之歌(Songs of Lear)》並非對莎士比亞文本的再現，而是一場關於聲音的現象學還原。導演 Grzegorz Bral 挪用Kandinsky關於「即興」與「結構」的繪畫理論，並結合Bach的賦格對位與道家太極的陰陽辯證，將戲劇動作消解為「聲音的色彩」。本文試圖以「調頻(Tuning)」為本體論核心，剖析該劇如何通過無拍子的時間共感、肉身的壓電效應以及對立能量的控制，建構出一種Kant式的「動態崇高(Dynamical Sublime)」體驗。
+            </div>
+
+            <div class="abstract-title en">Abstract</div>
+            <div class="abstract-text en">
+                Song of the Goat Theatre’s <em>Songs of Lear</em> is not a representation of Shakespeare’s text, but a phenomenological reduction of sound. Director Grzegorz Bral appropriates Wassily Kandinsky’s theories on "Improvisation" and "Composition," combining J.S. Bach’s fugal counterpoints with the Daoist dialectic of Yin and Yang, dissolving dramatic action into "sound color." This article posits "Tuning" as the ontological core of the work, analyzing how the piece constructs a Kantian "Dynamical Sublime" experience through ametrical temporal empathy, the piezoelectric effect of the flesh, and the control of opposing energies.
+            </div>
+        </div>
+
+        <!-- Document Image -->
+        <div class="image-container">
+            <img src="https://www.lcsd.gov.hk/CE/CulturalService/Programme/images/upload/1400x692/page_52961_cover_112853.jpg" alt="羊之歌劇團《李爾王之歌》演出海報">
+            <div class="caption caption-zh">羊之歌劇團《李爾王之歌》(波蘭) 2月6日 至 2月8日 於 香港大會堂劇院 演出</div>
+            <div class="caption caption-en">Song of the Goat Theatre's "Songs of Lear" (Poland) performed from Feb 6 to Feb 8 at Hong Kong City Hall Theatre.</div>
+        </div>
+
+        <!-- Section 1 -->
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 緒論：從再現到振動</span>
+                <span class="en-title">I. Introduction: From Representation to Vibration</span>
+            </h2>
+            <div class="zh-content">
+                <p>在後戲劇劇場(Post-dramatic Theatre)的語境下，經典文本的處理往往面臨解構或重構的抉擇。然而，Grzegorz Bral 的《李爾王之歌》選擇了一條更為古老且激進的路徑：蒸餾(Distill)<sup><a id="ref1" href="#fn1">1</a></sup>。這部作品拒絕了語言中心主義(Logocentrism)的敘事邏輯，轉而將《李爾王》的悲劇性還原為一種純粹的振動頻率。正如 Bral 所言，他試圖探索「聲音的色彩」，這直接呼應了 Kandinsky 在《論藝術的精神》中的主張：色彩（聲音）是直接作用於靈魂的琴鍵<sup><a id="ref2" href="#fn2">2</a></sup> (Kandinsky, 1914/1977)。</p>
+                <p>在這部「非線性清唱劇」中，我們看到的不是角色的扮演，而是能量的傳輸。貫穿全劇的核心技術與哲學概念，是<strong>「調頻(Tuning)」</strong>。這不僅是音樂上的音準校正，更是一種集體的、生理的、甚至是形而上的存在狀態。</p>
+            </div>
+            <div class="en-content">
+                <p>In the context of post-dramatic theatre, classical texts often face the choice between deconstruction and reconstruction. However, Grzegorz Bral’s <em>Songs of Lear</em> chooses a more ancient and radical path: Distill<sup><a href="#fn1">1</a></sup>. This work rejects the narrative logic of logocentrism, turning instead to reduce the tragedy of <em>King Lear</em> into pure vibrational frequencies. As Bral suggests, he attempts to explore "sound color," a direct echo of Wassily Kandinsky’s assertion in <em>Concerning the Spiritual in Art</em>, Color (Sound) is a keyboard that acts directly upon the soul<sup><a href="#fn2">2</a></sup> (Kandinsky, 1914/1977).</p>
+                <p>In this "non-linear oratorio," what we witness is not role-playing, but energy transmission. The central technical and philosophical concept spanning the performance is <strong>"tuning."</strong> This is not merely pitch correction in a musical sense, but a collective, physiological, and even metaphysical state of being.</p>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 時間的零度與頻率的織體</span>
+                <span class="en-title">II. Zero Degree of Time and the Texture of Frequencies</span>
+            </h2>
+            <div class="zh-content">
+                <p>「調頻」首先體現在時間的向度上。劇中大量的段落處於「無拍子(Ametrical)」狀態。這種擺脫了機械節拍器束縛的時間觀，迫使演員進入一種Heidegger的「<strong>操勞(Sorge)</strong><sup><a id="ref3" href="#fn3">3</a></sup> (Heidegger, 1962/1967)」狀態。全體演員必須共享同一種呼吸的幾何學，每一個和聲的切入、每一個休止符的延長，都依賴於一種高度敏銳的「集體神經系統」。</p>
+                <p>這種調頻在「節奏」與「情緒」的對位中尤為明顯。小女兒 Cordelia 的詠嘆調在劇中被反覆置入不同的情境中。這種重複(Repetition)並非簡單的再現，而是時間的螺旋。每一次重複，都是在原有的情感頻率上疊加新的泛音列(Overtone Series)。這種基於「音程(Interval)」的情緒調頻，利用不協和音程(Dissonance)製造生理性的緊張，再通過協和音程(Consonance)進行釋放，形成了一種呼吸般的張力結構。</p>
+                <p>此外，波蘭語的古老音韻與拉丁聖詠般的質地，為非波蘭語觀眾構建了一道必要的「審美距離」。這種語言上的隔閡，迫使觀眾放棄對「<strong>能指(Signifier)</strong><sup><a id="ref4" href="#fn4">4</a></sup> (Saussure, 1916/1959)」的追逐，轉而全神貫注於聲音本身的物質性。這種距離感本身，就是一種「<strong>文化調頻</strong>」，它過濾了世俗的語義，留下了神聖的語氣。</p>
+            </div>
+            <div class="en-content">
+                <p>"Tuning" manifests first in the dimension of time. Large sections of the performance exist in an "ametrical" state. This perception of time, liberated from the mechanical metronome, forces the actors into a Heideggerian state of <em>"<strong>sorge/care</strong><sup><a href="#fn3">3</a></sup>"</em> (Heidegger, 1962/1967). The entire ensemble must share a single geometry of breath; every harmonic entry, every elongation of a rest, relies on a highly acute "collective nervous system."</p>
+                <p>This tuning is particularly evident in the counterpoint of "rhythm" and "emotion." Cordelia's aria is repeatedly inserted into different contexts throughout the play. This repetition is not simple reproduction, but a spiral of time. Each iteration superimposes a new overtone series upon the original emotional frequency. This emotional tuning, based on musical "intervals," uses dissonance to create physiological tension, and consonance to release it, forming a respiratory structure of tension.</p>
+                <p>Furthermore, the archaic phonology of the Polish language and its Latin-chant-like texture construct a necessary "aesthetic distance" for non-Polish speaking audiences. This linguistic barrier forces the audience to abandon the chase for the "<strong>signifier</strong><sup><a href="#fn4">4</a></sup>" (Saussure, 1916/1959) and focus entirely on the materiality of the sound itself. This distance is, in itself, a form of "<strong>cultural tuning</strong>," filtering out secular semantics to leave behind a sacred tone.</p>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 賦格中的太極：肉身作為變頻器</span>
+                <span class="en-title">III. Tai Chi in the Fugue: The Body as Transducer</span>
+            </h2>
+            <div class="zh-content">
+                <p>本劇最令筆者震撼之處，在於將Bach的結構理性與道家的身體哲學進行了辯證統一。導演在演出後的QA提及巴哈賦格中的「<strong>對位(Counterpoint)</strong>」與太極的「陰陽」控制，這在「活體鼓框」的一場戲中得到了最極致的<strong>具身化(Embodied)</strong>呈現。</p>
+                <p>在這一場景中，演員以肉身持取鼓框，鼓手在演員間遊走，重擊鼓面。此時，演員不再是演奏的主體，而是被異化的樂器(Object)。鼓聲的音色直接取決於演員手臂肌肉的張力與骨骼的架構。</p>
+                <p>這裡發生了一種「<strong>肉身的壓電效應</strong>」。演員改變手臂力量的行為，不僅是對重量的支撐，更是在演出中進行「<strong>生物性的變頻</strong>」，體現了太極哲學中的「聽勁」與「化勁」：</p>
+                <ul>
+                    <li><strong>陽：</strong> 鼓手的打擊力與演員維持結構的剛性。</li>
+                    <li><strong>陰：</strong> 演員體內為了轉化衝擊、製造共鳴而進行的柔性微調。</li>
+                </ul>
+                <p>這種控制是反直覺的，一種「自然的控制」。演員必須在痛楚與壓力下，尋找身體內部的流動性。這種在巴哈式嚴謹結構（賦格的對位）中尋找太極式流動（能量的運行）的過程，將表演提升到了「本體論」的層次：痛苦不再是被表演的對象，而是成為發聲品質的物理性介質。</p>
+            </div>
+            <div class="en-content">
+                <p>The work’s most impressive phase lies in its dialectical unification of J.S. Bach’s structural rationality with Daoist somatic philosophy. The director explicitly references the "<strong>counterpoint</strong>" in Bach’s fugues and the "Yin/Yang" control of Tai Chi, which finds its most extreme <strong>embodied</strong> presentation in the scene of the "living drum frames."</p>
+                <p>In this scene, actors hold drum head regard their arm as the frame of drum. The drummer moves among them, striking the drum skins with sticks. At this moment, the actors are no longer the subjects of performance but alienated objects/instruments. The timbre of the drum beats depend directly on the tension of the actors' arm muscles and their skeletal architecture.</p>
+                <p>Here, a profound <strong>"piezoelectric effect of the flesh"</strong> occurs. The actor's act of altering arm strength is not merely supporting weight but engaging in <strong>"bio-acoustic tuning."</strong> This embodies the "Listening Energy" and "Neutralizing Energy" of Tai Chi philosophy:</p>
+                <ul>
+                    <li><strong>Yang:</strong> The relentless striking force of the drummer and the rigidity of the actor maintaining the structure.</li>
+                    <li><strong>Yin:</strong> The soft micro-adjustments within the actor’s body to transform the impact and create resonance.</li>
+                </ul>
+                <p>This control is counter-intuitive, a "natural control." The actor must find internal fluidity amidst extreme pain and pressure. This process of seeking Tai Chi-like flow (the movement of engery) within a Bach-like rigorous structure (fugal counterpoint) elevates performance to an ontological level: pain is no longer the object being performed; pain becomes the physical medium of sound generation.</p>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 結構的裂隙：弄臣與反崇高</span>
+                <span class="en-title">IV. Structural Ruptures: The Fool and the Anti-Sublime</span>
+            </h2>
+            <div class="zh-content">
+                <p>如果說合唱隊構建的是一座神聖的聲音大廈，那麼弄臣(The Fool)的兩次登場則是對這座大廈的必要的「爆破」。</p>
+                <p>在完美的和聲賦格中，弄臣以切分(Syncopation)與不和諧音程(Dissonant Interval)的方式在場。她的身體語言是痙攣的，聲音是怪誕的。這種設置防止了作品滑向廉價的神秘主義或新世紀音樂的甜美。弄臣的存在提醒我們，在天體音樂的和諧之外，始終存在著荒謬與混亂。這種「結構性的裂隙」是賦格中必要的對位，正是因為有了這種世俗的、粗糙的干擾，整體的崇高感才顯得真實而有重量。</p>
+            </div>
+            <div class="en-content">
+                <p>If the chorus constructs a sacred edifice of sound, the two appearances of The Fool represent the necessary "detonation" of this structure.</p>
+                <p>In a perfect harmonic fugue, The Fool represents syncopation and dissonant interval. Her body language is spasmodic; his voice is grotesque. This arrangement prevents the work from sliding into cheap mysticism or the sweetness of New Age music. The Fool’s existence reminds us that outside the harmony of celestial music, absurdity and chaos always exist. This "structural rupture" is a necessary <em>Contrast Point</em> in the fugue; it is precisely because of this secular, rough interference that the overall sense of the sublime feels authentic and weighty.</p>
+            </div>
+        </section>
+
+        <!-- Section 5 -->
+        <section id="section5">
+            <h2>
+                <span class="zh-title">五、 結論：通往康德式的超驗崇高</span>
+                <span class="en-title">V. Conclusion: Towards a Kantian Transcendental Sublime</span>
+            </h2>
+            <div class="zh-content">
+                <p>Grzegorz Bral 在《李爾之歌》中展示了一種「<strong>能量的工程學(Engineering of Energy)</strong>」。結合設計者的視角（特別是內部傳承的能量引導經驗），我們發現演員間的頻率疊加並非毫無保留的宣洩，而是一種「<strong>控制性的洩洪</strong><sup><a id="ref5" href="#fn5">5</a></sup> (Grotowski, 1968)」。</p>
+                <p>這種通過極致的身體規訓與聲音對位所產生的體驗，引導觀眾進入了 Kant 在《判斷力批判》中所描述的「<strong>動態崇高</strong><sup><a id="ref6" href="#fn6">6</a></sup> <strong>(Dynamical Sublime)</strong> (Kant, 1790/2000)」。面對那如暴風雨般壓倒性的聲壓與情感濃度，觀眾的感性直觀(sensible intuition)在試圖對聲響的「<strong>雜多</strong><sup><a id="ref7" href="#fn7">7</a></sup> <strong>(The Manifold)</strong> (Kant, 1781/1998)」進行綜合時遭遇了必然的潰敗，迫使心靈越過知性範疇的邊界，在思維中觸及那不可被認識、卻恆久存在的「<strong>物自身</strong><sup><a href="#fn7">7</a></sup> <strong>(Ding an sich/Noumena)</strong> (Kant, 1781/1998)」之回響。</p>
+                <p>最終，羊之歌劇團通過精密的「<strong>調頻</strong>」，在巴哈的數學與道家的氣韻之間，重建了一座通往彼岸的階梯。這不再僅是關於身體的規訓，而是一場關於「共振」的啟示：當感官的雜多被統合為純粹的振動時，我們得以跨越現象界的藩籬，在靈魂的共鳴中，聽見那屬於「天體(Celestial)」與神性的永恆回響。</p>
+            </div>
+            <div class="en-content">
+                <p>Grzegorz Bral demonstrates an "<strong>engineering of energy</strong>" in <em>Songs of Lear</em>. Combining the designer's perspective (specifically the internal transmission of energy guidance experiences), we find that the frequency superposition among actors is not unreserved catharsis, but a form of "<strong>controlled flooding</strong><sup><a href="#fn5">5</a></sup>" (Grotowski, 1968).</p>
+                <p>The experience generated through extreme somatic discipline and sonic counterpoint guides the audience into the <strong>"dynamical sublime</strong><sup><a href="#fn6">6</a></sup><strong>"</strong> described by Kant in the <em>Critique of the Power of Judgment</em> (Kant, 1790/2000). Facing the overwhelming sound pressure and emotional density akin to a storm, the audience's <strong>sensible intuition</strong> suffers an inevitable failure when attempting to synthesize the <strong>"manifold</strong><sup><a href="#fn7">7</a></sup><strong>"</strong> of sound (Kant, 1781/1998). This rupture of imagination forces the mind to cross the boundaries of the <strong>categories of understanding</strong>; it is precisely at this moment, that the audience, through a <strong>"negative presentation,"</strong> touches upon the resonance of the unknowable yet ever-present <strong>"thing-in-itself (noumena)</strong><sup><a href="#fn7">7</a></sup>" in thought (Kant, 1781/1998).</p>
+                <p>Ultimately, through precise "<strong>tuning</strong>," Song of the Goat Theatre reconstructs a ladder to the beyond, situated between the mathematics of Bach and the <em>Qi</em> of Daoism. This is no longer merely about somatic discipline, but a <strong>revelation of "resonance"</strong>: when the manifold of senses is unified into pure vibration, we transcend the barriers of the phenomenal world. In the resonance of the soul, we hear the eternal echo belonging to the "Celestial" and the divinity.</p>
+            </div>
+        </section>
+
+        <!-- References -->
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Leisure and Cultural Services Department. (n.d.). <em>羊之歌劇團《李爾王之歌》（波蘭）</em> [節目單]. <a target="_blank" href="https://www.lcsd.gov.hk/CE/CulturalService/Programme/tc/theatre/programs_1927.html">https://www.lcsd.gov.hk/CE/CulturalService/Programme/tc/theatre/programs_1927.html</a> (引自 The List, 2012) <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Kandinsky, W. (1977). <em>Concerning the spiritual in art</em> (M. T. H. Sadler, Trans.). New York, NY: Dover Publications. (Original work published 1914) <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Heidegger, M. (1962). <em>Being and time</em> (J. Macquarrie & E. Robinson, Trans.). Harper & Row. (Original work published 1927) <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Saussure, F. de. (1959). <em>Course in general linguistics</em> (W. Baskin, Trans.). Philosophical Library. (Original work published 1916) <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Grotowski, J. (1968). <em>Towards a poor theatre</em>. New York, NY: Simon & Schuster. <a href="#ref5" class="backref">↑</a></li>
+                <li id="fn6">Kant, I. (1998). Critique of pure reason (P. Guyer & A. W. Wood, Trans.). Cambridge, UK: Cambridge University Press. (Original work published 1781) <a href="#ref6" class="backref">↑</a></li>
+                <li id="fn7">Kant, I. (2000). Critique of the power of judgment (P. Guyer & E. Matthews, Trans.). Cambridge, UK: Cambridge University Press. (Original work published 1790) <a href="#ref7" class="backref">↑</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function setMode(mode) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                // fallback detection
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            // Reset body classes
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            
+            // Apply new mode
+            document.body.classList.add('mode-' + mode);
+            
+            // Dynamic Header Adjustments
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "論羊之歌劇團《李爾王之歌》";
+            } else if (mode === 'en') {
+                navTitle.textContent = "Energy Tuning in 'Songs of Lear'";
+            } else {
+                navTitle.textContent = "論羊之歌劇團《李爾王之歌》";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>

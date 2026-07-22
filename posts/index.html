@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> M-A Lab </title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F7F7F5;
+            --text-main: #2C2C2C;
+            --text-muted: #888888;
+            --accent-color: #A68A64;
+            --secondary-color: #64748b;
+            --card-bg: #FFFFFF;
+            --border-radius: 12px;
+            --border-color: #e2e8f0;
+            /* 強制所有中文字型使用黑體 (無襯線體) */
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-en), var(--font-zh);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* 移除原有 serif 設定，統一使用黑體 */
+        h1, h2, h3 { 
+            font-family: var(--font-en), var(--font-zh); 
+            font-weight: 700;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(247, 247, 245, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #E8E5DA;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-main);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        /* Dynamic Visibility Modes */
+        body.mode-zh .en-content { display: none !important; }
+        body.mode-en .zh-content { display: none !important; }
+        body.mode-bilingual .en-content { display: block; }
+        span.en-content { display: inline-block; }
+        body.mode-bilingual span.en-content { margin-left: 6px; padding-left: 6px; border-left: 1px solid #ccc;}
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: #111;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        header p.bio {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .post-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .post-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .post-image {
+            width: 100%;
+            padding-top: 56.25%;
+            position: relative;
+            background-color: #F0F0F0;
+            overflow: hidden;
+        }
+
+        .post-image img, .post-image .bg-img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .post-card:hover .post-image .bg-img {
+            transform: scale(1.05);
+        }
+
+        .post-image.empty-state {
+            background: linear-gradient(135deg, #F5F3EB 0%, #E8E5DA 100%);
+        }
+        .post-image.empty-state::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(var(--accent-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.15;
+        }
+
+        .post-content {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .post-meta {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 500;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            line-height: 1.4;
+            font-weight: 700;
+        }
+
+        .post-title a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .post-title a:hover {
+            color: var(--accent-color);
+        }
+        
+        .post-title .en-content {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-top: 6px;
+            border-left: none;
+            padding-left: 0;
+            display: block !important;
+        }
+        
+        body.mode-bilingual .post-title .en-content {
+            display: block !important;
+            margin-left: 0;
+        }
+        body.mode-zh .post-title .en-content { display: none !important; }
+
+        .post-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .post-excerpt p {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        body.mode-bilingual .post-excerpt p.en-content {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .post-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .read-more {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .read-more svg {
+            width: 16px; height: 16px;
+            margin-left: 6px;
+            transition: transform 0.2s;
+        }
+
+        .read-more:hover { color: var(--accent-color); }
+        .read-more:hover svg { transform: translateX(4px); }
+
+        @media (max-width: 768px) {
+            .post-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-title" id="navTitle">M-A Lab</div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>M-A Lab</h1>
+            <p class="bio zh-content">建築、運算、哲學 探索<br>M-A Lab Blog</p>
+            <p class="bio en-content" style="margin-top: 8px;">Architecture, Computation, Philosophy<br>M-A Lab Blog</p>
+        </header>
+        
+        <main class="post-grid" id="post-container">
+            </main>
+    </div>
+    
+    <script>
+        // Language Toggle Function
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+        }
+
+        // Fetch JSON Data and Generate Cards
+        fetch('posts_data.json')
+            .then(response => response.json())
+            .then(posts => {
+                const container = document.getElementById('post-container');
+                let html = '';
+                
+                posts.forEach(post => {
+                    // URL Encode filename
+                    const safeFile = encodeURI(post.filename);
+                    
+                    // 從檔名取得日期 (解析檔名 "_" 前的 8 個字元為 西洋年+月+日)
+                    let displayDate = "";
+                    const filenamePrefix = post.filename.split('_')[0];
+                    if (filenamePrefix && filenamePrefix.length === 8 && !isNaN(filenamePrefix)) {
+                        const year = filenamePrefix.substring(0, 4);
+                        const month = filenamePrefix.substring(4, 6);
+                        const day = filenamePrefix.substring(6, 8);
+                        displayDate = `${year}-${month}-${day}`;
+                    } else {
+                        displayDate = post.date || "Unknown Date"; // Fallback
+                    }
+                    
+                    // Thumbnail
+                    let thumbnailHtml = post.img_src ? 
+                        `<div class="post-image"><div class="bg-img" style="background-image: url('${post.img_src}');"></div></div>` : 
+                        `<div class="post-image empty-state"></div>`;
+                    
+                    // Content generation (支援預設欄位或多語系欄位)
+                    const titleZh = post.title_zh || post.title || '';
+                    const titleEn = post.title_en || post.title_en_fallback || ''; 
+                    const excerptZh = post.excerpt_zh || post.excerpt || '';
+                    const excerptEn = post.excerpt_en || '';
+                    
+                    html += `
+                        <article class="post-card">
+                            <a href="${safeFile}">${thumbnailHtml}</a>
+                            <div class="post-content">
+                                <div class="post-meta">${displayDate}</div>
+                                <h2 class="post-title">
+                                    <a href="${safeFile}">
+                                        <span class="zh-content">${titleZh}</span>
+                                        ${titleEn ? `<span class="en-content">${titleEn}</span>` : ''}
+                                    </a>
+                                </h2>
+                                <div class="post-excerpt">
+                                    <p class="zh-content">${excerptZh}</p>
+                                    ${excerptEn ? `<p class="en-content">${excerptEn}</p>` : ''}
+                                </div>
+                                <div class="post-footer">
+                                    <a href="${safeFile}" class="read-more">
+                                        <span class="zh-content">閱讀全文</span>
+                                        <span class="en-content">Read Article</span> 
+                                        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading posts:', error);
+                document.getElementById('post-container').innerHTML = '<p style="text-align:center; width:100%; color: var(--text-muted);">暫無文章或載入資料失敗 / No posts available or failed to load data.</p>';
+            });
+    </script>
+</body>
+</html>
