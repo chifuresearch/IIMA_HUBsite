@@ -1,0 +1,550 @@
+<!-- 基於提供的 HTML 模板架構改寫，去除過度矯飾與最高級用語，以冷靜理性的風格進行潤飾 -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>將末日鑿成一座火山口：論 Ridley Scott《The Dog Stars》中的失重綿延與棲居變體</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+        
+        .spoiler-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 40px 0 50px 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .spoiler-divider::before,
+        .spoiler-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px dashed var(--accent-color);
+            opacity: 0.5;
+        }
+        
+        .spoiler-divider:not(:empty)::before {
+            margin-right: 15px;
+        }
+        
+        .spoiler-divider:not(:empty)::after {
+            margin-left: 15px;
+        }
+
+        .spoiler-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .spoiler-text.en {
+            font-family: var(--font-en);
+            font-size: 0.85rem;
+            letter-spacing: 0;
+            font-weight: normal;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en,
+        body.mode-zh .spoiler-text.en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh,
+        body.mode-en .spoiler-text.zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+        
+        .caption a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent-color);
+        }
+        
+        .caption a:hover {
+            color: #1a2a3a;
+            border-bottom-style: solid;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+            .spoiler-text.zh { font-size: 0.85rem; }
+            .spoiler-text.en { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="index.html" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">將末日鑿成一座火山口</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">將末日鑿成一座火山口：論 Ridley Scott《The Dog Stars》中的失重綿延與棲居變體</h1>
+            <div class="subtitle">Carving a Crater from the Apocalypse: Weightless Duration and Variants of Dwelling in Ridley Scott's The Dog Stars</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">引言</div>
+            <div class="abstract-text zh">
+                藝術家 James Turrell 耗費數十年，在荒涼的沙漠中將一座死火山改造成裸眼天文台 Roden Crater。這個空間的特殊之處，在於它並非一座用來抵禦荒漠的堡壘，而是一個「抽離裝置」：它將現代社會的同質時間與日常剝離，讓身處其中的人，在孤絕環境中直面光線推移與時間的「綿延」。Ridley Scott 的《The Dog Stars》在影像結構上，呼應了這座火山口的美學與哲學。相較於《28 Years Later》以超現實影像呈現末日崩壞，《The Dog Stars》選擇褪去宏大敘事，將主角 Hig 所在的廢土，打造成一座隔絕日常、向內挖掘的內在性平面。Scott 不問世界為何毀滅，而是透過剝離外在條件，引導觀眾在失重的時間中，觀察人類如何重新找回「棲居」的可能。
+            </div>
+
+            <div class="abstract-title en">Introduction</div>
+            <div class="abstract-text en">
+                Artist James Turrell spent decades transforming a dormant volcano in a desolate desert into a naked-eye observatory, <em>Roden Crater</em>. The significance of this space lies not in being a fortress against the wasteland, but in acting as a "mechanism of extraction": it strips away the homogeneous time and daily routines of modern society, allowing those within to confront the progression of light and the "duration" of time in isolation. Ridley Scott's <em>The Dog Stars</em> echoes the aesthetics and philosophy of this crater in its cinematic structure. Compared to <em>28 Years Later</em>, which uses surreal imagery to depict apocalyptic collapse, <em>The Dog Stars</em> chooses to shed grand narratives, shaping the wasteland inhabited by the protagonist, Hig, into a plane of immanence that isolates the everyday and excavates inward. Scott does not ask why the world was destroyed; instead, by stripping away external conditions, he guides the audience to observe how humanity can reclaim the possibility of "dwelling" within weightless time.
+            </div>
+        </div>
+
+        <div class="spoiler-divider">
+            <div class="spoiler-content">
+                <span class="spoiler-text zh">以下內容涉及《The Dog Stars》劇情透漏，請斟酌閱讀</span>
+                <span class="spoiler-text en">The following content contains spoilers for The Dog Stars. Read at your own risk.</span>
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://rodencrater.com/wp-content/uploads/2015/10/ConjunctionB.jpg" alt="James Turrell - Roden Crater">
+            
+            <div class="caption caption-zh">
+                <p><strong>圖示：</strong>藝術家 James Turrell 位於沙漠中的死火山改造計畫 Roden Crater。該空間剝離了現代社會的同質時間，讓人在荒涼的地景中，體驗時間的「綿延」與感知上的失重狀態，呼應了電影中主角於空中關閉引擎的哲學意境。（出處：<a href="https://rodencrater.com/about/" target="_blank">Roden Crater</a>）</p>
+            </div>
+            
+            <div class="caption caption-en">
+                <p><strong>Illustration:</strong> Artist James Turrell's project <em>Roden Crater</em>, a transformed dormant volcano in the desert. This space strips away the homogeneous time of modern society, allowing individuals in a desolate landscape to experience the "duration" of time and a perceptual state of weightlessness, echoing the philosophical atmosphere of the protagonist shutting off his engine mid-air in the film. (Source: <a href="https://rodencrater.com/about/" target="_blank">Roden Crater</a>)</p>
+            </div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 Roden Crater 與失重的綿延：抽離日常與 Deleuze 的流動切面</span>
+                <span class="en-title">I. Roden Crater and the Weightless Duration: Extracting the Everyday and Deleuze's Mobile Section</span>
+            </h2>
+            <div class="zh-content">
+                <p>在電影開篇，退役軍人 Bangley 將廢棄機場建構為一個「防衛性堡壘」。在末日的語境下，Bangley 依賴機械化的 routine (日常巡邏、清理周邊) 來維繫生存。這種 routine 是 Heidegger 所說的「生存掩體」<sup><a href="#fn5">5</a></sup>，也是 Bergson <sup><a href="#fn1">1</a></sup> 所指被切割、空間化且缺乏質變的「機械時間」：人們透過重複的防衛動作建立習慣，減少對生命流動的感知。</p>
+                <p>然而，對主角 Hig 而言，他駕駛小飛機升空的時刻，便是他進入自我「Roden Crater」的儀式。全片具本體論意義的畫面，發生在他於高空關閉引擎，任由機身在蒼涼地景上「停機漂浮」的時刻。Scott 在這裡實踐了 Deleuze <sup><a href="#fn2">2</a></sup> 對 Bergson 電影時間觀的批判與翻轉。</p>
+                <p>Bergson 早期認為電影是一種「運動的幻影」，是用同質的放映時間拼湊瞬間切面。但 Deleuze 反駁，電影直接生產了「流動的切面」(Mobile section)。當 Hig 關閉引擎，物理上的懸停中斷了 Bangley 那種防衛性日常的機械時間表象。在失去動力的「失重」瞬間， routine 被抽離，影像不再為推進敘事因果而服務，而是釋放出了「綿延」(Durée)。</p>
+                <p>在這個宛如 Roden Crater 般孤絕的流動切面中，Hig 喪妻的過去、末日的荒蕪當下，共存在同一個內在性平面上。他在空中漂浮，是他在失去舊世界後，靈魂拒絕被同質時間推著走，而將自身封閉於悲痛之「綿延」的具象化表現。這並非時間的靜止，而是時間整體的失重。</p>
+            </div>
+            <div class="en-content">
+                <p>In the opening of the film, military veteran Bangley constructs an abandoned airport into a "defensive fortress." In the context of the apocalypse, Bangley relies on mechanized routines (daily patrols, perimeter clearing) to sustain survival. This routine is what Heidegger calls a "survival bunker" <sup><a href="#fn5">5</a></sup>, and it is also the kind of "mechanical time" identified by Bergson <sup><a href="#fn1">1</a></sup>: time that is compartmentalized, spatialized, and lacking in qualitative change. People form habits through repetitive defensive actions, reducing their perception of the flow of life.</p>
+                <p>However, for the protagonist Hig, the moment he takes off in his small plane is his ritual of entering his personal "Roden Crater." The ontologically significant scenes in the film occur when he cuts the engine at high altitudes, allowing the aircraft to float over the desolate landscape. Here, Scott implements Deleuze's <sup><a href="#fn2">2</a></sup> critique and inversion of Bergson's cinematic concept of time.</p>
+                <p>Bergson early on considered cinema merely an "illusion of movement," piecing together instantaneous sections using homogeneous projection time. But Deleuze argued that cinema directly produces "mobile sections." When Hig turns off the engine, the physical suspension interrupts the facade of mechanical time inherent in Bangley's defensive routines. In the "weightless" moment of lost power, routines are extracted, and the image no longer serves to advance narrative causality, but releases "duration" (durée).</p>
+                <p>In this isolated mobile section akin to <em>Roden Crater</em>, the past of Hig losing his wife and the desolate present of the apocalypse co-exist on the same plane of immanence. His floating in the air is the visual manifestation of his soul refusing to be pushed forward by homogeneous time after losing the old world, enclosing himself in the "duration" of grief. This is not the stillness of time, but the weightlessness of time as a whole.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 震地的野牛與去浪漫化的他者：清空跑道與受助的震撼</span>
+                <span class="en-title">II. The Earth-Shaking Bison and the De-romanticized Other: Clearing the Runway and the Shock of Being Rescued</span>
+            </h2>
+            <div class="zh-content">
+                <p>要打破這座火山口的封閉狀態，讓停滯的綿延重新與外界產生質變，並非來自浪漫敘事，而是源於一次寫實的生存危機。在中段「清空失事飛機障礙」的橋段中，女主角與其年邁的父親，並非等待救援的弱者，而是主動提供救助的角色。</p>
+                <p>Scott 鏡頭下 Guy Pearce 從警惕、幹練與求生本能朝向伸出援手的舉動，宛如「震地的野牛群」般，以無可迴避的姿態，介入了 Bangley 那「所有人皆是威脅」的防衛日常。</p>
+                <p>這群無形的野牛瓦解了 Guy Pearce 用來隔絕外界的防禦機制。「向陌生人提供幫助」這個動作，在末日中是一種具風險的信任，卻也是 Heidegger 哲學中「煩擾／關懷」(Care / Sorge) <sup><a href="#fn3">3</a></sup> 的開端。這份來自他者的連結，引導 Hig 將目光從火山口的天空移回大地。</p>
+            </div>
+            <div class="en-content">
+                <p>To break the enclosure of this crater and allow the stagnant duration to undergo qualitative change with the outside world does not come from a sentimental narrative, but originates from a realistic survival crisis. In the mid-point sequence of "clearing the crashed plane obstacle," the female lead and her elderly father are not weaklings waiting for rescue, but actively take on the role of providers of aid.</p>
+                <p>Under Scott's lens, Guy Pearce's shift from vigilance, competence, and survival instinct toward extending a helping hand is like a herd of "earth-shaking bison," intervening in Bangley's defensive routine of "everyone is a threat" in an unavoidable manner.</p>
+                <p>This invisible herd of bison dismantles the defensive mechanisms Guy Pearce uses to isolate himself. The act of "offering help to strangers" is a risky form of trust in the apocalypse, yet it is also the beginning of "Care" (Sorge) in Heidegger's philosophy <sup><a href="#fn3">3</a></sup>. This connection from the Other guides Hig to shift his gaze from the sky of the crater back to the earth.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 棲居的兩極化變體：Grand Junction 的實用要塞 vs. Mennonites 的有機大地</span>
+                <span class="en-title">III. Polarized Variants of Dwelling: The Pragmatic Fortress of Grand Junction vs. The Organic Earth of the Mennonites</span>
+            </h2>
+            <div class="zh-content">
+                <p>電影的後半段，透過兩個不同的場域，呈現了對末日生存本質的辯證。</p>
+                <p>當 Hig 一行人抵達 Grand Junction 時，他們看見的是「末日實用主義」的體現。人類在這裡被異化為維持系統運作的齒輪，是一種 Heidegger 所批判的「促逼」(Gestell) <sup><a href="#fn4">4</a></sup>。空間被剝奪了溫度，時間在這裡成為 Bergson 所指的純粹消耗品與生存的倒數計時。</p>
+                <p>與 Grand Junction 形成對比的，是最後抵達的 Mennonites 集散地。Mennonites 拒絕現代科技，回歸土地，以勞作與社群共融維繫生活。在 Heidegger 的哲學中，真正的「棲居」必須包含對大地的拯救與順應 <sup><a href="#fn5">5</a></sup>。Mennonites 的耕作與和平主義，在廢土上重新建立起一種依循自然節律的「有機時間」。</p>
+                <p>然而，接近人類理想棲居狀態的社群，在末日中卻缺乏自保能力。這促成了 Hig 與 Bangley 的身分翻轉：他們從清空跑道時的「受助者」，轉變為這個和平社群的「救助者」。Bangley 的防衛與 Hig 的武裝，轉向為了「守護棲居得以發生的空間」。</p>
+            </div>
+            <div class="en-content">
+                <p>The second half of the film presents a dialectic on the nature of apocalyptic survival through two different realms.</p>
+                <p>When Hig and his companions arrive at Grand Junction, what they see is a manifestation of "apocalyptic pragmatism." Here, humans are alienated into cogs maintaining the system's operation, a form of "Enframing" (Gestell) criticized by Heidegger <sup><a href="#fn4">4</a></sup>. Space is stripped of warmth, and time here becomes the pure consumable and survival countdown identified by Bergson.</p>
+                <p>Forming a contrast with Grand Junction is the final destination: the settlement of the Mennonites. The Mennonites reject modern technology and return to the land, sustaining life through manual labor and community communion. In Heidegger's philosophy, true "dwelling" must include the saving of and yielding to the earth <sup><a href="#fn5">5</a></sup>. The farming and pacifism of the Mennonites re-establish an "organic time" that follows natural rhythms on the wasteland.</p>
+                <p>However, the community approaching the ideal human state of dwelling lacks self-preservation capabilities in the apocalypse. This prompts an identity reversal for Hig and Bangley: they transform from the "rescued" (during the runway clearing) into the "rescuers" of this peaceful community. Bangley's defense and Hig's armament are redirected to "protect the space where dwelling can occur."</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 結語：晚期風格的冷靜凝視與電影本質的還原</span>
+                <span class="en-title">IV. Conclusion: The Calm Gaze of Late Style and the Reduction to Cinema's Essence</span>
+            </h2>
+            <div class="zh-content">
+                <p>Hig 在劇末再開飛機進入最後一次失重的儀式後，再回到 Mennonites 庇護地，是對原先停滯的綿延的道別，回歸整體朝向運動的動態實踐。這個抉擇並非單純的溫情敘事或避風港式的救贖；這是一位電影創作者在其「晚期風格」(Late Style) 中，對電影本質與人性意義的冷靜重構。</p>
+                <p>Ridley Scott 剝離了工業神話與視覺奇觀，將電影轉化為探討哲學概念的媒介。空中漂浮不再是為了逃避現實或將靈魂封閉於悲痛之中，Hig 將自身從孤絕的內在性平面中解放。在 Scott 的凝視下，電影的意義不在於展現毀滅的奇觀，而是記錄人類在直面虛無時，如何以「行動」抵抗存在的潰散。Hig 最終選擇為他者承擔重量，在大地上重新刻下「棲居」的印記，這不僅是 Heidegger 式「向死而生」的具體實踐，也是人類在文明盡頭的存在主義意義。</p>
+            </div>
+            <div class="en-content">
+                <p>At the end of the film, Hig takes off in his plane for one last weightless ritual before returning to the Mennonites' sanctuary. This is a formal farewell to the previously stagnant duration, returning to a dynamic practice of movement oriented towards a unified whole. This choice is not a sentimental narrative or simple redemption; it is a calm reconstruction of the essence of cinema and the meaning of humanity by a filmmaker in his "Late Style."</p>
+                <p>Ridley Scott removes the elements of industrial myth and visual spectacle, transforming cinema into a medium for philosophical inquiry. Floating in the air is no longer a means of escaping reality or enclosing his soul in grief, as Hig liberates himself from the isolated plane of immanence. Under Scott's gaze, the meaning of cinema is not to display the spectacle of destruction, but to record how humanity, when facing nothingness, uses "action" to resist the collapse of existence. Hig's ultimate choice to bear the weight for the Other and carve the mark of "dwelling" anew on the earth is not only a concrete practice of Heidegger's "being-towards-death," but also humanity's existential significance at the end of civilization.</p>
+            </div>
+        </section>
+        
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Bergson, H. (1911). <em>Creative evolution</em> (A. Mitchell, Trans.). New York, NY: Henry Holt and Company. (Original work published 1907) <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Deleuze, G. (1986). <em>Cinema 1: The movement-image</em> (H. Tomlinson & B. Habberjam, Trans.). Minneapolis, MN: University of Minnesota Press. (Original work published 1983) <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Heidegger, M. (1962). <em>Being and time</em> (J. Macquarrie & E. Robinson, Trans.). New York, NY: Harper & Row. (Original work published 1927) <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Heidegger, M. (1977). The question concerning technology. In <em>The question concerning technology and other essays</em> (W. Lovitt, Trans.) (pp. 3-35). New York, NY: Garland Publishing. (Original work published 1954) <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Heidegger, M. (1971). Building dwelling thinking. In <em>Poetry, language, thought</em> (A. Hofstadter, Trans.) (pp. 143-159). New York, NY: Harper & Row. (Original work published 1951) <a href="#ref5" class="backref">↑</a></li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script>
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+            
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "將末日鑿成一座火山口";
+            } else if (mode === 'en') {
+                navTitle.textContent = "Carving a Crater from the Apocalypse";
+            } else {
+                navTitle.textContent = "將末日鑿成一座火山口";
+            }
+        }
+    </script>
+</body>
+</html>

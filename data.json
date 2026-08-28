@@ -24,9 +24,14 @@
         "scene": {
             "mode": "auto",
             "pointcloud": "pointclouds/demo.ply",
-            "glb": "models/sitecam.glb",
+            "glb": "models/small.glb",
+            "models": [
+                { "label": "Site Scan — small.glb", "file": "models/small.glb" },
+                { "label": "Sitecam — sitecam.glb", "file": "models/sitecam.glb" },
+                { "label": "Demo Point Cloud — demo.ply", "file": "pointclouds/demo.ply" }
+            ],
             "pointBudget": 200000,
-            "samplesPerMesh": 35000,
+            "samplesPerMesh": 20000,
             "normalizeSize": 22,
             "views": {
                 "0": { "loc": [0, 8, -26], "target": [0, 2, 0] },
