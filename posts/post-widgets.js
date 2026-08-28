@@ -253,8 +253,8 @@
      動態點雲背景：直接沿用 index 的場景
      - 以固定 iframe 嵌入 ../?bg=1（App 的純背景模式）：同一個模型、
        同樣的 shader 與 gear 設定；模型檔走瀏覽器快取
-     - 直接訪問文章頁時，先顯示與 index 同款的 loading（iframe 內場景
-       會回報進度與完成訊息）
+     - 非阻塞載入：內容立即可讀，角落小徽章顯示背景載入進度，
+       場景就緒後（iframe 回報 iima-bg-ready）背景淡入
      - 內文容器加毛玻璃 pane 保持可讀性
      - data.json widgets.postBg === false 可整體停用
      ================================================================ */
@@ -280,44 +280,41 @@
     frame.src = '../?bg=1';
     frame.setAttribute('aria-hidden', 'true');
     frame.tabIndex = -1;
+    frame.style.opacity = '0';
+    frame.style.transition = 'opacity 1.2s ease';
     document.body.insertBefore(frame, document.body.firstChild);
 
-    /* ---- Loading 覆蓋層（與 index 同款）---- */
-    var ov = document.createElement('div');
-    ov.id = 'iima-bg-loading';
-    ov.style.cssText =
-      'position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;' +
-      'align-items:center;justify-content:center;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;' +
-      'color:#fff;transition:opacity .5s;';
-    ov.innerHTML =
-      '<div style="position:relative;width:256px;height:2px;background:#1a1a1a;">' +
-      '<div id="iima-bg-bar" style="position:absolute;top:0;left:0;bottom:0;width:0%;background:#ff5e00;' +
-      'box-shadow:0 0 15px #ff5e00;transition:width .3s;"></div></div>' +
-      '<div style="margin-top:24px;font-size:12px;letter-spacing:.3em;">LOADING POINT CLOUD MATRIX</div>' +
-      '<div id="iima-bg-pct" style="margin-top:6px;font-size:10px;opacity:.5;">0% COMPLETE</div>';
-    document.body.appendChild(ov);
+    /* ---- 非阻塞載入指示：內容立即可讀，角落小徽章顯示背景載入進度 ---- */
+    var chip = document.createElement('div');
+    chip.id = 'iima-bg-loading';
+    chip.style.cssText =
+      'position:fixed;left:16px;bottom:16px;z-index:90;pointer-events:none;' +
+      'font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px;' +
+      'letter-spacing:.25em;color:#ff5f00;background:rgba(0,0,0,.7);' +
+      'border:1px solid rgba(255,95,0,.4);padding:8px 12px;transition:opacity .5s;';
+    chip.textContent = 'LOADING POINT CLOUD\u2026 0%';
+    document.body.appendChild(chip);
 
     var dismissed = false;
-    function dismiss() {
+    function dismiss(showBg) {
+      if (showBg) frame.style.opacity = '1';
       if (dismissed) return;
       dismissed = true;
-      ov.style.opacity = '0';
-      setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 550);
+      chip.style.opacity = '0';
+      setTimeout(function () { if (chip.parentNode) chip.parentNode.removeChild(chip); }, 550);
     }
-    setTimeout(dismiss, 15000);          // 安全網：逾時直接顯示內容
-    frame.addEventListener('error', dismiss);
+    // 安全網：逾時就收掉徽章（背景屆時若已可看也一併淡入交給 ready 訊息）
+    setTimeout(function () { dismiss(false); }, 30000);
+    frame.addEventListener('error', function () { dismiss(false); });
 
     /* ---- 與 iframe 場景通訊 ---- */
     window.addEventListener('message', function (e) {
       var d = e.data || {};
       if (d.type === 'iima-bg-progress') {
-        var bar = document.getElementById('iima-bg-bar');
-        var pct = document.getElementById('iima-bg-pct');
         var v = Math.max(0, Math.min(100, d.p || 0));
-        if (bar) bar.style.width = v + '%';
-        if (pct) pct.textContent = v + '% COMPLETE';
+        if (!dismissed) chip.textContent = 'LOADING POINT CLOUD\u2026 ' + v + '%';
       } else if (d.type === 'iima-bg-ready') {
-        dismiss();
+        dismiss(true);
       }
     });
 
