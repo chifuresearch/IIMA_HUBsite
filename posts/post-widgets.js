@@ -48,14 +48,16 @@
     fetch('../data.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        var fb = (d && d.data && d.data.widgets && d.data.widgets.firebase) || {};
+        var w = (d && d.data && d.data.widgets) || {};
+        initPostBg(w);
+        var fb = w.firebase || {};
         var db = (fb.databaseURL || '').replace(/\/+$/, '');
         if (!db) return;
         var key = postKey();
         initViews(db, key);
         initComments(db, key);
       })
-      .catch(function () { /* data.json 不可用時安靜跳過 */ });
+      .catch(function () { initPostBg({}); /* data.json 不可用仍給預設背景 */ });
   });
 
   /* ---------------- 瀏覽數 ---------------- */
@@ -245,5 +247,91 @@
     item.appendChild(head);
     item.appendChild(body);
     return item;
+  }
+
+  /* ================================================================
+     動態點雲背景：直接沿用 index 的場景
+     - 以固定 iframe 嵌入 ../?bg=1（App 的純背景模式）：同一個模型、
+       同樣的 shader 與 gear 設定；模型檔走瀏覽器快取
+     - 直接訪問文章頁時，先顯示與 index 同款的 loading（iframe 內場景
+       會回報進度與完成訊息）
+     - 內文容器加毛玻璃 pane 保持可讀性
+     - data.json widgets.postBg === false 可整體停用
+     ================================================================ */
+
+  function initPostBg(w) {
+    if (w && w.postBg === false) return;
+
+    /* ---- 版面：背景轉暗 + 內文毛玻璃 pane ---- */
+    var st = document.createElement('style');
+    st.textContent =
+      'html{background:#050505 !important;}' +
+      'body{background:transparent !important;}' +
+      '#iima-bg-frame{position:fixed;inset:0;width:100%;height:100%;z-index:-1;border:0;' +
+      'pointer-events:none;display:block;background:#000;}' +
+      '.container,.wrap{background:rgba(253,252,251,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);' +
+      'border-radius:16px;box-shadow:0 12px 60px rgba(0,0,0,.55);margin-top:28px;margin-bottom:56px;}' +
+      '.control-bar{background:rgba(253,252,251,.82) !important;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);}' +
+      '@media (max-width:600px){.container,.wrap{border-radius:0;margin-top:0;}}';
+    document.head.appendChild(st);
+
+    var frame = document.createElement('iframe');
+    frame.id = 'iima-bg-frame';
+    frame.src = '../?bg=1';
+    frame.setAttribute('aria-hidden', 'true');
+    frame.tabIndex = -1;
+    document.body.insertBefore(frame, document.body.firstChild);
+
+    /* ---- Loading 覆蓋層（與 index 同款）---- */
+    var ov = document.createElement('div');
+    ov.id = 'iima-bg-loading';
+    ov.style.cssText =
+      'position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;' +
+      'align-items:center;justify-content:center;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;' +
+      'color:#fff;transition:opacity .5s;';
+    ov.innerHTML =
+      '<div style="position:relative;width:256px;height:2px;background:#1a1a1a;">' +
+      '<div id="iima-bg-bar" style="position:absolute;top:0;left:0;bottom:0;width:0%;background:#ff5e00;' +
+      'box-shadow:0 0 15px #ff5e00;transition:width .3s;"></div></div>' +
+      '<div style="margin-top:24px;font-size:12px;letter-spacing:.3em;">LOADING POINT CLOUD MATRIX</div>' +
+      '<div id="iima-bg-pct" style="margin-top:6px;font-size:10px;opacity:.5;">0% COMPLETE</div>';
+    document.body.appendChild(ov);
+
+    var dismissed = false;
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      ov.style.opacity = '0';
+      setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 550);
+    }
+    setTimeout(dismiss, 15000);          // 安全網：逾時直接顯示內容
+    frame.addEventListener('error', dismiss);
+
+    /* ---- 與 iframe 場景通訊 ---- */
+    window.addEventListener('message', function (e) {
+      var d = e.data || {};
+      if (d.type === 'iima-bg-progress') {
+        var bar = document.getElementById('iima-bg-bar');
+        var pct = document.getElementById('iima-bg-pct');
+        var v = Math.max(0, Math.min(100, d.p || 0));
+        if (bar) bar.style.width = v + '%';
+        if (pct) pct.textContent = v + '% COMPLETE';
+      } else if (d.type === 'iima-bg-ready') {
+        dismiss();
+      }
+    });
+
+    function send(msg) {
+      try { if (frame.contentWindow) frame.contentWindow.postMessage(msg, '*'); } catch (err) { /* ignore */ }
+    }
+    function onScroll() {
+      var mx = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      send({ type: 'iima-scroll', p: Math.min(1, Math.max(0, window.scrollY / mx)) });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('mousemove', function (e) {
+      send({ type: 'iima-mouse', x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
+    }, { passive: true });
+    frame.addEventListener('load', onScroll);
   }
 })();

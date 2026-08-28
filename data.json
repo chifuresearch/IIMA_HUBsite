@@ -6,12 +6,28 @@
             "logo_sub": "HUB",
             "tagline_tw": "整合 M+A 書寫、設計方法與運算工具的中繼站\nArchitecture / Computation / Philosophy — Integrated Intelligence for Media + Architecture",
             "tagline": "A hub integrating M+A essays, design methodologies and computational tools.\nArchitecture / Computation / Philosophy",
-            "menu": ["About", "Blog", "Tutorials", "Resources"],
-            "menu_tw": ["網站介紹", "文章", "教學專欄", "其他資源"],
+            "menu": [
+                "About",
+                "Blog",
+                "Tutorials",
+                "Resources"
+            ],
+            "menu_tw": [
+                "網站介紹",
+                "文章",
+                "教學專欄",
+                "其他資源"
+            ],
             "email": "chifu.research@gmail.com",
             "links": [
-                { "label": "GitHub", "url": "https://github.com/chifuresearch" },
-                { "label": "M+A Blog Origin", "url": "#" }
+                {
+                    "label": "GitHub",
+                    "url": "https://github.com/chifuresearch"
+                },
+                {
+                    "label": "M+A Blog Origin",
+                    "url": "#"
+                }
             ],
             "footer_tw": "建築、運算、哲學的整合實驗場。\n本站由 Python 後端自動部署，內容由 labos agents 持續匯入。",
             "footer": "An integrated field for architecture, computation and philosophy.\nDeployed by a Python backend; content continuously ingested by labos agents."
@@ -21,23 +37,82 @@
                 "databaseURL": "https://iimahub-default-rtdb.asia-southeast1.firebasedatabase.app"
             }
         },
+        "construction": {
+            "intro_cards": true,
+            "tutorials": true,
+            "resources": true
+        },
         "scene": {
             "mode": "auto",
             "pointcloud": "pointclouds/demo.ply",
             "glb": "models/small.glb",
             "models": [
-                { "label": "Site Scan — small.glb", "file": "models/small.glb" },
-                { "label": "Sitecam — sitecam.glb", "file": "models/sitecam.glb" },
-                { "label": "Demo Point Cloud — demo.ply", "file": "pointclouds/demo.ply" }
+                {
+                    "label": "Site Scan — small.glb",
+                    "file": "models/small.glb"
+                },
+                {
+                    "label": "Sitecam — sitecam.glb",
+                    "file": "models/sitecam.glb"
+                },
+                {
+                    "label": "Demo Point Cloud — demo.ply",
+                    "file": "pointclouds/demo.ply"
+                }
             ],
             "pointBudget": 200000,
             "samplesPerMesh": 20000,
             "normalizeSize": 22,
+            "viewBoundScale": 0.4,
             "views": {
-                "0": { "loc": [0, 8, -26], "target": [0, 2, 0] },
-                "1": { "loc": [18, 5, -14], "target": [2, 1, 0] },
-                "2": { "loc": [-20, 12, -10], "target": [-2, 0, 2] },
-                "3": { "loc": [0, 24, -6], "target": [0, 0, 0] }
+                "0": {
+                    "loc": [
+                        0,
+                        8,
+                        -26
+                    ],
+                    "target": [
+                        0,
+                        2,
+                        0
+                    ]
+                },
+                "1": {
+                    "loc": [
+                        18,
+                        5,
+                        -14
+                    ],
+                    "target": [
+                        2,
+                        1,
+                        0
+                    ]
+                },
+                "2": {
+                    "loc": [
+                        -20,
+                        12,
+                        -10
+                    ],
+                    "target": [
+                        -2,
+                        0,
+                        2
+                    ]
+                },
+                "3": {
+                    "loc": [
+                        0,
+                        24,
+                        -6
+                    ],
+                    "target": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
             }
         },
         "intro": {
@@ -68,7 +143,11 @@
                 "title_tw": "點雲上網：從掃描到瀏覽器渲染",
                 "desc": "From scan data (.ply/.xyz) to Babylon.js shader rendering in the browser.",
                 "desc_tw": "從掃描資料（.ply / .xyz）到 Babylon.js 自訂 shader 的瀏覽器渲染流程。",
-                "tags": ["pointcloud", "babylonjs", "webgl"],
+                "tags": [
+                    "pointcloud",
+                    "babylonjs",
+                    "webgl"
+                ],
                 "url": "",
                 "status": "coming_soon"
             },
@@ -77,7 +156,10 @@
                 "title_tw": "建築數位孿生入門",
                 "desc": "Building digital twin pipelines for architecture.",
                 "desc_tw": "建築數位孿生管線的建置方法與案例。",
-                "tags": ["digital-twin", "bim"],
+                "tags": [
+                    "digital-twin",
+                    "bim"
+                ],
                 "url": "",
                 "status": "coming_soon"
             },
@@ -86,7 +168,11 @@
                 "title_tw": "Agent 工作流設計",
                 "desc": "Wiring lab agents into publishing and analysis pipelines.",
                 "desc_tw": "把實驗室 agents 接進出版與分析管線的方法。",
-                "tags": ["agent", "python", "api"],
+                "tags": [
+                    "agent",
+                    "python",
+                    "api"
+                ],
                 "url": "",
                 "status": "coming_soon"
             }
