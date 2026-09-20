@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>凝視的轉向：論 Monster 從肉體張力到規訓觀眾的病理學媒介</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+        
+        .spoiler-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 40px 0 50px 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .spoiler-divider::before,
+        .spoiler-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px dashed var(--accent-color);
+            opacity: 0.5;
+        }
+        
+        .spoiler-divider:not(:empty)::before {
+            margin-right: 15px;
+        }
+        
+        .spoiler-divider:not(:empty)::after {
+            margin-left: 15px;
+        }
+
+        .spoiler-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .spoiler-text.en {
+            font-family: var(--font-en);
+            font-size: 0.85rem;
+            letter-spacing: 0;
+            font-weight: normal;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en,
+        body.mode-zh .spoiler-text.en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh,
+        body.mode-en .spoiler-text.zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+        
+        .caption a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent-color);
+        }
+        
+        .caption a:hover {
+            color: #1a2a3a;
+            border-bottom-style: solid;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+            .spoiler-text.zh { font-size: 0.85rem; }
+            .spoiler-text.en { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="../" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">凝視的轉向</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">凝視的轉向：論《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》從肉體張力到規訓觀眾的病理學媒介</h1>
+            <div class="subtitle">The Shift of the Gaze: On Monster from Fleshly Tension to a Disciplinary Medium of Pathology</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">引言</div>
+            <div class="abstract-text zh">
+                Netflix 影集《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》不僅是一部犯罪傳記，更是一場關於影視凝視機制演變的展示。電影史中對怪物的描繪，曾經依賴突破常規的肉體張力，用以挑戰觀眾對正常邊界的認知。然而，隨著精神病理學在影視敘事中的介入，這種表現張力已逐漸消解。本作透過冷靜的鏡頭語言與臨床分析式的劇本結構，不再旨在撕裂社會的日常表象，而是將鏡頭轉化為一面精神病院的單向玻璃。導演不僅是在分析 Ed Gein，更是在建構一種規訓觀眾的媒介，引導觀看者在面對失序時，退回制度與理性所劃定的安全網之內。
+            </div>
+
+            <div class="abstract-title en">Introduction</div>
+            <div class="abstract-text en">
+                The Netflix series <em>Monster: The Ed Gein Story</em> is not merely a crime biopic, but a demonstration of the evolving mechanism of the cinematic gaze. Historically, the depiction of monsters in cinema relied on transgressive fleshly tension to challenge the audience's perception of normal boundaries. However, with the intervention of psychopathology in film narratives, this expressive tension has gradually dissolved. Through calm cinematography and an analytical script structure, this series no longer aims to tear through the facade of social everydayness. Instead, it transforms the lens into a one-way mirror of a psychiatric ward. The director is not just analyzing Ed Gein, but constructing a medium to discipline the audience, guiding viewers to retreat within the safety net defined by institutions and rationality when confronted with disorder.
+            </div>
+        </div>
+
+        <div class="spoiler-divider">
+            <div class="spoiler-content">
+                <span class="spoiler-text zh">以下內容涉及《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》劇情探討，請斟酌閱讀</span>
+                <span class="spoiler-text en">The following content contains thematic discussions of <em>Monster: The Ed Gein Story</em>. Read at your own risk.</span>
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Museo_del_Prado_-_Goya_-_Caprichos_-_No._43_-_El_sue%C3%B1o_de_la_razon_produce_monstruos.jpg/960px-Museo_del_Prado_-_Goya_-_Caprichos_-_No._43_-_El_sue%C3%B1o_de_la_razon_produce_monstruos.jpg?utm_source=zh.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail" alt="Francisco Goya - The Sleep of Reason Produces Monsters">
+            
+            <div class="caption caption-zh">
+                <p><strong>圖示：</strong>18 世紀西班牙版畫家 Francisco Goya 的《 Museo del Prado (理性沉睡，心魔生焉) 》，是啟蒙時代對 monster 作為警告意味 (monere) 的作品。畫作傳達了當人類的理性閉上雙眼時，迷信、無知與瘋狂就會伺機而動並吞噬社會。這裡的怪物不是神話猛獸，而是人類失去理智後的具現化警告。（出處：<a href="https://commons.wikimedia.org/wiki/File:Museo_del_Prado_-_Goya_-_Caprichos_-_No._43_-_El_sue%C3%B1o_de_la_razon_produce_monstruos.jpg" target="_blank">Wikimedia Commons</a>）</p>
+            </div>
+            
+            <div class="caption caption-en">
+                <p><strong>Illustration:</strong> 18th-century Spanish printmaker Francisco Goya's <em>Museo del Prado</em> (The Sleep of Reason Produces Monsters) represents the Enlightenment era's concept of the monster as a warning (monere). The artwork conveys that when human reason closes its eyes, superstition, ignorance, and madness lie in wait to devour society. The monsters here are not mythical beasts, but the materialized warnings of humanity losing its rationality. (Source: <a href="https://commons.wikimedia.org/wiki/File:Museo_del_Prado_-_Goya_-_Caprichos_-_No._43_-_El_sue%C3%B1o_de_la_razon_produce_monstruos.jpg" target="_blank">Wikimedia Commons</a>)</p>
+            </div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 語源的警告與異托邦內的極端反抗</span>
+                <span class="en-title">I. The Etymological Warning and Extreme Resistance within the Heterotopia</span>
+            </h2>
+            <div class="zh-content">
+                <p>怪物 (Monster) 一詞源自拉丁語動詞 monere，意即忠告、警告或預示。在 Ed Gein 的生命軌跡中，這種宗教與道德的警告具象化為母親 Augusta 的禁慾教條。Augusta 試圖以恐懼來規訓兒子，然而這種壓抑並未消滅慾望，反而激發了對抗規訓的破壞衝動。</p>
+                <p>Michel Foucault 在《 Madness and Civilization (瘋癲與文明) 》中對性壓抑的探討，為解構此一空間權力關係提供了視角<sup><a href="#fn4">4</a></sup>。Ed Gein 位於 Wisconsin 的農場不僅是地理上的孤立，更是異托邦 (Heterotopia)。這是一個與外界社會常規隔絕、由母權與信仰統治的空間。在這種空間壓抑下，Ed Gein 藉由挖掘屍體與重塑人體，完成了對體制化家庭警告的反撲。</p>
+            </div>
+            <div class="en-content">
+                <p>The word "Monster" originates from the Latin verb <em>monere</em>, meaning "to advise, to warn," or "to presage." In the life trajectory of Ed Gein, this religious and moral warning was materialized through his mother Augusta's ascetic dogmas. Augusta attempted to discipline her son through fear. However, this repression did not eliminate desire; instead, it incited a destructive impulse to resist the discipline.</p>
+                <p>Michel Foucault's exploration of sexual repression in <em>Madness and Civilization</em> provides a perspective for deconstructing this spatial power dynamic <sup><a href="#fn4">4</a></sup>. Ed Gein's farm in Wisconsin was not merely geographically isolated; it was a Heterotopia. It functioned as a space cut off from external social norms, ruled by matriarchy and faith. Under such spatial repression, Ed Gein accomplished his retaliation against institutionalized familial warnings by exhuming corpses and reshaping human bodies.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 肉體張力與 Gilles Deleuze 視角下的恐怖感知</span>
+                <span class="en-title">II. Fleshly Tension and Horror Perception through the Lens of Gilles Deleuze</span>
+            </h2>
+            <div class="zh-content">
+                <p>在早期的電影轉譯中，電影鏡頭對怪物的凝視，側重於展現脫離理性的肉體張力。Ed Gein 將女性屍體解構並重組為人皮物件，是對當時美國社會所謂正常認知的挑戰。根據 Gilles Deleuze 在《 The Logic of Sensation (感覺的邏輯) 》中對 Francis Bacon 畫作的分析，當肉體 (Flesh) 脫離了理性的骨架與組織後，便成為了痛苦與慾望的載體<sup><a href="#fn3">3</a></sup>。</p>
+                <p>延伸至電影脈絡，Gilles Deleuze 在《 Cinema 1: The Movement-Image (電影1：運動影像) 》中提出了情感影像 (Affection-Image) 與任意空間 (Any-space-whatever) 的概念<sup><a href="#fn2">2</a></sup>。恐怖電影曾高度依賴這種視覺機制。在諸如《 The Texas Chain Saw Massacre (德州電鋸殺人狂) 》這類受 Ed Gein 啟發的電影中，Wisconsin 荒蕪的鄉村地景化為失去座標的任意空間，鏡頭強迫觀眾直視無涉理性的暴力與肉體奇觀。此時的凝視具備顛覆性，它撕裂了文明的表象，將觀眾拋入感官的恐懼之中。</p>
+            </div>
+            <div class="en-content">
+                <p>In early cinematic translations, the camera's gaze upon the monster focused on presenting fleshly tension divorced from rationality. Ed Gein's deconstruction and reassembly of female corpses into skin-made objects was a challenge to what American society deemed "normal." According to Gilles Deleuze's analysis of Francis Bacon's paintings in <em>The Logic of Sensation</em>, when the flesh escapes its rational skeleton and organization, it becomes a vehicle for pain and desire <sup><a href="#fn3">3</a></sup>.</p>
+                <p>Extending this to the cinematic context, Gilles Deleuze proposed the concepts of the Affection-Image and the Any-space-whatever in <em>Cinema 1: The Movement-Image</em> <sup><a href="#fn2">2</a></sup>. Horror cinema once relied on this visual mechanism. In films inspired by Ed Gein, such as <em>The Texas Chain Saw Massacre</em>, the desolate rural landscape of Wisconsin transformed into an uncoordinated any-space-whatever, and the camera forced the audience to confront senseless violence and fleshly spectacles directly. At this stage, the gaze was subversive; it tore through the facade of civilization, throwing the audience into the terror of the senses.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 凝視的轉向：從奇觀到病理學的觀察室</span>
+                <span class="en-title">III. The Shift of the Gaze: From Spectacle to the Pathological Observation Room</span>
+            </h2>
+            <div class="zh-content">
+                <p>然而，隨著影視工業的發展，觀眾觀看施暴行為的機制產生了質變。鏡頭的凝視不再為了引發失序的恐懼，而是轉向建立一套能將異常行為合理化的論述。早期的 Alfred Hitchcock 在《 Psycho (驚魂記) 》中尚利用心理學理論來製造懸疑與驚悚<sup><a href="#fn1">1</a></sup>，但到了現代，影視作品則將病理學視為收編怪物的工具。</p>
+                <p>這種轉向在《 The Silence of the Lambs (沉默的羔羊) 》中已具雛形。體制 (FBI) 透過精神分析，將 Hannibal Lecter 轉化為可供歸檔、協助辦案的工具<sup><a href="#fn5">5</a></sup>。而《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》則延續這套邏輯。劇中使用冷靜客觀的攝影機運動與蒼白的調色，捨棄了剝削電影式的肉體狂歡。此時的電影鏡頭，宛如精神病院觀察室裡的單向玻璃，觀眾的凝視被賦予了臨床醫學的權威性，在安全的距離外對 Ed Gein 進行病理切片。</p>
+            </div>
+            <div class="en-content">
+                <p>However, as the film industry developed, the mechanism by which audiences view acts of violence underwent a qualitative change. The camera's gaze no longer seeks to induce the fear of disorder, but shifts toward establishing a discourse that rationalizes abnormal behavior. While early filmmakers like Alfred Hitchcock in <em>Psycho</em> utilized psychological theories to generate suspense and thrills <sup><a href="#fn1">1</a></sup>, modern audiovisual works treat pathology as a tool to co-opt the monster.</p>
+                <p>This shift was already taking shape in <em>The Silence of the Lambs</em>. The institution (FBI), through psychoanalysis, transformed Hannibal Lecter into a tool that could be archived and assist in investigations <sup><a href="#fn5">5</a></sup>. <em>Monster: The Ed Gein Story</em> continues this logic. The series employs calm, objective camera movements and pale color grading, abandoning the fleshly revelry typical of exploitation films. At this point, the cinematic lens functions like a one-way mirror in a psychiatric observation room. The audience's gaze is endowed with clinical authority, performing a pathological dissection on Ed Gein from a safe distance.</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 結語：喪失權力意志的媒介與 monere 的失效</span>
+                <span class="en-title">IV. Conclusion: A Medium Stripped of Will to Power and the Invalidation of Monere</span>
+            </h2>
+            <div class="zh-content">
+                <p>若將本作與 M. Night Shyamalan 的《 Split (分裂) 》進行對照，便能看見《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》在論述上的退怯。在《 Split (分裂) 》中，人格解離被推向了超越性的層次。名為野獸 (The Beast) 的人格如同擁有權力意志 (Will to Power) 的實體，粉碎了精神科醫師所代表的理性框架，反向揭露了病理學在面對混沌時的無能<sup><a href="#fn6">6</a></sup>。《 Split (分裂) 》的鏡頭逼迫觀眾承認，有些黑暗是無法被分析收編的。</p>
+                <p>反觀《 Monster: The Ed Gein Story (怪物：艾德蓋恩的故事) 》，影集末段虛構了年老的 Ed Gein 在精神病院協助 FBI 進行 Ted Bundy 心理側寫的情節。這一安排，消解了怪物對社會體制的顛覆性。Ed Gein 被處理成一位帶有宗教性自我救贖色彩的次文化教父，服務於建制派的犯罪學體系。</p>
+                <p>導演未將 Ed Gein 的解離狀態昇華為對體制的質疑，反而將整部劇作打造為規訓觀眾的媒介。觀眾透過這面病理學的鏡片，藉由確認怪物的異常來反覆確證自身的正常。最終，鏡頭語言喪失了撕裂社會偽裝的權力意志。在當代影視的臨床凝視下，Monster 不再是警告體制內服從者規範邊界的 monere，而降格為現代紀律社會用以安撫大眾、確認理性秩序的安慰劑。</p>
+            </div>
+            <div class="en-content">
+                <p>Contrasting this work with M. Night Shyamalan's <em>Split</em> reveals the discursive retreat in <em>Monster</em>. In <em>Split</em>, dissociative identity is pushed to a level of transcendence. The personality known as The Beast, acting as an entity possessing the Will to Power, shatters the rational framework represented by the psychiatrist, conversely exposing the impotence of pathology in the face of chaos <sup><a href="#fn6">6</a></sup>. The lens in <em>Split</em> forces the audience to acknowledge that some darkness cannot be analytically co-opted.</p>
+                <p>In contrast, <em>Monster: The Ed Gein Story</em> invents a plotline in its final act where an elderly Ed Gein assists the FBI with psychological profiling on Ted Bundy from within the asylum. This arrangement diminishes the monster's subversiveness toward the social system. Ed Gein is treated as a subcultural godfather tinged with religious self-redemption, serving the establishment's criminological system.</p>
+                <p>The director fails to sublimate Ed Gein's dissociative state into a questioning of the system; instead, he shapes the entire series into a medium to discipline the audience. Through this pathological lens, viewers repeatedly validate their own normality by confirming the monster's abnormality. Ultimately, the cinematic language loses its Will to Power to tear off society's disguise. Under the clinical gaze of contemporary cinema, the Monster is no longer the <em>monere</em> that warns the obedient within the system about normative boundaries, and is downgraded to a placebo used by modern disciplinary society to pacify the masses and confirm rational order.</p>
+            </div>
+        </section>
+        
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Clover, C. J. (1992). <em>Men, women, and chain saws: Gender in the modern horror film</em>. Princeton University Press. <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Deleuze, G. (1986). <em>Cinema 1: The movement-image</em> (H. Tomlinson & B. Habberjam, Trans.). University of Minnesota Press. (Original work published 1983) <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Deleuze, G. (2003). <em>Francis Bacon: The logic of sensation</em> (D. W. Smith, Trans.). Continuum. (Original work published 1981) <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Foucault, M. (1965). <em>Madness and civilization: A history of insanity in the age of reason</em> (R. Howard, Trans.). Pantheon Books. (Original work published 1961) <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Schmid, D. (2005). <em>Natural born celebrities: Serial killers in American culture</em>. University of Chicago Press. <a href="#ref5" class="backref">↑</a></li>
+                <li id="fn6">Wood, R. (1986). <em>Hollywood from Vietnam to Reagan</em>. Columbia University Press. <a href="#ref6" class="backref">↑</a></li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script>
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+            
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "凝視的轉向";
+            } else if (mode === 'en') {
+                navTitle.textContent = "The Shift of the Gaze";
+            } else {
+                navTitle.textContent = "凝視的轉向";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>
