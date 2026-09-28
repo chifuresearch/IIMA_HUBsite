@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機器、代謝與棲居：人機共生世代的負熵詩學與主體回歸</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+        
+        a.citation-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a.citation-link:hover {
+            text-decoration: underline;
+        }
+
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+        
+        .caption a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent-color);
+        }
+        
+        .caption a:hover {
+            color: #1a2a3a;
+            border-bottom-style: solid;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+            word-break: break-all;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="../" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">機器、代謝與棲居</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">機器、代謝與棲居：人機共生世代的負熵詩學與主體回歸</h1>
+            <div class="subtitle">Machine, Metabolism, and Dwelling: The Negentropic Poetics and the Return of the Subject in the Era of Human-Machine Symbiosis</div>
+        </header>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">引言：斯賓諾莎的努力與物質的終局</div>
+            <div class="abstract-text zh">
+                在十七世紀的《Ethics》(倫理學) 中，哲學家 Baruch Spinoza 提出了一個存有學命題：「萬物只要在其自身之中，無不竭力保持其自身的存在」(<a class="citation-link" href="#fn1" id="ref1">Spinoza, 1677/1985, p. 498</a>)。這種被稱為 Conatus (努力) 的內在動力，是實體抵抗消亡維持自我邊界的基礎。然而，在自然環境的熱力學法則下，物質無可避免地經歷消散的過程。長久以來，建築與空間的創造是人類為了延續自身存在、回應自然環境的一種空間實踐。當代 AI (人工智慧) 與 Robotic Fabrication (自動化構築) 技術，為此探問打開了新的維度。當演算法、Digital Twin (數位孿生) 與生化材料相結合時，技術得以超越靜態結構的建造，成為具有活性的代謝中樞。本論述從古典哲學對生命存續的探問出發，行經熱力學、控制論與技術哲學，轉向現象學與人類學的視角，探討在人機共生的世代中，主體如何重新認識空間、使用工具，並反思 Dwelling (棲居) 的存有狀態。
+            </div>
+
+            <div class="abstract-title en">Introduction: Spinoza's Conatus and the Destiny of Matter</div>
+            <div class="abstract-text en">
+                In the seventeenth-century <em>Ethics</em>, philosopher Baruch Spinoza proposed an ontological proposition: "Each thing, as far as it can by its own power, strives to persevere in its being" (<a class="citation-link" href="#fn1">Spinoza, 1677/1985, p. 498</a>). This internal drive, known as <em>Conatus</em>, is the foundation of entities resisting their demise to maintain self-boundaries. However, under the thermodynamic laws of the natural environment, matter inevitably undergoes a process of dissipation. Historically, the creation of architecture and space has been humanity's spatial practice to prolong its existence and respond to the natural environment. Contemporary AI and Robotic Fabrication technologies open a new dimension to this inquiry. When algorithms, Digital Twins, and biochemical materials are combined, technology moves beyond the construction of static structures to become an active metabolic center. This essay departs from classical philosophical inquiries into the continuation of life, traverses thermodynamics, cybernetics, and the philosophy of technology, and turns toward phenomenological and anthropological perspectives. It explores how, in the era of human-machine symbiosis, the subject re-recognizes space, utilizes tools, and reflects on the existential state of Dwelling.
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://www.maxxi.art/wp-content/gallery/superstudio50/11_MAXXI_SUPERSTUDIO50_AttiFondamentali_Vita.jpg" alt="Conceptual grid structure representing Superstudio's Fundamental Acts and network">
+            
+            <div class="caption caption-zh">
+                <p><strong>圖示：</strong> 義大利前衛建築團體 Superstudio 在 1970 年代晚期發表的《Fundamental Acts》(基本行為) 系列，展現了從實體建築結構轉向人類學探索的轉折。該系列探討在技術發展至高度網路化 (如 Supersurface) 之後，建築的形體可能退回至支持人類基本生存如生命、教育、儀式與死亡的系統網絡中。這反映了將技術與主體存有狀態重新連結的思想。（出處：<a href="https://www.maxxi.art/en/events/superstudio-50/" target="_blank">MAXXI</a>）</p>
+            </div>
+            
+            <div class="caption caption-en">
+                <p><strong>Illustration:</strong> The <em>Fundamental Acts</em> series published in the late 1970s by the Italian avant-garde architectural group Superstudio demonstrates a turn from physical architectural structures to anthropological explorations. The series explores how, after technology develops into a highly networked state (such as the Supersurface), architectural forms might retreat into systemic networks that support fundamental human existence, such as life, education, ceremony, and death. This reflects the thought of reconnecting technology with the ontological state of the subject. (Source: <a href="https://www.maxxi.art/en/events/superstudio-50/" target="_blank">MAXXI</a>)</p>
+            </div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 物質的命運與技術的修復：從負熵到負人類世</span>
+                <span class="en-title">I. The Destiny of Matter and Technological Repair: From Negentropy to the Neganthropocene</span>
+            </h2>
+            <div class="zh-content">
+                <p>要理解人機共生系統介入空間環境的哲學意義，必須先探討其科學與資訊基座。物理學家 Erwin Schrödinger 在《What is Life?》(生命是什麼？) 中以物理視角重新詮釋了存續的命題，指出生命以負熵為食 (<a class="citation-link" href="#fn2" id="ref2">Schrödinger, 1944, p. 71</a>)。在熱力學第二定律的框架下，系統趨向於混亂與無序。有機體能維持形體，是因為它能從環境中汲取秩序來抵消自身的解構。當代將生化有機材料應用於構築的嘗試，反映了自然界熵增的具象化，而 AI 與機械手臂的介入，則是在系統中積極導入負熵的過程。</p>
+                <p>這套機制的運作建立在 Norbert Wiener 所奠基的 Cybernetics (控制論) 之上 (<a class="citation-link" href="#fn3" id="ref3">Wiener, 1948</a>)。透過空間感測，實體物質的狀態被轉譯為幾何資訊，反饋至數位模型中。AI 演算法在虛擬世界計算結構的變化，將修補指令化為實體運動，使資訊流成為回應物質代謝的媒介。在當代藝術實踐中，Neri Oxman 帶領 MIT Media Lab 創作的《Aguahoja》提供了觀察的對照 (<a class="citation-link" href="#fn4" id="ref4">Oxman et al., 2018</a>)。該作品使用蘋果皮與幾丁質等生化材料列印大型結構，設計為接觸雨水後自然分解回歸泥土。《Aguahoja》呈現了從秩序建造至自然熵增解構的過程。而本論述所探討的自動化計畫，則進一步探討 AI 持續介入的可能性，形成涵蓋建造、崩解、偵測與修復的動態代謝迴圈。</p>
+            </div>
+            
+            <div class="en-content">
+                <p>To understand the philosophical significance of the human-machine symbiotic system intervening in the spatial environment, its scientific and informational foundation must first be explored. Physicist Erwin Schrödinger, in <em>What is Life?</em>, reinterpreted the proposition of continuation from a physical perspective, noting that life feeds on negative entropy (<a class="citation-link" href="#fn2">Schrödinger, 1944, p. 71</a>). Within the framework of the second law of thermodynamics, systems tend toward chaos and disorder. An organism maintains its form because it can extract order from the environment to offset its own deconstruction. Contemporary attempts to apply biochemical organic materials in construction reflect the materialization of natural entropy increase, whereas the intervention of AI and robotic arms represents an active introduction of negative entropy into the system.</p>
+                <p>The operation of this mechanism is built upon Cybernetics, founded by Norbert Wiener (<a class="citation-link" href="#fn3">Wiener, 1948</a>). Through spatial sensing, the state of physical matter is translated into geometric information and fed back into a digital model. AI algorithms calculate structural changes in the virtual world and translate repair commands into physical movements, making the information flow a medium for responding to material metabolism. In contemporary art practice, <em>Aguahoja</em>, created by the MIT Media Lab led by Neri Oxman, provides an observational reference (<a class="citation-link" href="#fn4">Oxman et al., 2018</a>). Utilizing biochemical materials like apple pectin and chitin to print large structures, the work is designed to decompose naturally upon contact with rain. <em>Aguahoja</em> presents the process from ordered construction to natural entropic deconstruction. The automated project discussed in this essay further explores the possibility of continuous AI intervention, forming a dynamic metabolic loop that encompasses construction, decay, detection, and repair.</p>
+            </div>
+
+            <div class="image-container">
+                <img src="https://cdn.prod.website-files.com/690e0b6e2e2a0cbc45ab116e/69724237954bd062b79e8a3a_imgi_20_67bda86b3cdb248a8ea76064_aguahoja-2018-pavilion-horizontally-positioned-ocn-process-1.avif" alt="Aguahoja by MIT Media Lab">
+                <div class="caption caption-zh">
+                    <p><strong>圖示：</strong> MIT Media Lab 創作的《Aguahoja》系列，使用生化材料透過機器人列印出大型結構，設計為接觸雨水後自然分解。該作品展示了秩序建造至自然代謝分解的單向過程。（出處：<a href="https://www.oxman.com/projects/aguahoja" target="_blank">Oxman</a>）</p>
+                </div>
+                <div class="caption caption-en">
+                    <p><strong>Illustration:</strong> The <em>Aguahoja</em> series by MIT Media Lab utilizes biochemical materials and robotic printing to create large structures designed to decompose naturally upon contact with rain. This work demonstrates a one-way process from ordered construction to natural metabolic decomposition. (Source: <a href="https://www.oxman.com/projects/aguahoja" target="_blank">Oxman</a>)</p>
+                </div>
+            </div>
+
+            <div class="zh-content">
+                <p>若論述僅停留在工程閉環，便可能忽略技術的倫理維度。哲學家 Bernard Stiegler 的 Neganthropocene (負人類世) 概念 (<a class="citation-link" href="#fn5" id="ref5">Stiegler, 2018</a>) 提供了人文思辨的橋樑。他探討了現代工業技術對地球環境的影響，並提出技術應轉化為 Care (修復與照顧) 實踐的可能。在有機代謝的構築框架中，AI 與機器人轉變了以往作為單一量產與資源消耗工具的角色，成為參與環境維護的媒介，具備持續修補物質變化的潛能。</p>
+            </div>
+            <div class="en-content">
+                <p>If the discourse remains solely within an engineering closed-loop, it may neglect the ethical dimension of technology. Philosopher Bernard Stiegler's concept of the Neganthropocene (<a class="citation-link" href="#fn5">Stiegler, 2018</a>) provides a bridge for humanistic speculation. He discusses the impact of modern industrial technology on the Earth's environment and proposes the possibility of transforming technology into a practice of Care. Within the constructive framework of organic metabolism, AI and robotics shift from their previous roles as tools of homogenous mass production and resource consumption, becoming mediums that participate in environmental maintenance with the potential to continuously repair material changes.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 突破抽象運算：先驗統覺與空間主體的認識論</span>
+                <span class="en-title">II. Breaking Through Abstract Computation: Transcendental Apperception and the Epistemology of the Spatial Subject</span>
+            </h2>
+            <div class="zh-content">
+                <p>探討主體如何認識世界，有助於釐清機器在動態代謝中扮演的角色。現象學視空間為主體與世界相遇的場域，而非純粹客觀的容器。將 Immanuel Kant 的哲學引入 AI 領域時，機器的感知與人的認知之間產生了對話空間。如 Richard Evans 在探討「康德式認知架構」時指出，將先驗邏輯應用於人工智慧，為理解系統如何統整經驗提供了理論基礎 (<a class="citation-link" href="#fn6" id="ref6">Evans, 2019</a>)。Immanuel Kant 在《Critique of Pure Reason》(純粹理性批判) (<a class="citation-link" href="#fn7" id="ref7">Kant, 1781/1998</a>) 中提出的 Transcendental Apperception (先驗統覺)，闡述了主體具備綜合雜多感官經驗的能力，進而形成自我意識與對客體的認識。</p>
+                <p>對於驅動空間構築的 AI 而言，未經結構化的空間數據猶如感官碎片。AI 演算法發揮了類似機器統覺機制的功用，將孤立的數據點綜合為具備語義與拓樸關係的結構模型。這使得機械的自動化修補超越了單純的數學計算，體現了機器在數位環境中對物理空間變化的認知，並做出具備空間意向性的回應。Philip Beesley 的互動建築裝置《Hylozoic Series》 (<a class="citation-link" href="#fn8" id="ref8">Beesley, 2010</a>) 呈現了將機器轉化為感知體的相關嘗試。該作品由微控制器與 AI 演算法包覆的機構組成，使空間能感知人類移動並做出反應，探討了機械與環境互動的邊界。</p>
+            </div>
+            
+            <div class="en-content">
+                <p>Exploring how the subject perceives the world helps clarify the role machines play in dynamic metabolism. Phenomenology views space as the field where the subject encounters the world, rather than a purely objective container. When Immanuel Kant's philosophy is introduced into the AI domain, a space for dialogue emerges between machine perception and human cognition. As Richard Evans points out in his exploration of a "Kantian cognitive architecture," applying transcendental logic to artificial intelligence provides a theoretical foundation for understanding how systems synthesize experience (<a class="citation-link" href="#fn6">Evans, 2019</a>). In <em>Critique of Pure Reason</em> (<a class="citation-link" href="#fn7">Kant, 1781/1998</a>), Immanuel Kant's concept of Transcendental Apperception elaborates that the subject possesses the ability to synthesize manifold sensory experiences, thereby forming self-consciousness and the cognition of objects.</p>
+                <p>For the AI driving spatial construction, unstructured spatial data acts as sensory fragments. The AI algorithm functions similarly to a machine apperception mechanism, synthesizing isolated data points into a structural model with semantic and topological relations. This makes automated mechanical repair transcend mere mathematical calculation, reflecting the machine's cognition of physical spatial changes within a digital environment and enabling a response with spatial intentionality. Philip Beesley's interactive architectural installation <em>Hylozoic Series</em> (<a class="citation-link" href="#fn8">Beesley, 2010</a>) presents related attempts to transform the machine into a perceiving entity. Composed of mechanisms enveloped by microcontrollers and AI algorithms, the work enables space to sense and react to human movement, exploring the boundaries of mechanical and environmental interaction.</p>
+            </div>
+
+            <div class="image-container">
+                <img src="https://images.architizer.com/media/139335576140907118_69056.jpg" alt="The Hylozoic Series by Philip Beesley">
+                <div class="caption caption-zh">
+                    <p><strong>圖示：</strong> Philip Beesley 的《Hylozoic Series》由微控制器與 AI 演算法組建，使空間具備對人類移動的感知與行為驅動反應，探討了機械在環境互動中的潛力。（出處：<a href="https://architizer.com/projects/the-hylozoic-series/" target="_blank">Architizer</a>）</p>
+                </div>
+                <div class="caption caption-en">
+                    <p><strong>Illustration:</strong> Philip Beesley's <em>Hylozoic Series</em>, constructed with microcontrollers and AI algorithms, equips space with perception and behavior-driven reactions to human movement, exploring the potential of mechanics in environmental interaction. (Source: <a href="https://architizer.com/projects/the-hylozoic-series/" target="_blank">Architizer</a>)</p>
+                </div>
+            </div>
+
+            <div class="zh-content">
+                <p>《Hylozoic Series》探討了感測與行為的互動。而本論述探討的系統，則將這種認知延伸至實體的物質代謝與結構維護層面，探究機器如何成為人類認識並參與空間代謝的輔助媒介。</p>
+            </div>
+            <div class="en-content">
+                <p><em>Hylozoic Series</em> explores the interaction between sensing and behavior. The system discussed in this discourse extends this cognition to the level of actual material metabolism and structural maintenance, investigating how the machine can become an auxiliary medium for humanity to perceive and participate in spatial metabolism.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 存在的本真：工具與棲居的現象學</span>
+                <span class="en-title">III. The Authenticity of Being: Phenomenology of Tools and Dwelling</span>
+            </h2>
+            <div class="zh-content">
+                <p>當機器系統具備處理空間資訊的能力，這種人機整合的行動對 Being-in-the-world (在世存有) 的意義，可透過 Martin Heidegger 的現象學進行觀察。在探討工具性時，Martin Heidegger 區辨了 Ready-to-hand (上手狀態) 與 Present-at-hand (現成狀態) (<a class="citation-link" href="#fn9" id="ref9">Heidegger, 1927/1962</a>)。在人機共生的架構中，感測器與機械手臂作為當代工具，並非由人手直接操作，而是人類思維藉由 AI 邏輯的延伸。這反映了工具存有論的演進：人類的意向透過數位代碼，轉化為實體的自動化行為。</p>
+                <p>透過這種「上手」技術的延伸，主體得以有意識地介入環境的 Lifecycle (生命週期)。在自然有機體的物質代謝（熵增）與機器的修復介入（熵減）之間，建立起一種動態的平衡。這不僅涉及物理狀態的維持，也呼應了 Martin Heidegger 關於 Dwelling (棲居) 的討論。在《Building Dwelling Thinking》(築·居·思) (<a class="citation-link" href="#fn10" id="ref10">Heidegger, 1951/1971</a>) 中，建築與棲居密切相關，而棲居包含了對環境的照料 (To spare and preserve)。因此，將技術應用於動態修復，可視為實踐棲居概念的一種方式。棲居在此表現為一種持續回應環境變化與照顧事物 (Care) 的存在狀態。Gilberto Esparza 的藝術作品《Plantas Nómadas》(游牧植物) 提供了將機器視為有機體照料者的實踐案例 (<a class="citation-link" href="#fn11" id="ref11">Esparza, 2010</a>)。該作品中的機器人偵測到植物需求或水質變化時，會自主移動至河川汲水，透過微生物燃料電池處理水質以維持植物生長。</p>
+            </div>
+            
+            <div class="en-content">
+                <p>When machine systems possess the capability to process spatial information, the significance of this human-machine integrated action upon Being-in-the-world can be observed through Martin Heidegger's phenomenology. In discussing instrumentality, Martin Heidegger distinguished between Ready-to-hand and Present-at-hand (<a class="citation-link" href="#fn9">Heidegger, 1927/1962</a>). In the human-machine symbiotic framework, sensors and robotic arms act as contemporary tools, operated not directly by human hands but as extensions of human thought via AI logic. This reflects an evolution in tool ontology: human intentionality is translated into physical automated behavior through digital codes.</p>
+                <p>Through this technological extension of being "ready-to-hand," the subject can consciously intervene in the Lifecycle of the environment. A dynamic equilibrium is established between the material metabolism of natural organisms (entropy increase) and the machine's reparative intervention (entropy decrease). This involves not only the maintenance of a physical state but also echoes Martin Heidegger's discussion on Dwelling. In <em>Building Dwelling Thinking</em> (<a class="citation-link" href="#fn10">Heidegger, 1951/1971</a>), building and dwelling are closely related, and dwelling encompasses the care of the environment (to spare and preserve). Therefore, applying technology to dynamic repair can be viewed as a way to practice the concept of dwelling. Dwelling is manifested here as an existential state of continuously responding to environmental changes and caring for things (Care). Gilberto Esparza's artwork <em>Plantas Nómadas</em> provides a practical case of treating the machine as a caregiver for organisms (<a class="citation-link" href="#fn11">Esparza, 2010</a>). When the robot in the work detects plant needs or water quality changes, it autonomously moves to a river to draw water, processing it through a microbial fuel cell to sustain plant growth.</p>
+            </div>
+
+            <div class="image-container">
+                <img src="https://gilbertoesparza.net/wp-content/uploads/2021/02/proceso176-978x652.jpg" alt="Plantas Nómadas by Gilberto Esparza">
+                <div class="caption caption-zh">
+                    <p><strong>圖示：</strong> Gilberto Esparza 的作品《Plantas Nómadas》。機器人透過偵測環境變化與自主水質處理，展示了機器參與維護有機生命存續的具體行為。（出處：<a href="https://gilbertoesparza.net/portfolio/plantas-nomadas/" target="_blank">Gilberto Esparza</a>）</p>
+                </div>
+                <div class="caption caption-en">
+                    <p><strong>Illustration:</strong> Gilberto Esparza's work <em>Plantas Nómadas</em>. Through environmental detection and autonomous water treatment, the robot demonstrates concrete behavior of a machine participating in the maintenance of organic life's continuation. (Source: <a href="https://gilbertoesparza.net/portfolio/plantas-nomadas/" target="_blank">Gilberto Esparza</a>)</p>
+                </div>
+            </div>
+
+            <div class="zh-content">
+                <p>《Plantas Nómadas》呈現了機器透過具體行為介入有機體運作的可能性。在當代構築系統中，人工智慧透過數位孿生與自動化設備，有潛力將此類環境照料與平衡的動能拓展至更大的空間尺度。</p>
+            </div>
+            <div class="en-content">
+                <p><em>Plantas Nómadas</em> presents the possibility of machines intervening in organic operations through concrete behaviors. In contemporary construction systems, artificial intelligence, via digital twins and automated equipment, has the potential to expand this dynamic of environmental care and equilibrium to a larger spatial scale.</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 人類學轉向與生活世界：技術作為當代認識的義肢</span>
+                <span class="en-title">IV. Anthropological Turn and the Lebenswelt: Technology as the Prosthesis of Contemporary Cognition</span>
+            </h2>
+            <div class="zh-content">
+                <p>沿著上述對技術與存有狀態的反思，本論述的架構呼應了 1970 年代義大利前衛建築團體 Superstudio 的思想軌跡 (<a class="citation-link" href="#fn12" id="ref12">Lang & Menking, 2003</a>)。Superstudio 早期以《Continuous Monument》(連續紀念碑) 探討技術擴張與客觀化；而在其晚期的《Fundamental Acts》(基本行為) 系列 (<a class="citation-link" href="#fn13" id="ref13">Superstudio, 1972</a>) 中，他們發生了深刻的人類學轉向。這種類似於 Edmund Husserl 晚期現象學走向以 Lebenswelt (生活世界) 為核心的文化與歷史反思。Edmund Husserl 對科學技術的探問，源於他擔憂過度客觀化與實證化的科學，將逐漸與人類具體的生活世界脫節 (<a class="citation-link" href="#fn14" id="ref14">Husserl, 1936/1970</a>)。</p>
+                <p>然而，我們今日正處於現象學轉向之後的時代。在資訊與運算深度導入的當代，科技已深深刻入我們的生活世界。當我們通過人工智慧重新檢視自我如何理解世界，並藉由這種認知框架重新認識有機物質的生長與消長，進而驅動機械裝置進行干預、修補與引導等互動行為時，機器的運作便不再僅是為了創造遠離人性的龐大結構，而是透過模擬代謝，反思人類的脆弱性與勞作本質。在這個修復的循環中，機器參與了維繫生命週期的基本行為。人工智慧從引發焦慮的實證客體，轉化為人機共生世代中，用以測量時間、與環境共處，並重新棲居於世的嶄新義肢。這不僅是技術的演進，更是對未來空間構築與公共實踐的深刻預示。</p>
+            </div>
+            <div class="en-content">
+                <p>Following the aforementioned reflections on technology and the state of being, the framework of this discourse echoes the intellectual trajectory of the 1970s Italian avant-garde architectural group Superstudio (<a class="citation-link" href="#fn12">Lang & Menking, 2003</a>). Early on, Superstudio explored technological expansion and objectification with the <em>Continuous Monument</em>. In their later <em>Fundamental Acts</em> series (<a class="citation-link" href="#fn13">Superstudio, 1972</a>), they underwent a profound anthropological turn, akin to Edmund Husserl's late phenomenology, which pivoted towards cultural and historical reflection centered on the <em>Lebenswelt</em> (Life-world). Edmund Husserl's inquiry into science and technology stemmed from his concern that overly objectified and positivist science would gradually become detached from the concrete human life-world (<a class="citation-link" href="#fn14">Husserl, 1936/1970</a>).</p>
+                <p>However, we currently stand in the era following this phenomenological turn. In the contemporary age, where information and computation are deeply integrated, technology has profoundly permeated our life-world. When we utilize artificial intelligence to re-examine how we understand the world, and apply this cognitive framework to re-recognize the growth and decay of organic matter—thereby driving mechanical devices to engage in interactive behaviors such as intervention, repair, and guidance—the machine's operation is no longer solely for creating massive structures detached from humanity. Instead, through simulating metabolism, it reflects upon human fragility and the nature of labor. In this cycle of repair, the machine participates in the fundamental acts that sustain the life cycle. Artificial intelligence transforms from an anxiety-inducing positivist object into a novel prosthesis in the era of human-machine symbiosis, utilized to measure time, coexist with the environment, and re-dwell in the world. This is not only a technological evolution but also a profound foreshadowing of future spatial construction and public practice.</p>
+            </div>
+        </section>
+        
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Spinoza, B. (1985). <em>The collected works of Spinoza</em> (Vol. 1). (E. Curley, Trans.). Princeton University Press. (Original work published 1677) <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Schrödinger, E. (1944). <em>What is life? The physical aspect of the living cell</em>. Cambridge University Press. <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Wiener, N. (1948). <em>Cybernetics: Or control and communication in the animal and the machine</em>. MIT Press. <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Oxman, N., Laucks, J., Kayskov, M., & Duro-Royo, J. (2018). <em>Aguahoja</em>. MIT Media Lab. <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Stiegler, B. (2018). <em>The Neganthropocene</em> (D. Ross, Trans.). Open Humanities Press. <a href="#ref5" class="backref">↑</a></li>
+                <li id="fn6">Evans, R. (2019). A Kantian cognitive architecture. In D. Berkich & M. V. d'Alfonso (Eds.), <em>On the cognitive, ethical, and scientific dimensions of artificial intelligence</em> (Vol. 134, pp. 233-262). Springer. https://doi.org/10.1007/978-3-030-01800-9_13 <a href="#ref6" class="backref">↑</a></li>
+                <li id="fn7">Kant, I. (1998). <em>Critique of pure reason</em> (P. Guyer & A. W. Wood, Trans.). Cambridge University Press. (Original work published 1781) <a href="#ref7" class="backref">↑</a></li>
+                <li id="fn8">Beesley, P. (2010). <em>Hylozoic ground: Liminal responsive architecture</em>. Riverside Architectural Press. <a href="#ref8" class="backref">↑</a></li>
+                <li id="fn9">Heidegger, M. (1962). <em>Being and time</em> (J. Macquarrie & E. Robinson, Trans.). Harper & Row. (Original work published 1927) <a href="#ref9" class="backref">↑</a></li>
+                <li id="fn10">Heidegger, M. (1971). Building dwelling thinking. In A. Hofstadter (Trans.), <em>Poetry, language, thought</em> (pp. 143-161). Harper & Row. (Original work published 1951) <a href="#ref10" class="backref">↑</a></li>
+                <li id="fn11">Esparza, G. (2010). <em>Plantas Nómadas</em>. LABoral Centro de Arte y Creación Industrial. <a href="#ref11" class="backref">↑</a></li>
+                <li id="fn12">Lang, P., & Menking, W. (2003). <em>Superstudio: Life without objects</em>. Skira. <a href="#ref12" class="backref">↑</a></li>
+                <li id="fn13">Superstudio. (1972). Fundamental acts. <em>Architectural Design</em>, 42(12), 727-729. <a href="#ref13" class="backref">↑</a></li>
+                <li id="fn14">Husserl, E. (1970). <em>The crisis of European sciences and transcendental phenomenology: An introduction to phenomenological philosophy</em> (D. Carr, Trans.). Northwestern University Press. (Original work published 1936) <a href="#ref14" class="backref">↑</a></li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script>
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+            
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "機器、代謝與棲居";
+            } else if (mode === 'en') {
+                navTitle.textContent = "Machine, Metabolism, and Dwelling";
+            } else {
+                navTitle.textContent = "機器、代謝與棲居";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>
