@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技術促逼與意志甦醒：論 Digger 中的災難再現與空間麻醉</title>
+    <style>
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+            transition: all 0.3s ease;
+        }
+
+        .control-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 60%;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #f1ede4;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-btn:hover {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 5px;
+            background: #f1ede4;
+            padding: 4px;
+            border-radius: 20px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-family: var(--font-zh);
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            color: var(--secondary-color);
+        }
+
+        .lang-btn.active {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #f1ede4;
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #1a2a3a;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-family: var(--font-en);
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .abstract-section {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .abstract-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+        }
+
+        .abstract-title.en {
+            font-family: var(--font-en);
+            font-size: 1.05rem;
+            letter-spacing: 0px;
+            margin-top: 15px;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            text-align: justify;
+            color: #475569;
+        }
+        
+        .spoiler-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 40px 0 50px 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        .spoiler-divider::before,
+        .spoiler-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px dashed var(--accent-color);
+            opacity: 0.5;
+        }
+        
+        .spoiler-divider:not(:empty)::before {
+            margin-right: 15px;
+        }
+        
+        .spoiler-divider:not(:empty)::after {
+            margin-left: 15px;
+        }
+
+        .spoiler-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .spoiler-text.en {
+            font-family: var(--font-en);
+            font-size: 0.85rem;
+            letter-spacing: 0;
+            font-weight: normal;
+        }
+
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #1a2a3a;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eef0f2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 .en-title {
+            font-family: var(--font-en);
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        sup a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0 2px;
+        }
+
+        sup a:hover {
+            text-decoration: underline;
+        }
+
+        .en-content {
+            font-family: var(--font-en);
+            color: #4a5568;
+            font-size: 0.98rem;
+            background-color: rgba(241, 237, 228, 0.2);
+            padding: 15px 20px;
+            border-radius: 6px;
+            border-left: 2px dashed #d1c9bc;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+
+        body.mode-zh .en-content,
+        body.mode-zh .en-title,
+        body.mode-zh .abstract-title.en,
+        body.mode-zh .abstract-text.en,
+        body.mode-zh .subtitle,
+        body.mode-zh .caption-en,
+        body.mode-zh .spoiler-text.en {
+            display: none !important;
+        }
+
+        body.mode-en .zh-content,
+        body.mode-en .zh-title,
+        body.mode-en .abstract-title.zh,
+        body.mode-en .abstract-text.zh,
+        body.mode-en .main-title,
+        body.mode-en .caption-zh,
+        body.mode-en .spoiler-text.zh {
+            display: none !important;
+        }
+
+        body.mode-bilingual .en-content {
+            display: block;
+        }
+
+        .image-container {
+            margin: 40px 0;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f1ede4;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        .caption {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+            padding: 0 10px;
+            text-align: left;
+        }
+        
+        .caption a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent-color);
+        }
+        
+        .caption a:hover {
+            color: #1a2a3a;
+            border-bottom-style: solid;
+        }
+
+        .caption-en {
+            font-family: var(--font-en);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .references-section {
+            margin-top: 60px;
+            border-top: 2px solid #f1ede4;
+            padding-top: 30px;
+        }
+
+        .references-title {
+            font-size: 1.3rem;
+            color: #1a2a3a;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 0.92rem;
+            color: #4a5568;
+            text-align: justify;
+        }
+        
+        li:target {
+            background-color: #f1ede4;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        li em {
+            font-family: var(--font-en);
+        }
+
+        .backref {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.05rem; }
+            .control-bar { padding: 10px; }
+            .lang-btn { padding: 4px 10px; font-size: 0.75rem; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; }
+            body { padding-bottom: 60px; }
+            .spoiler-text.zh { font-size: 0.85rem; }
+            .spoiler-text.en { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body class="mode-bilingual">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="../" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">技術促逼與意志甦醒</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="main-title">技術促逼與意志甦醒：論《 Digger (挖掘者) 》中的災難再現與空間麻醉</h1>
+            <div class="subtitle">Technological Enframing and the Awakening of Will: On Disaster Representation and Spatial Anaesthetics in Digger</div>
+        </header>
+
+        <div class="spoiler-divider">
+            <div class="spoiler-content">
+                <span class="spoiler-text zh">說明：內容涉及情節的安排，請斟酌觀影後閱讀</span>
+                <span class="spoiler-text en">Note: The following content involves plot details. Please read at your own discretion after viewing.</span>
+            </div>
+        </div>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">引言</div>
+            <div class="abstract-text zh">
+                Edward Burtynsky (愛德華·伯汀斯基) 在其攝影集《 Oil (石油) 》中，以抽象的構圖呈現人類工業對自然地貌的開採與重塑。這些影像具備雙重性，它既是人類破壞自然的客觀紀錄，同時又在視覺上呈現出幾何與色彩的結構美學。這種開採與美學奇觀間的矛盾，契合了 2026 年由 Alejandro G. Iñárritu (亞歷山卓·崗札雷·伊納利圖) 執導、Tom Cruise (湯姆·克魯斯) 主演的電影《 Digger (挖掘者) 》的核心命題。《 Digger 》表面上採用環境生態災難的敘事，其深層結構則是一部探討景觀社會、災難再現與戲劇本質的後設文本。劇中資深演員、前衛導演與資本方出資者的三方角力，揭示了災難事件如何被轉化為供大眾消費的文化商品。本文試圖將此戲劇張力置入現象學與當代空間理論的脈絡中，從 Martin Heidegger (馬丁·海德格) 的「促逼」(Herausfordern) 與「揭露」(Entbergen) 概念出發，剖析戲劇本質中的技術性剝削與現象學式的除魅。接著對應至建築學域，探討當代資本驅動下前衛建築空間的麻醉現象。最後，將劇場與崇高空間如 Gothic (哥德式) 建築、Zaha Hadid (札哈·哈蒂) 流動空間的場域經驗並置，結合 Martin Heidegger 的「向死而生」與 Arthur Schopenhauer (亞瑟·叔本華) 的「表象與意志」，論證主體為何必須透過被扭曲的再現物，才能重新尋求生命的動力。
+            </div>
+
+            <div class="abstract-title en">Introduction</div>
+            <div class="abstract-text en">
+                Edward Burtynsky, in his photography book <em>Oil</em>, uses abstract composition to present the extraction and reshaping of natural landscapes by human industry. These images possess a duality; they are both objective records of human destruction of nature and visual presentations of geometric and chromatic structural aesthetics. This contradiction between extraction and aesthetic spectacle aligns with the core proposition of the 2026 film <em>Digger</em>, directed by Alejandro G. Iñárritu and starring Tom Cruise. <em>Digger</em> superficially adopts a narrative of environmental catastrophe, while its deep structure is a meta-text exploring the society of the spectacle, disaster representation, and the essence of drama. The tripartite struggle among the veteran actor, the avant-garde director, and the financier reveals how disaster events are transformed into cultural commodities for public consumption. This article attempts to place this dramatic tension within the context of phenomenology and contemporary spatial theory. Starting from Martin Heidegger's concepts of "enframing" (Herausfordern) and "revealing" (Entbergen), it analyzes the technological exploitation and phenomenological disenchantment in the essence of drama. It then corresponds to the architectural field to discuss the phenomenon of anaesthetics in avant-garde architectural spaces driven by contemporary capital. Finally, by juxtaposing the field experiences of the theater and sublime spaces, such as Gothic architecture and the fluid spaces of Zaha Hadid, and integrating Martin Heidegger's "being-towards-death" and Arthur Schopenhauer's "will and representation," it argues why subjects must seek the drive of life through distorted representations.
+            </div>
+        </div>
+
+        <div class="image-container">
+            <img src="https://confederationcentre.com/wp-content/uploads/2023/05/nickel-tailings-small.jpg" alt="Bingham Canyon Mine as an example of Industrial Landscape Extraction">
+            
+            <div class="caption caption-zh">
+                <p><strong>圖示：</strong>人類工業對自然地貌的開採與重塑，展現出高度抽象的幾何與色彩結構。這類工業地景呼應了攝影師 Edward Burtynsky 鏡頭下人類對自然的技術促逼與美學奇觀的雙重性。（出處：<a href="https://confederationcentre.com/exhibition/edward-burtynsky-material-matters/" target="_blank">Confederationcentre.com</a>）</p>
+            </div>
+            
+            <div class="caption caption-en">
+                <p><strong>Illustration:</strong> The extraction and reshaping of natural landscapes by human industry exhibit highly abstract geometric and chromatic structures. Such industrial landscapes echo the duality of human technological enframing of nature and aesthetic spectacle captured by photographer Edward Burtynsky. (Source: <a href="https://confederationcentre.com/exhibition/edward-burtynsky-material-matters/" target="_blank">Confederationcentre.com</a>)</p>
+            </div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、 科技的促逼與災難的揭露：作為持存物的真實</span>
+                <span class="en-title">I. Technological Enframing and the Revealing of Disaster: Reality as Standing-Reserve</span>
+            </h2>
+            <div class="zh-content">
+                <p>在《 Digger 》中，關於如何將已發生的巨大災難事件再現的辯論，擊中了戲劇與再現本質的核心。對演員而言，表演的核心在於對角色的忠實還原。對導演而言，客觀事實必須讓位於敘事結構與立場。對出資者而言，災難則是一種用於創造價值的資本材料。</p>
+                <p>若以 Martin Heidegger 的技術哲學視角觀之，導演與出資者的行為，正是現代技術本質，即「座架」(Gestell) 的體現。Martin Heidegger 在《 The Question Concerning Technology, and Other Essays (關於科技的詰問及其他論文) 》中提出，現代技術並非單純的工具，而是一種特定的「解蔽」或「揭露」(Entbergen) 方式。這種方式以「促逼」(Herausfordern) 的姿態，向自然或真實事件索求能量，並將其囤積為隨時可供調度的「持存物」(Bestand)<sup><a href="#fn3">3</a></sup>。</p>
+                <p>一如 Edward Burtynsky 在《 Oil 》中捕捉的工業地景，電影語境裡那場生態災難被剝奪了原初的沉重感，被促逼成戲劇工業的持存物。導演透過剪輯與敘事的權力，將災難座架於美學的框架內，資本方則將其座架於票房與利潤的計算中。</p>
+                <p>然而，從現象學的角度來看，這種扭曲反而促成了一種另類的除魅 (Disenchantment) 與揭露。電影不再假裝能客觀重現真實，而是透過各方利益的衝突，揭露真實如何被建構與消費的機制。至於處於災難創傷中的觀眾，為何會願意走進戲院，用戲謔或沉痛等必然扭曲的方式來面對真實，這呼應了 Antonin Artaud (安托南·亞陶) 在《 The Theater and Its Double (劇場及其複象) 》中的論點。在日常生活的麻木與資本社會的撫慰中，主體已然失語<sup><a href="#fn1">1</a></sup>。唯有透過戲劇那高度濃縮、充滿人為張力的扭曲，觀眾才能在虛構的保護傘下，將被壓抑的創傷揭露出來，與真實進行對話。</p>
+            </div>
+            <div class="en-content">
+                <p>In <em>Digger</em>, the debate over how to represent a massive disaster strikes at the core of drama and representation. For the actor, the essence of performance lies in the faithful restoration of the character. For the director, objective facts must yield to narrative structure and position. For the financier, the disaster is capital material used for value creation.</p>
+                <p>Viewed through Martin Heidegger's philosophy of technology, the actions of the director and financier embody the essence of modern technology, namely Enframing (Gestell). In <em>The Question Concerning Technology, and Other Essays</em>, Martin Heidegger proposes that modern technology is not merely a tool but a specific mode of revealing (Entbergen). This mode assumes a posture of challenging forth (Herausfordern), extracting energy from nature or real events, and stockpiling it as standing-reserve (Bestand) ready for deployment <sup><a href="#fn3">3</a></sup>.</p>
+                <p>Similar to the industrial landscapes captured by Edward Burtynsky in <em>Oil</em>, the ecological disaster in the film's context is stripped of its original gravity and enframed into a standing-reserve for the dramatic industry. The director, through the power of editing and narrative, positions the disaster within an aesthetic framework, while the financier positions it within the calculus of box office and profit.</p>
+                <p>However, from a phenomenological perspective, this distortion conversely facilitates an alternative disenchantment and revealing. The film no longer pretends to objectively reproduce reality but exposes the mechanisms of how reality is constructed and consumed through the conflicts of various interests. As for why audiences amidst the trauma of disaster are willing to enter the theater and face reality through inevitably distorted means such as banter or sorrow, this aligns with Antonin Artaud's argument in <em>The Theater and Its Double</em>. In the numbness of daily life and the consolations of capitalist society, the subject has lost its voice <sup><a href="#fn1">1</a></sup>. Only through the highly concentrated and artificially tense distortions of drama can audiences expose their repressed trauma under the umbrella of fiction, engaging in a dialogue with reality.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、 資本驅動下的建築矛盾與空間的麻醉</span>
+                <span class="en-title">II. Architectural Contradiction Driven by Capital and Spatial Anaesthetics</span>
+            </h2>
+            <div class="zh-content">
+                <p>戲劇場域中這種促逼與再現的關係，若延伸至實體空間的論述，便對應著當代建築在資本主義下的發展。當建築成為資本運作的視覺奇觀，我們看見了 Robert Venturi (羅伯特·文丘里) 於《 Complexity and Contradiction in Architecture (建築的複雜與矛盾) 》中所指出的建築矛盾性<sup><a href="#fn6">6</a></sup>，說明建築不再服務於單純的庇護機能，而是必須同時滿足資本的炫耀、美學的標新立異以及都市行銷的渴望。</p>
+                <p>這引發了一個核心的空間叩問：當代前衛派建築師所創造的高價空間，究竟是建築師對自身的作麻醉，亦或是對使用者的麻醉？</p>
+                <p>建築理論家 Neil Leach (尼爾·里奇) 在其著作《 The Anaesthetics of Architecture (建築的麻醉) 》中，借用 Walter Benjamin (華特·班雅明) 的幻境 (Phantasmagoria) 與 Jean Baudrillard (尚·布希亞) 的擬像 (Simulacra) 概念，批判當代前衛建築過度追求視覺影像的刺激，最終導致感知與政治意識的麻木<sup><a href="#fn4">4</a></sup>。在當代學術脈絡中，這種麻醉是雙向且共謀的。</p>
+                <p>首先是對建築師的形式沉醉。建築師在龐大資本的挹注下，得以實現各種扭曲、流動的前衛幾何形態。建築師被自身創造的視覺影像所麻醉，沉溺於技術與美學的烏托邦中，藉此逃避建築應當承擔的社會與環境責任。一如《 Digger 》中那位基於敘事調整事實的前衛導演，當代建築師為了形式的純粹性，削弱了空間的社會真實性。</p>
+                <p>其次是對使用者的感官超載。對於進入高價空間的使用者而言，過度刺激的空間造形與錯置的尺度，產生了一種感官超載 (Sensory overload)。為了抵抗這種過度的刺激，使用者的心理防衛機制會自動啟動，最終導致感知的鈍化與批判能力的喪失。資本將災難轉化為電影奇觀，同時也將生活空間轉化為消費奇觀，讓大眾在麻醉中遺忘了空間背後的資本運作。</p>
+            </div>
+            <div class="en-content">
+                <p>This relationship of enframing and representation within the theatrical field, when extended to spatial discourse, corresponds to the development of contemporary architecture under capitalism. When architecture becomes a visual spectacle of capital operation, we observe the architectural contradiction pointed out by Robert Venturi in <em>Complexity and Contradiction in Architecture</em> <sup><a href="#fn6">6</a></sup>, illustrating that architecture no longer serves the simple function of shelter but must simultaneously satisfy capital's ostentation, aesthetic novelty, and the desire for urban marketing.</p>
+                <p>This raises a core spatial inquiry: Are the high-priced spaces created by contemporary avant-garde architects an anaesthetic for the architects themselves, or for the users?</p>
+                <p>Architectural theorist Neil Leach, in his book <em>The Anaesthetics of Architecture</em>, borrows Walter Benjamin's concept of Phantasmagoria and Jean Baudrillard's Simulacra to critique how contemporary avant-garde architecture excessively pursues visual image stimulation, ultimately leading to a numbness in perception and political consciousness <sup><a href="#fn4">4</a></sup>. In the contemporary academic context, this anaesthesia is bidirectional and complicit.</p>
+                <p>First is the formal intoxication of the architect. With the injection of massive capital, architects can realize various distorted and fluid avant-garde geometries. Architects become anesthetized by their own image-making, indulging in technological and aesthetic utopias, thereby evading the social and environmental responsibilities architecture should bear. Similar to the avant-garde director in <em>Digger</em> who adjusts facts based on narrative, contemporary architects weaken the social reality of space for the sake of formal purity.</p>
+                <p>Second is the sensory overload of the user. For users entering high-priced spaces, the excessively stimulating spatial forms and displaced scales generate sensory overload. To resist this excessive stimulation, the user's psychological defense mechanisms automatically activate, eventually resulting in dulled perception and a loss of critical capacity. Capital transforms disasters into cinematic spectacles and living spaces into consumption spectacles, causing the public to forget the capital operations behind the spaces amidst anaesthesia.</p>
+            </div>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、 雙重場域經驗：向死而生與意志的展現</span>
+                <span class="en-title">III. Dual Field Experiences: Being-towards-death and the Manifestation of Will</span>
+            </h2>
+            <div class="zh-content">
+                <p>儘管前衛建築與災難電影都帶有資本麻醉的性質，但場域本身仍蘊含著超越控制的潛能。當我們將進入戲院觀看災難與進入 Gothic 建築或 Zaha Hadid 的流動空間這兩種經驗並置，會發現它們共同指向了一種本體論的體驗。</p>
+                <p>Gothic 建築的垂直性、上升的尖頂，以及 Zaha Hadid 建築中非線性、使人失去方向感的流動空間，兩者都在瞬間剝奪了主體在日常生活中的世俗安全感。在這種空間尺度與扭曲的幾何面前，人類被迫直面自身的渺小與脆弱。</p>
+                <p>這正是 Martin Heidegger 在《 Being and Time (存在與時間) 》中所謂的「向死而生」(Sein-zum-Tode)。Martin Heidegger 認為，日常狀態下的人們總是處於沉淪 (Verfallen) 中，逃避對死亡與虛無的焦慮。但當我們進入某種崇高 (Sublime) 的異質場域時，空間會將我們從常規中拉出，迫使我們在畏 (Angst) 的狀態下，正視自身的有限性與邊界<sup><a href="#fn2">2</a></sup>。</p>
+                <p>為何觀眾與空間使用者，明知這種經驗伴隨著痛苦與迷失，卻仍具有動力進入其中？</p>
+                <p>Arthur Schopenhauer 的巨著《 The World as Will and Representation (作為意志和表象的世界) 》提供了哲學動力學的解答。在 Arthur Schopenhauer 看來，我們日常所見的物質世界、資本邏輯，甚至電影與建築的實體，都只不過是「表象」(Vorstellung)；而推動萬物運作的核心，是底層的「生命意志」(Wille zum Leben)<sup><a href="#fn5">5</a></sup>。</p>
+                <p>《 Digger 》中災難的再現、前衛建築扭曲的空間，都是一種表象的展現。受難的觀眾走進戲院，並非為了尋求撫慰，而是因為在日常生活的麻醉下，他們需要喚醒生命意志。透過電影中被戲謔與悲憤包裹的災難再現，或是 Gothic 與解構建築那挑戰常規感官的空間體驗，觀眾與使用者的常規表象世界被短暫地擊碎。在那表象破裂的瞬間，底層充滿生機的生命意志得以重新湧現。</p>
+            </div>
+            <div class="en-content">
+                <p>Although avant-garde architecture and disaster films carry the nature of capitalist anaesthesia, the field itself still contains the potential to transcend control. When juxtaposing the experiences of entering a theater to view a disaster and entering Gothic architecture or the fluid spaces of Zaha Hadid, we find that they collectively point to an ontological experience.</p>
+                <p>The verticality and rising spires of Gothic architecture, and the non-linear, disorienting fluid spaces in Zaha Hadid's architecture, momentarily deprive the subject of secular security in daily life. In the face of this spatial scale and distorted geometry, humanity is forced to confront its own insignificance and fragility.</p>
+                <p>This is precisely what Martin Heidegger calls "being-towards-death" (Sein-zum-Tode) in <em>Being and Time</em>. Martin Heidegger posits that people in their everyday state are always in a condition of falling (Verfallen), evading the anxiety of death and nothingness. But when we enter a sublime, heterogeneous field, the space pulls us from our routine, forcing us to confront our finitude and boundaries in a state of dread (Angst) <sup><a href="#fn2">2</a></sup>.</p>
+                <p>Why do audiences and spatial users, knowing this experience is accompanied by pain and disorientation, still have the drive to enter it?</p>
+                <p>Arthur Schopenhauer's magnum opus <em>The World as Will and Representation</em> provides a philosophical dynamic answer. In Arthur Schopenhauer's view, the material world, capitalist logic, and even the physical entities of film and architecture we see daily are merely representation (Vorstellung); the core driving all operations is the underlying will to life (Wille zum Leben) <sup><a href="#fn5">5</a></sup>.</p>
+                <p>The representation of disaster in <em>Digger</em> and the distorted spaces of avant-garde architecture are manifestations of representation. The suffering audience enters the theater not to seek consolation, but because they need to awaken their will to life under the anaesthesia of daily life. Through the disaster representation wrapped in banter and sorrow in the film, or the spatial experiences that challenge conventional senses in Gothic and deconstructivist architecture, the conventional world of representation of the audience and users is briefly shattered. In the moment the representation fractures, the underlying vital will to life re-emerges.</p>
+            </div>
+        </section>
+
+        <section id="section4">
+            <h2>
+                <span class="zh-title">四、 結論：在扭曲中除魅與確認存有</span>
+                <span class="en-title">IV. Conclusion: Disenchantment and Confirmation of Being within Distortion</span>
+            </h2>
+            <div class="zh-content">
+                <p>在《 Digger 》的敘事與當代空間實踐中，演員、導演、出資者，或是使用者、建築師與資本家之間的衝突，本質上無法也不需要被調和。因為當代藝術與空間的張力，正是建立在技術促逼的剝削、與存有本真的抵抗之間的拉扯上。</p>
+                <p>前衛建築的高價空間與災難電影的再現，確實是資本主義下對大眾的麻醉劑，試圖將悲劇與空間轉化為可消費的持存物。然而，正如現象學的揭露過程所昭示，極致的造作與扭曲，往往成為了最終的除魅。</p>
+                <p>當苦難中的觀眾步入戲院，當人們走進那些宏偉的異質空間，他們實質上是在挪用資本所提供的麻醉劑，進行一場自我存有的確認。透過直面空間與戲劇中的界限，他們喚醒了 Arthur Schopenhauer 筆下強韌的生命意志。在必然被扭曲的世界裡，人們藉由體驗痛楚與崇高，完成了對自身存有狀態的確認。</p>
+            </div>
+            <div class="en-content">
+                <p>In the narrative of <em>Digger</em> and contemporary spatial practice, the conflicts among actors, directors, and financiers, or users, architects, and capitalists, are fundamentally irreconcilable and do not need to be reconciled. The tension in contemporary art and space is built upon the tug-of-war between the exploitation of technological enframing and the resistance of authentic being.</p>
+                <p>The high-priced spaces of avant-garde architecture and the representation of disaster films are indeed anaesthetics for the public under capitalism, attempting to transform tragedy and space into consumable standing-reserves. However, as the phenomenological process of revealing demonstrates, extreme fabrication and distortion often become the ultimate disenchantment.</p>
+                <p>When suffering audiences enter the theater, and when people walk into those magnificent heterogeneous spaces, they are essentially appropriating the anaesthetics provided by capital to conduct a confirmation of their own being. By confronting the boundaries in space and drama, they awaken the resilient will to life described by Arthur Schopenhauer. In a world that is inevitably distorted, people achieve the confirmation of their state of being by experiencing pain and sublimity.</p>
+            </div>
+        </section>
+        
+        <div class="references-section">
+            <h3 class="references-title">參考文獻 / References</h3>
+            <ol>
+                <li id="fn1">Artaud, A. (1958). <em>The theater and its double</em> (M. C. Richards, Trans.). Grove Press. <a href="#ref1" class="backref">↑</a></li>
+                <li id="fn2">Heidegger, M. (1962). <em>Being and time</em> (J. Macquarrie & E. Robinson, Trans.). Harper & Row. <a href="#ref2" class="backref">↑</a></li>
+                <li id="fn3">Heidegger, M. (1977). <em>The question concerning technology, and other essays</em> (W. Lovitt, Trans.). Harper & Row. <a href="#ref3" class="backref">↑</a></li>
+                <li id="fn4">Leach, N. (1999). <em>The anaesthetics of architecture</em>. MIT Press. <a href="#ref4" class="backref">↑</a></li>
+                <li id="fn5">Schopenhauer, A. (1969). <em>The world as will and representation</em> (Vol. 1) (E. F. J. Payne, Trans.). Dover Publications. <a href="#ref5" class="backref">↑</a></li>
+                <li id="fn6">Venturi, R. (1966). <em>Complexity and contradiction in architecture</em>. Museum of Modern Art. <a href="#ref6" class="backref">↑</a></li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script>
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const eventTarget = event ? event.target : null;
+            if (eventTarget) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if(btn.getAttribute('onclick').includes(mode)) btn.classList.add('active');
+                });
+            }
+
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+            
+            const navTitle = document.getElementById('navTitle');
+            if (mode === 'zh') {
+                navTitle.textContent = "技術促逼與意志甦醒";
+            } else if (mode === 'en') {
+                navTitle.textContent = "Awakening of Will";
+            } else {
+                navTitle.textContent = "技術促逼與意志甦醒";
+            }
+        }
+    </script>
+<script src="post-widgets.js" defer></script>
+</body>
+</html>
