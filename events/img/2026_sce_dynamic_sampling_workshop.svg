@@ -81,6 +81,6 @@
   <!-- date / location -->
   <g font-family="Consolas, 'Cascadia Code', monospace" font-size="22" fill="#ffe6cc">
     <text x="120" y="800" letter-spacing="2">2026.11.07 · 11.08 · 11.16</text>
-    <text x="470" y="800" letter-spacing="2" fill-opacity="0.75">ESP32-S3 · TKU ARCHITECTURE</text>
+    <text x="640" y="800" letter-spacing="2" fill-opacity="0.75">ESP32-S3 · TKU ARCHITECTURE</text>
   </g>
 </svg>

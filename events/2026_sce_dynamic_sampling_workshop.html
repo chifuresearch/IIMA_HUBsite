@@ -711,7 +711,7 @@
             document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
             document.body.classList.add('mode-' + mode);
             const navTitle = document.getElementById('navTitle');
-            navTitle.textContent = (mode === 'en') ? "2026 Spatial Context Engineering Worksho" : "2026 空間資訊脈絡 動態採樣技術 工作營";
+            navTitle.textContent = (mode === 'en') ? "2026 Spatial Context Engineering Workshop: Dynamic Sampling Techniques" : "2026 空間資訊脈絡 動態採樣技術 工作營";
             try { localStorage.setItem('iima_event_lang', mode); } catch (e) {}
         }
         // 預設語系：網址 ?lang=zh|en|bi（優先）→ 這個瀏覽器上次選的 → 雙語對照
