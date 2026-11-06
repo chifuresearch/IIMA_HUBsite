@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 空間資訊脈絡 動態採樣技術 工作營</title>
+    <meta name="description" content="兩天半密集實作：從零組裝 ESP32-S3 微控制器，捕捉空間中的光線變化、人流與身體動作，經 Wi-Fi 轉譯為結構化數據流，驅動馬達與燈光完成「動態採樣 → 空間互動回饋」的虛實整合原型。教育部教學實踐研究計畫核心實作活動，現場配發開發套件，不需任何電路或程式基礎。">
+    <style>
+        /* =====================================================
+           IIMA HUB — 活動頁模板（由 backend/eventgen.py 套用）
+           版型沿用文章頁（紙色 pane + 點雲背景 iframe），
+           CTA / 狀態 / 表單重點用站台橘色 #ff5f00。
+           語系：body.mode-zh / mode-en / mode-bilingual
+                 .zh / .en 為通用的雙語成對元素
+           ===================================================== */
+        :root {
+            --bg-color: #fdfcfb;
+            --text-color: #2c3e50;
+            --accent-color: #8b7355;
+            --hub-orange: #ff5f00;
+            --secondary-color: #64748b;
+            --card-bg: #f8f6f2;
+            --border-color: #e2e8f0;
+            --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-en: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --font-mono: Consolas, "Cascadia Code", Menlo, monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-zh);
+            line-height: 1.8;
+            padding: 0 0 100px 0;
+        }
+
+        /* ---------- 頂欄 ---------- */
+        .control-bar {
+            position: sticky; top: 0; z-index: 1000;
+            background-color: rgba(253, 252, 251, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+        .nav-left { display: flex; align-items: center; gap: 15px; max-width: 60%; }
+        .home-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            color: var(--secondary-color); text-decoration: none;
+            font-size: 0.85rem; font-weight: bold; padding: 6px 12px; border-radius: 16px;
+            background: #f1ede4; transition: all 0.2s ease; white-space: nowrap;
+        }
+        .home-btn:hover { background-color: white; color: var(--text-color); box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
+        .nav-title { font-size: 0.95rem; font-weight: bold; color: var(--accent-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .lang-switcher { display: flex; gap: 5px; background: #f1ede4; padding: 4px; border-radius: 20px; }
+        .lang-btn {
+            background: none; border: none; padding: 6px 16px; font-size: 0.85rem; font-family: var(--font-zh);
+            cursor: pointer; border-radius: 16px; transition: all 0.2s ease; color: var(--secondary-color);
+            white-space: nowrap;
+        }
+        .lang-btn.active { background-color: white; color: var(--text-color); box-shadow: 0 2px 5px rgba(0,0,0,0.08); font-weight: bold; }
+
+        /* ---------- 版心 ---------- */
+        .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+
+        /* ---------- 活動標頭 ---------- */
+        .ev-header { margin-bottom: 36px; border-bottom: 2px solid #f1ede4; padding-bottom: 30px; }
+        .ev-kicker {
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.25em;
+            color: var(--secondary-color); text-transform: uppercase; margin-bottom: 14px;
+        }
+        .ev-status {
+            display: inline-block; padding: 3px 10px; letter-spacing: 0.2em; font-weight: 700;
+            border: 1px solid var(--hub-orange); color: var(--hub-orange); background: rgba(255,95,0,0.06);
+        }
+        .ev-status[data-status="ended"], .ev-status[data-status="closed"] { border-color: #94a3b8; color: #64748b; background: rgba(0,0,0,0.03); }
+        .ev-status[data-status="ongoing"] { border-color: #16a34a; color: #15803d; background: rgba(22,163,74,0.06); }
+        h1.main-title { font-size: 2.1rem; color: #1a2a3a; line-height: 1.35; margin-bottom: 10px; }
+        .subtitle { font-family: var(--font-en); font-size: 1.2rem; color: var(--secondary-color); line-height: 1.4; font-style: italic; }
+        body.mode-en .subtitle { font-size: 2rem; font-style: normal; color: #1a2a3a; font-weight: 700; line-height: 1.3; }
+        .ev-tagline { margin-top: 18px; font-size: 1.05rem; font-weight: 700; color: var(--hub-orange); }
+        .ev-facts {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 22px;
+        }
+        .fact { background: var(--card-bg); border-left: 3px solid var(--hub-orange); padding: 12px 16px; border-radius: 0 8px 8px 0; }
+        .fact .k { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--secondary-color); text-transform: uppercase; margin-bottom: 4px; }
+        .fact .v { font-size: 0.95rem; line-height: 1.6; font-weight: 700; color: #1a2a3a; }
+        body.mode-bilingual .fact .v .pair .en { font-weight: 600; }
+        /* 時程行：一行一個日期、粗體、永不斷行（{{SCHEDULE}} 展開；活動時間卡與表單 intro 共用） */
+        .sched-lines { display: block; margin: 2px 0 0; }
+        .sched-line { display: block; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+        .fact .sched-line { font-size: 0.98rem; color: #1a2a3a; }
+        .form-intro .sched-lines { margin: 4px 0 6px 1.6em; }
+        body.mode-bilingual .pair .en .sched-line { font-weight: 600; }
+        .ev-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 6px;
+            font-weight: 700; font-size: 0.92rem; text-decoration: none; cursor: pointer; border: 1px solid var(--hub-orange);
+            color: var(--hub-orange); background: #fff; transition: all 0.2s ease; font-family: var(--font-zh);
+        }
+        .btn:hover { background: rgba(255,95,0,0.08); }
+        .btn.primary { background: var(--hub-orange); color: #000; }
+        .btn.primary:hover { background: #ff7a2e; }
+        .btn.disabled { opacity: 0.45; pointer-events: none; border-color: #94a3b8; color: #64748b; }
+        .meta { color: var(--secondary-color); font-size: 0.8rem; letter-spacing: 0.08em; margin-top: 16px; }
+
+        /* ---------- 圖片 / 引言 ---------- */
+        .image-container { margin: 30px 0 36px; text-align: center; background: var(--card-bg); padding: 16px; border-radius: 8px; border: 1px solid #f1ede4; }
+        .image-container img { max-width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: block; margin: 0 auto 10px; }
+        .caption { margin-top: 10px; font-size: 0.85rem; color: var(--secondary-color); line-height: 1.6; text-align: left; }
+        .caption-en { font-family: var(--font-en); margin-top: 4px; font-style: italic; }
+        .abstract-section { background-color: var(--card-bg); border-left: 4px solid var(--accent-color); padding: 25px 30px; margin-bottom: 30px; border-radius: 0 8px 8px 0; }
+        .abstract-title { font-size: 1.05rem; font-weight: bold; margin-bottom: 8px; color: var(--accent-color); letter-spacing: 2px; }
+        .abstract-title.en { font-family: var(--font-en); letter-spacing: 0; margin-top: 15px; }
+        .abstract-text { font-size: 0.95rem; text-align: justify; color: #475569; }
+        .abstract-text.en { font-family: var(--font-en); }
+
+        /* ---------- 章節 ---------- */
+        section { margin-bottom: 44px; scroll-margin-top: 80px; }
+        h2 { font-size: 1.45rem; color: #1a2a3a; margin: 36px 0 18px; padding-bottom: 8px; border-bottom: 1px solid #eef0f2; display: flex; flex-direction: column; }
+        h2 .en-title { font-family: var(--font-en); font-size: 1.05rem; color: var(--secondary-color); font-weight: normal; margin-top: 4px; }
+        .zh-content p, .en-content p { margin-bottom: 1em; text-align: justify; font-size: 1rem; }
+        .en-content { font-family: var(--font-en); color: #475569; }
+        .en-content p { font-size: 0.95rem; }
+        body.mode-bilingual .en-content { border-top: 1px dashed #e5e0d6; padding-top: 14px; margin-top: 6px; }
+
+        /* 套件 / 項目清單 */
+        .ev-items { list-style: none; margin: 10px 0 0; display: grid; gap: 10px; }
+        .ev-items li { background: var(--card-bg); border: 1px solid #f1ede4; border-radius: 8px; padding: 14px 18px; }
+        .ev-items .name { font-weight: 700; color: #1a2a3a; display: block; margin-bottom: 4px; }
+        .ev-items .desc { font-size: 0.92rem; color: #475569; display: block; }
+
+        /* 活動資訊：時程表 */
+        .ev-schedule { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 0.93rem; }
+        .ev-schedule th, .ev-schedule td { padding: 10px 12px; border-bottom: 1px solid #eef0f2; vertical-align: top; text-align: left; }
+        .ev-schedule th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; color: var(--secondary-color); text-transform: uppercase; }
+        .ev-schedule td.d { white-space: nowrap; font-family: var(--font-mono); color: var(--hub-orange); font-weight: 700; }
+        .ev-info-row { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px dashed #eef0f2; font-size: 0.95rem; }
+        .ev-info-row .k { font-weight: 700; color: #1a2a3a; }
+
+        /* ---------- 通用雙語成對元素 ---------- */
+        .en { font-family: var(--font-en); }
+        body.mode-bilingual .pair .en { display: block; font-size: 0.86em; color: var(--secondary-color); margin-top: 2px; }
+        body.mode-bilingual .pair.inline .en { display: inline; margin-left: 6px; }
+        body.mode-bilingual .pair.inline .en::before { content: "/ "; }
+        body.mode-zh .en, body.mode-zh .en-content, body.mode-zh .en-title, body.mode-zh .subtitle,
+        body.mode-zh .abstract-title.en, body.mode-zh .abstract-text.en, body.mode-zh .caption-en { display: none !important; }
+        body.mode-en .zh, body.mode-en .zh-content, body.mode-en .zh-title, body.mode-en .main-title,
+        body.mode-en .abstract-title.zh, body.mode-en .abstract-text.zh, body.mode-en .caption-zh { display: none !important; }
+
+        /* ---------- 報名／回饋按鈕列（活動資訊段落底部） ---------- */
+        .ev-cta { margin-top: 26px; padding-top: 22px; border-top: 1px dashed #e5e0d6; }
+        .btn.closed { border-color: #cbd5e1; color: #94a3b8; background: #f8fafc; }
+        .btn.closed:hover { background: #f1f5f9; }
+        .btn.primary.closed { background: #e2e8f0; color: #64748b; border-color: #cbd5e1; }
+        .btn.done { border-color: #16a34a; color: #15803d; background: #f0fdf4; }
+
+        /* ---------- 表單 modal ---------- */
+        body.ev-modal-open { overflow: hidden; }
+        .ev-modal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .ev-modal[hidden] { display: none; }
+        .ev-modal-backdrop { position: absolute; inset: 0; background: rgba(5,5,5,0.72); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+        .ev-modal-panel {
+            position: relative; width: 100%; max-width: 860px; max-height: calc(100vh - 48px); overflow-y: auto;
+            background: var(--bg-color); border-radius: 14px; box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+            border-top: 4px solid var(--hub-orange); animation: ev-pop 0.25s ease;
+        }
+        @keyframes ev-pop { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+        .ev-modal-close {
+            position: sticky; top: 10px; display: block; margin: 10px 12px 0 auto; z-index: 5;
+            width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-color); background: #fff;
+            color: var(--secondary-color); font-size: 1.4rem; line-height: 1; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .ev-modal-close:hover { color: var(--hub-orange); border-color: var(--hub-orange); }
+        .ev-modal-body { padding: 0 32px 36px; }
+        .ev-form h2 { margin-top: 0; }
+        .form-intro { background: var(--card-bg); border-left: 4px solid var(--hub-orange); padding: 20px 26px; border-radius: 0 8px 8px 0; margin-bottom: 26px; font-size: 0.95rem; }
+        .form-intro p { margin-bottom: 0.8em; }
+        .form-intro p:last-child { margin-bottom: 0; }
+        .form-closed { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; font-size: 0.92rem; }
+        .form-section { border: 1px solid var(--border-color); border-radius: 10px; padding: 22px 24px; margin-bottom: 22px; background: #fff; }
+        .form-section legend { padding: 0 8px; font-weight: 700; color: #1a2a3a; font-size: 1.05rem; }
+        .form-section .sec-desc { font-size: 0.9rem; color: var(--secondary-color); margin: 4px 0 14px; }
+        .q { padding: 16px 0; border-bottom: 1px dashed #eef0f2; }
+        .q:last-child { border-bottom: none; }
+        .q-label { display: block; font-weight: 700; color: #1a2a3a; font-size: 0.98rem; line-height: 1.6; }
+        .q-num { font-family: var(--font-mono); color: var(--hub-orange); margin-right: 8px; font-size: 0.85rem; }
+        .req { color: #dc2626; margin-left: 4px; }
+        .q-help { font-size: 0.86rem; color: var(--secondary-color); margin: 4px 0 8px; line-height: 1.6; }
+        .q-body { margin-top: 8px; }
+        .q input[type="text"], .q input[type="email"], .q input[type="tel"], .q textarea {
+            width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; font-size: 0.95rem;
+            background: #fff; color: var(--text-color); transition: border-color 0.2s;
+        }
+        .q input:focus, .q textarea:focus { outline: none; border-color: var(--hub-orange); box-shadow: 0 0 0 3px rgba(255,95,0,0.12); }
+        .q textarea { min-height: 110px; resize: vertical; }
+        .opt { display: flex; align-items: flex-start; gap: 10px; padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 0.95rem; line-height: 1.6; }
+        .opt:hover { background: var(--card-bg); }
+        .opt input { margin-top: 6px; flex-shrink: 0; accent-color: var(--hub-orange); width: 16px; height: 16px; }
+        .opt .other-input { margin-left: 8px; width: auto; min-width: 180px; padding: 4px 10px; display: inline-block; }
+        .q.consent .opt { background: var(--card-bg); border: 1px solid #f1ede4; }
+        .grid-wrap { overflow-x: auto; }
+        .grid { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .grid th { font-family: var(--font-mono); font-weight: 700; color: var(--secondary-color); padding: 8px 6px; text-align: center; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        .grid td { padding: 10px 6px; border-bottom: 1px dashed #eef0f2; vertical-align: middle; }
+        .grid td.row-label { text-align: left; min-width: 240px; line-height: 1.5; }
+        .grid td.cell { text-align: center; }
+        .grid td.cell input { accent-color: var(--hub-orange); width: 17px; height: 17px; cursor: pointer; }
+        .grid tr.err td.row-label { color: #dc2626; }
+        .q-err { display: none; color: #dc2626; font-size: 0.82rem; margin-top: 6px; }
+        .q.has-err .q-err { display: block; }
+        .q.has-err .q-label { color: #dc2626; }
+        .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+        .form-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+        .form-msg { font-size: 0.88rem; color: var(--secondary-color); }
+        .form-msg.err { color: #dc2626; }
+        .form-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 22px 26px; border-radius: 10px; font-size: 1rem; line-height: 1.8; }
+        .form-success .again { display: inline-block; margin-top: 10px; font-size: 0.82rem; color: var(--secondary-color); cursor: pointer; text-decoration: underline; }
+        form.is-closed .q-body { opacity: 0.55; pointer-events: none; }
+
+        /* ---------- 小型提醒 popup（離開提醒 / 缺填提醒 / 未開放） ---------- */
+        .ev-alert { position: fixed; inset: 0; z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .ev-alert-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
+        .ev-alert-box {
+            position: relative; width: 100%; max-width: 420px; background: #fff; border-radius: 12px; padding: 24px 26px 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.45); border-left: 5px solid var(--hub-orange); animation: ev-pop 0.2s ease;
+        }
+        .ev-alert-box.warn { border-left-color: #dc2626; }
+        .ev-alert-title { font-weight: 700; font-size: 1.05rem; color: #1a2a3a; margin-bottom: 8px; }
+        .ev-alert-text { font-size: 0.93rem; color: #475569; line-height: 1.7; }
+        .ev-alert-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+        .ev-alert-actions .btn { padding: 8px 18px; font-size: 0.88rem; }
+        .ev-alert-actions .btn.ghost { border-color: #cbd5e1; color: var(--secondary-color); }
+        .q.flash { animation: ev-flash 1.2s ease; }
+        @keyframes ev-flash { 0%, 60% { background: rgba(255,95,0,0.12); } 100% { background: transparent; } }
+
+        @media (max-width: 600px) {
+            h1.main-title { font-size: 1.55rem; }
+            .subtitle { font-size: 1rem; }
+            body.mode-en .subtitle { font-size: 1.5rem; }
+            .control-bar { padding: 10px; gap: 8px; }
+            .lang-btn { padding: 4px 8px; font-size: 0.72rem; }
+            .lang-switcher { padding: 3px; flex-shrink: 0; }
+            .home-btn { padding: 4px 8px; font-size: 0.75rem; }
+            .nav-left { gap: 8px; max-width: 48%; }
+            .nav-title { font-size: 0.8rem; }
+            .container { padding: 24px 16px; }
+            .ev-facts { grid-template-columns: 1fr; gap: 10px; }
+            .fact { padding: 12px 14px; }
+            .fact .sched-line { font-size: 1.02rem; }
+            .sched-line { font-size: 0.98rem; }
+            .form-intro { padding: 16px 16px; }
+            .form-intro .sched-lines { margin-left: 0; }
+            .ev-kicker { gap: 8px; font-size: 0.68rem; }
+            /* 時程表在手機改成每列一個區塊：日期＋時間同一行粗體、內容在下一行 */
+            .ev-schedule thead { display: none; }
+            .ev-schedule tr { display: block; padding: 8px 0; border-bottom: 1px solid #eef0f2; }
+            .ev-schedule td { display: inline-block; border: none; padding: 2px 8px 2px 0; }
+            .ev-schedule td.d { font-size: 0.95rem; }
+            .ev-schedule td:last-child { display: block; padding-top: 2px; }
+            .form-section { padding: 16px 14px; }
+            .ev-modal { padding: 0; }
+            .ev-modal-panel { max-height: 100vh; height: 100%; border-radius: 0; }
+            .ev-modal-body { padding: 6px 16px 30px; }
+            .ev-cta .btn { width: 100%; justify-content: center; }
+            .ev-info-row { grid-template-columns: 1fr; gap: 2px; }
+            .grid td.row-label { min-width: 180px; font-size: 0.85rem; }
+            body { padding-bottom: 60px; }
+        }
+    </style>
+</head>
+
+<body class="mode-bilingual" data-event="2026_sce_dynamic_sampling_workshop">
+
+    <div class="control-bar">
+        <div class="nav-left">
+            <a href="../" class="home-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                首頁
+            </a>
+            <div class="nav-title" id="navTitle">2026 空間資訊脈絡 動態採樣技術 工作營</div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" onclick="setMode('zh')">中文</button>
+            <button class="lang-btn" onclick="setMode('en')">English</button>
+            <button class="lang-btn active" onclick="setMode('bilingual')">雙語對照</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="ev-header">
+            <div class="ev-kicker">
+                <span class="pair inline"><span class="zh">活動</span><span class="en">Event</span></span>
+                <span class="ev-status pair inline" data-status="open"><span class="zh">報名中</span><span class="en">Registration open</span></span>
+                <span>2026-11-07 → 2026-11-16</span>
+            </div>
+            <h1 class="main-title">2026 空間資訊脈絡 動態採樣技術 工作營</h1>
+            <div class="subtitle">2026 Spatial Context Engineering Workshop: Dynamic Sampling Techniques</div>
+            <p class="ev-tagline pair"><span class="zh">讓空間「看見」你的動作，讓設計「回應」真實的環境！</span><span class="en">Let space &quot;see&quot; your movement, and let design &quot;respond&quot; to the real environment.</span></p>
+            <div class="ev-facts">
+            <div class="fact"><div class="k pair inline"><span class="zh">活動時間</span><span class="en">Dates</span></div><div class="v"><span class="pair"><span class="zh"><span class="sched-lines"><span class="sched-line">11/07（六） 13:00-18:00</span><span class="sched-line">11/08（日） 13:00-18:00</span><span class="sched-line">11/16（一） 09:00-12:00</span></span></span><span class="en"><span class="sched-lines"><span class="sched-line">Nov 7 (Sat) 13:00-18:00</span><span class="sched-line">Nov 8 (Sun) 13:00-18:00</span><span class="sched-line">Nov 16 (Mon) 09:00-12:00</span></span></span></span></div></div>
+            <div class="fact"><div class="k pair inline"><span class="zh">活動地點</span><span class="en">Venue</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系系館 K102（電腦教室）</span><span class="en">Room K102 (computer classroom), Department of Architecture Building, Tamkang University</span></span></div></div>
+            <div class="fact"><div class="k pair inline"><span class="zh">招收對象</span><span class="en">Audience</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系大學部（修習建築設計四學員優先）及對空間互動、數位構築有興趣之學員。</span><span class="en">Undergraduate students of the TKU Department of Architecture (priority to students enrolled in Architectural Design IV) and anyone interested in spatial interaction and digital fabrication.</span></span></div></div>
+            </div>
+            <div class="meta" id="evMeta"></div>
+        </header>
+
+        <div class="image-container">
+            <img src="../events/img/2026_sce_dynamic_sampling_workshop.svg" alt="2026 空間資訊脈絡 動態採樣技術 工作營">
+            <div class="caption caption-zh">空間動態採樣：感測 → 結構化數據流 → 實體致動</div>
+            <div class="caption caption-en">Spatial dynamic sampling: sensing, structured data streams, physical actuation</div>
+        </div>
+
+        <div class="abstract-section">
+            <div class="abstract-title zh">活動概要</div>
+            <div class="abstract-text zh">兩天半密集實作：從零組裝 ESP32-S3 微控制器，捕捉空間中的光線變化、人流與身體動作，經 Wi-Fi 轉譯為結構化數據流，驅動馬達與燈光完成「動態採樣 → 空間互動回饋」的虛實整合原型。教育部教學實踐研究計畫核心實作活動，現場配發開發套件，不需任何電路或程式基礎。</div>
+            <div class="abstract-title en">Overview</div>
+            <div class="abstract-text en">A two-and-a-half-day intensive: assemble an ESP32-S3 microcontroller from scratch, capture light, presence and body movement in real space, stream it over Wi-Fi as structured data, and drive motors and lights to complete a cyber-physical prototype from dynamic sampling to spatial feedback. Core hands-on activity of a MOE Teaching Practice Research project; development kits provided, no electronics or coding background required.</div>
+        </div>
+
+        <section id="section1">
+            <h2>
+                <span class="zh-title">一、工作營緣起與核心目標</span>
+                <span class="en-title">I. Background and Core Objectives</span>
+            </h2>
+            <div class="zh-content">
+            <p class="">面對生成式 AI 時代，建築設計正從單向的「提示詞工程（Prompt Engineering）」邁向具備環境感知與系統思維的「空間脈絡工程（Spatial Context Engineering, SCE）」。為了克服虛擬生成常見的「脈絡真空化」困境，設計者需要讓數位模型與 AI 代理人能夠真正「看見」、「感知」並「回應」真實空間中的物理屬性與使用者行為。</p>
+            <p class="">本工作營為教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的AI導向建築設計教學方法》之核心實作活動。在這兩天半的密集實作中，我們將帶領學員建立「建築脈絡工程循環（ACEC）」中的環境感知層（Perception Layer）與行動實踐層（Action Layer）：透過 ESP32-S3 微控制器的無線遠端連線功能，即時捕捉空間中的「光線變化、物體通過、身體動作與人為觸發」等動態數據，並將真實世界的行為轉譯為結構化數據流（JSON / Serial / Wi-Fi 通訊），最終驅動燈光與動力馬達等實體致動器，完成從「動態採樣」到「空間互動回饋」的虛實整合原型（Prototyping）。</p>
+            </div>
+            <div class="en-content">
+            <p class="">In the era of generative AI, architectural design is moving from one-directional prompt engineering toward Spatial Context Engineering (SCE), an approach grounded in environmental sensing and systems thinking. To overcome the &quot;context vacuum&quot; that so often limits virtual generation, designers need digital models and AI agents that can actually see, sense and respond to the physical properties and user behaviours of real space.</p>
+            <p class="">This workshop is the core hands-on activity of the MOE Teaching Practice Research project Spatial Context Engineering: An AI-oriented Architectural Design Pedagogy Integrating Digital Twins and Prototyping. Over two and a half intensive days, participants build the Perception Layer and the Action Layer of the Architectural Context Engineering Cycle (ACEC): using the wireless connectivity of the ESP32-S3 microcontroller, they capture dynamic data in space, such as changes in light, objects passing by, body movement and manual triggers, translate real-world behaviour into structured data streams (JSON / Serial / Wi-Fi), and finally drive physical actuators such as lights and motors, completing a cyber-physical prototype that runs from dynamic sampling to spatial interactive feedback.</p>
+            </div>
+        </section>
+
+        <section id="section2">
+            <h2>
+                <span class="zh-title">二、我們將提供給你的「空間感知工具箱」</span>
+                <span class="en-title">II. The &quot;Spatial Sensing Toolkit&quot; We Provide</span>
+            </h2>
+            <div class="zh-content">
+            <p class="">你不需要自己購買零組件！工作營期間，主辦單位將為每位（或每組）學員配發一套完整規劃的「ESP32-S3 空間動態採樣開發套件（附專屬收納箱）」，內含：</p>
+            </div>
+            <div class="en-content">
+            <p class="">You do not need to buy any components. During the workshop every participant (or team) receives a fully planned ESP32-S3 Spatial Dynamic Sampling Development Kit in its own storage box, containing:</p>
+            </div>
+            <ul class="ev-items">
+                <li><span class="name"><span class="pair"><span class="zh">核心控制與遠端通訊</span><span class="en">Core control and remote communication</span></span></span><span class="desc"><span class="pair"><span class="zh">ESP32-S3 開發板（支援 Wi-Fi / 藍牙遠端連線）、USB-A to Type-C 傳輸線、外部 5V 獨立電源線。</span><span class="en">ESP32-S3 development board (Wi-Fi / Bluetooth), USB-A to USB-C cable, separate 5 V external power cable.</span></span></span></li>
+                <li><span class="name"><span class="pair"><span class="zh">空間環境與動作感知（Sensors）</span><span class="en">Spatial environment and motion sensing (Sensors)</span></span></span><span class="desc"><span class="pair"><span class="zh">紅外線阻斷感應器（約 100cm 動作/通過事件偵測）、光敏電阻 LDR（空間光照度採樣）、可變電阻（類比數值映射）、瞬時按鈕（事件觸發）。</span><span class="en">Infrared break-beam sensor (motion / pass-through events at about 100 cm), LDR photoresistor (ambient light sampling), potentiometer (analog value mapping), momentary push button (event trigger).</span></span></span></li>
+                <li><span class="name"><span class="pair"><span class="zh">空間物理回饋與致動（Actuators）</span><span class="en">Physical feedback and actuation (Actuators)</span></span></span><span class="desc"><span class="pair"><span class="zh">SG90 伺服馬達（精準角度與位置控制）、TT 減速直流馬達 + TB6612FNG 驅動板（連續旋轉、PWM 調速與正反轉控制）、多色 LED 燈光回饋模組。</span><span class="en">SG90 servo (precise angle and position control), TT geared DC motor with TB6612FNG driver (continuous rotation, PWM speed and direction control), multi-colour LED feedback module.</span></span></span></li>
+                <li><span class="name"><span class="pair"><span class="zh">快速原型搭建輔具</span><span class="en">Rapid prototyping aids</span></span></span><span class="desc"><span class="pair"><span class="zh">大型免焊接麵包板（830孔）、全套杜邦排線、S22R/S33R 快夾接線頭（讓你不需焊接即可快速穩定連接馬達與電源）。</span><span class="en">Large solderless breadboard (830 points), a full set of jumper wires, S22R / S33R quick-clip connectors so motors and power can be connected securely without soldering.</span></span></span></li>
+            </ul>
+        </section>
+
+        <section id="section3">
+            <h2>
+                <span class="zh-title">三、活動資訊</span>
+                <span class="en-title">III. Event Information</span>
+            </h2>
+            <table class="ev-schedule">
+                <thead><tr><th><span class="pair inline"><span class="zh">日期</span><span class="en">Date</span></span></th>
+                <th><span class="pair inline"><span class="zh">時間</span><span class="en">Time</span></span></th>
+                <th><span class="pair inline"><span class="zh">內容</span><span class="en">Programme</span></span></th></tr></thead>
+                <tbody>
+                <tr><td class="d">2026-11-07（<span class="pair inline"><span class="zh">六</span><span class="en">Sat</span></span>）</td><td class="d">13:00 - 18:00</td><td><span class="pair"><span class="zh">下午：基礎感知電路、ADC 採樣與事件觸發</span><span class="en">Afternoon: basic sensing circuits, ADC sampling and event triggering</span></span></td></tr>
+                <tr><td class="d">2026-11-08（<span class="pair inline"><span class="zh">日</span><span class="en">Sun</span></span>）</td><td class="d">13:00 - 18:00</td><td><span class="pair"><span class="zh">下午：ESP32-S3 遠端連線、結構化資料流與馬達動力控制</span><span class="en">Afternoon: ESP32-S3 remote connectivity, structured data streams and motor control</span></span></td></tr>
+                <tr><td class="d">2026-11-16（<span class="pair inline"><span class="zh">一</span><span class="en">Mon</span></span>）</td><td class="d">09:00 - 12:00</td><td><span class="pair"><span class="zh">上午：空間動態採樣整合實作、原型展示與回饋</span><span class="en">Morning: integrated spatial dynamic sampling, prototype presentation and feedback</span></span></td></tr>
+                </tbody>
+            </table>
+            <div class="ev-info-row"><div class="k pair"><span class="zh">活動地點</span><span class="en">Venue</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系系館 K102（電腦教室）</span><span class="en">Room K102 (computer classroom), Department of Architecture Building, Tamkang University</span></span></div></div>
+            <div class="ev-info-row"><div class="k pair"><span class="zh">招收對象</span><span class="en">Audience</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系大學部（修習建築設計四學員優先）及對空間互動、數位構築有興趣之學員。</span><span class="en">Undergraduate students of the TKU Department of Architecture (priority to students enrolled in Architectural Design IV) and anyone interested in spatial interaction and digital fabrication.</span></span></div></div>
+            <div class="ev-info-row"><div class="k pair"><span class="zh">自備設備</span><span class="en">Bring</span></div><div class="v"><span class="pair"><span class="zh">個人筆記型電腦（需具備 USB 接口，若筆電僅有 Type-C 孔，請務必自備轉接頭 / Hub），並請攜帶充電器。</span><span class="en">A personal laptop with a USB port (if it only has USB-C, bring an adapter or hub) and its charger.</span></span></div></div>
+            <div class="ev-info-row"><div class="k pair"><span class="zh">主辦單位</span><span class="en">Organizer</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系｜教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的 AI 導向建築設計教學方法》</span><span class="en">Department of Architecture, Tamkang University | MOE Teaching Practice Research Project: Spatial Context Engineering, an AI-oriented architectural design pedagogy integrating digital twins and prototyping</span></span></div></div>
+            <div class="ev-cta" id="cta"><button type="button" class="btn primary" data-open-form="registration"><span class="pair inline"><span class="zh">報名表</span><span class="en">Registration</span></span></button><button type="button" class="btn closed" data-open-form="feedback"><span class="pair inline"><span class="zh">課後回饋表</span><span class="en">Post-workshop Feedback</span></span></button></div>
+        </section>
+    </div>
+
+    <div class="ev-modal" id="modal-registration" data-form="registration" hidden>
+        <div class="ev-modal-backdrop"></div>
+        <div class="ev-modal-panel" role="dialog" aria-modal="true" aria-label="報名表">
+            <button type="button" class="ev-modal-close" aria-label="close">&times;</button>
+            <div class="ev-modal-body">
+
+    <section class="ev-form" id="form-registration" data-form="registration" data-open="1">
+        <h2><span class="zh-title">2026 空間資訊脈絡 動態採樣技術 工作營｜報名暨課前調查表</span><span class="en-title">2026 Spatial Context Engineering Workshop | Registration and Pre-workshop Survey</span></h2>
+        <div class="form-intro pair">
+            <p class="zh">在 AI 與數位建築時代，我們不只要在電腦裡畫出漂亮的模型，更希望設計出來的空間能夠「感知」真實世界的光線、人流與使用者動作，並做出即時的物理互動與回饋。</p>
+            <p class="zh">本工作營為教育部教學實踐研究計畫之核心實作活動。在這兩天半的密集實作中，你不需要有任何電子電路或寫程式的基礎！我們將從零開始，帶你親手組裝 ESP32-S3 微控制器，學習如何偵測空間中的「光線變化、身體經過、按鈕觸發」等動態數據，並透過 Wi-Fi 遠端連線將數據即時傳回電腦，進而驅動「伺服馬達、直流馬達與燈光」做出實體空間的動態回饋。</p>
+            <p class="zh">📅 活動請全程參與：<span class="sched-lines"><span class="sched-line">11/07（六） 13:00-18:00</span><span class="sched-line">11/08（日） 13:00-18:00</span><span class="sched-line">11/16（一） 09:00-12:00</span></span>📍 地點：淡江大學建築學系系館 K102（電腦教室）。<br>💻 自備物品：個人筆記型電腦與充電器；若筆電只有 Type-C 孔，請自備轉接頭 / Hub。<br>📦 免買材料：現場配發「空間動態採樣開發套件箱」（內容詳見上方第二節）。</p>
+            <p class="en">In the age of AI and digital architecture, we want more than beautiful models on screen: we want designed spaces that can sense real-world light, people and movement, and respond with physical interaction in real time.</p>
+            <p class="en">This workshop is the core hands-on activity of a MOE Teaching Practice Research project. Over two and a half intensive days you need no background in electronics or programming. Starting from zero, you will assemble an ESP32-S3 microcontroller with your own hands, learn to detect dynamic data in space such as changes in light, someone passing by or a button press, stream it to your computer over Wi-Fi, and drive servos, DC motors and lights to make physical space respond.</p>
+            <p class="en">📅 Please attend the full workshop:<span class="sched-lines"><span class="sched-line">Nov 7 (Sat) 13:00-18:00</span><span class="sched-line">Nov 8 (Sun) 13:00-18:00</span><span class="sched-line">Nov 16 (Mon) 09:00-12:00</span></span>📍 Venue: Room K102 (computer classroom), Department of Architecture Building, Tamkang University.<br>💻 Bring: your laptop and charger; if it only has USB-C ports, bring an adapter or hub.<br>📦 No materials to buy: a Spatial Dynamic Sampling Development Kit is handed out on site (see Section II above).</p>
+        </div>
+        <div class="form-closed" hidden><span class="pair"><span class="zh">報名已截止，感謝大家的參與。</span><span class="en">Registration is closed. Thank you for your interest.</span></span></div>
+        <form novalidate class="" data-form="registration" autocomplete="off">
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">基本資料與筆電設備確認</span><span class="en">Basic Information and Laptop Check</span></span></legend>
+
+            <div class="q short" data-qid="q01_name" data-type="short" data-required="1">
+                <label class="q-label"><span class="q-num">Q1</span><span class="pair"><span class="zh">姓名<span class="req">*</span></span><span class="en">Name<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<input type="text" name="registration.q01_name" autocomplete="off">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q short" data-qid="q02_student_id" data-type="short" data-required="1">
+                <label class="q-label"><span class="q-num">Q2</span><span class="pair"><span class="zh">學號<span class="req">*</span></span><span class="en">Student ID<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">請填寫正確學號，作為活動簽到與課後證書/回饋配對使用。</span><span class="en">Please enter your correct student ID; it is used for check-in and to pair the pre- and post-workshop surveys.</span></span></div>
+                <div class="q-body">
+<input type="text" name="registration.q02_student_id" autocomplete="off">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q radio" data-qid="q03_class" data-type="radio" data-required="1">
+                <label class="q-label"><span class="q-num">Q3</span><span class="pair"><span class="zh">系級 / 身份別<span class="req">*</span></span><span class="en">Year / Affiliation<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築四"><span class="opt-text"><span class="pair"><span class="zh">建築四</span><span class="en">4th-year Architecture</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築系其他年級（大一～大三、大五）"><span class="opt-text"><span class="pair"><span class="zh">建築系其他年級（大一～大三、大五）</span><span class="en">Architecture, other years (1st to 3rd, 5th)</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築系碩士班"><span class="opt-text"><span class="pair"><span class="zh">建築系碩士班</span><span class="en">Architecture, master&#x27;s programme</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="__other__"><span class="opt-text"><span class="pair inline"><span class="zh">其他系所</span><span class="en">Other department</span></span>：<input type="text" class="other-input" name="registration.q03_class__other" placeholder="…"></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q email" data-qid="q04_email" data-type="email" data-required="1">
+                <label class="q-label"><span class="q-num">Q4</span><span class="pair"><span class="zh">聯絡 Email<span class="req">*</span></span><span class="en">Contact email<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">用來寄發工作營雲端空間連結，請填寫常收信的信箱就好。</span><span class="en">Used to send you the workshop cloud-drive link; just give an inbox you check regularly.</span></span></div>
+                <div class="q-body">
+<input type="email" name="registration.q04_email" autocomplete="email">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q radio" data-qid="q07_os" data-type="radio" data-required="1">
+                <label class="q-label"><span class="q-num">Q5</span><span class="pair"><span class="zh">你當天攜帶的筆電作業系統是？<span class="req">*</span></span><span class="en">Which operating system is on the laptop you will bring?<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="radio" name="registration.q07_os" value="Windows 10 / 11"><span class="opt-text"><span class="pair"><span>Windows 10 / 11</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q07_os" value="Mac（Apple M1 / M2 / M3 / M4 晶片）"><span class="opt-text"><span class="pair"><span class="zh">Mac（Apple M1 / M2 / M3 / M4 晶片）</span><span class="en">Mac (Apple M1 / M2 / M3 / M4)</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q07_os" value="Mac（舊款 Intel 晶片）"><span class="opt-text"><span class="pair"><span class="zh">Mac（舊款 Intel 晶片）</span><span class="en">Mac (older Intel chip)</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q radio" data-qid="q08_usb" data-type="radio" data-required="1">
+                <label class="q-label"><span class="q-num">Q6</span><span class="pair"><span class="zh">筆電 USB 連接孔確認（重要！）<span class="req">*</span></span><span class="en">Laptop USB port check (important)<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">本次套件提供的傳輸線與馬達獨立電源線皆為「傳統方形 USB-A 接頭」（共需 2 個孔位），請確認你的筆電狀況：</span><span class="en">Both the data cable and the separate motor power cable in the kit use the traditional rectangular USB-A plug (two ports needed). Please check your laptop:</span></span></div>
+                <div class="q-body">
+<label class="opt"><input type="radio" name="registration.q08_usb" value="我的筆電本身就有 2 個以上的傳統 USB-A 孔"><span class="opt-text"><span class="pair"><span class="zh">我的筆電本身就有 2 個以上的傳統 USB-A 孔</span><span class="en">My laptop has two or more USB-A ports</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q08_usb" value="我的筆電只有 Type-C 孔（或只有 1 個 USB 孔），我當天會自備轉接頭 / USB 擴充 Hub"><span class="opt-text"><span class="pair"><span class="zh">我的筆電只有 Type-C 孔（或只有 1 個 USB 孔），我當天會自備轉接頭 / USB 擴充 Hub</span><span class="en">My laptop only has USB-C (or a single USB port); I will bring an adapter / USB hub</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q08_usb" value="我的筆電只有 1 個 USB 孔，我當天會自備「行動電源」來插馬達的獨立電源線"><span class="opt-text"><span class="pair"><span class="zh">我的筆電只有 1 個 USB 孔，我當天會自備「行動電源」來插馬達的獨立電源線</span><span class="en">My laptop has a single USB port; I will bring a power bank for the motor power cable</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q radio" data-qid="q09_hotspot" data-type="radio" data-required="1">
+                <label class="q-label"><span class="q-num">Q7</span><span class="pair"><span class="zh">手機個人熱點（Wi-Fi）確認<span class="req">*</span></span><span class="en">Mobile hotspot (Wi-Fi) check<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">第二天練習 ESP32-S3 遠端連線時，需讓開發板連上 Wi-Fi（校園網路因需網頁登入無法直接連，使用手機熱點最穩定）。</span><span class="en">On day two the ESP32-S3 must join a Wi-Fi network (campus Wi-Fi requires a web login, so a phone hotspot is the most reliable option).</span></span></div>
+                <div class="q-body">
+<label class="opt"><input type="radio" name="registration.q09_hotspot" value="我的手機可以開啟個人熱點（Wi-Fi 分享）供自己測試使用"><span class="opt-text"><span class="pair"><span class="zh">我的手機可以開啟個人熱點（Wi-Fi 分享）供自己測試使用</span><span class="en">My phone can share a personal hotspot for my own testing</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q09_hotspot" value="我的手機沒有吃到飽或無法開熱點，需與同組同學共用"><span class="opt-text"><span class="pair"><span class="zh">我的手機沒有吃到飽或無法開熱點，需與同組同學共用</span><span class="en">My phone has no unlimited data or cannot share a hotspot; I will share with a teammate</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">課前小調查：你的經驗與對空間互動的想像</span><span class="en">Pre-workshop Survey: Your Experience and Ideas about Spatial Interaction</span></span></legend>
+                <div class="sec-desc"><span class="pair"><span class="zh">別擔心！這裡完全不是考試，也不會影響錄取資格。我們只想了解大家在還沒上課前，有沒有碰過類似的東西，好讓老師調整上課的速度！</span><span class="en">Don&#x27;t worry, this is not a test and it does not affect your admission. We only want to know what you have tried before so the instructors can adjust the pace.</span></span></div>
+
+            <div class="q radio" data-qid="q11_experience" data-type="radio" data-required="1">
+                <label class="q-label"><span class="q-num">Q8</span><span class="pair"><span class="zh">關於「接電路」與「微控制器（如 Arduino / ESP32）」，你之前的經驗是？<span class="req">*</span></span><span class="en">What is your prior experience with wiring circuits and microcontrollers (Arduino / ESP32)?<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="radio" name="registration.q11_experience" value="🌱 完全沒碰過：我是純新手，沒插過麵包板，也沒接過電子零件與電線。"><span class="opt-text"><span class="pair"><span class="zh">🌱 完全沒碰過：我是純新手，沒插過麵包板，也沒接過電子零件與電線。</span><span class="en">🌱 None at all: complete beginner, never used a breadboard or wired any component.</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q11_experience" value="👀 看過但沒自己動手：以前分組看隊友做過，或在網路上看過別人做。"><span class="opt-text"><span class="pair"><span class="zh">👀 看過但沒自己動手：以前分組看隊友做過，或在網路上看過別人做。</span><span class="en">👀 Seen it but never done it: watched teammates or online videos.</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q11_experience" value="🔧 照著步驟接過：以前上課或工作坊，有跟著老師的圖把燈泡、感測器或馬達接起來過。"><span class="opt-text"><span class="pair"><span class="zh">🔧 照著步驟接過：以前上課或工作坊，有跟著老師的圖把燈泡、感測器或馬達接起來過。</span><span class="en">🔧 Followed instructions: wired LEDs, sensors or motors from a diagram in a class or workshop.</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q11_experience" value="🚀 可以自己組裝修改：我懂基本的正負極與腳位，可以自己查資料把想要的零件接起來並改程式。"><span class="opt-text"><span class="pair"><span class="zh">🚀 可以自己組裝修改：我懂基本的正負極與腳位，可以自己查資料把想要的零件接起來並改程式。</span><span class="en">🚀 Can build and modify on my own: I understand polarity and pinouts, can look things up, wire parts and edit code.</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q short" data-qid="q12_experience_detail" data-type="short" data-required="1">
+                <label class="q-label"><span class="q-num">Q9</span><span class="pair"><span class="zh">承上題，如果你以前有碰過（選第 2~4 項的人），當時大概做過什麼東西？做到什麼程度？（沒碰過請填「無」）<span class="req">*</span></span><span class="en">If you chose options 2 to 4 above, what did you build and how far did you get? (Enter &quot;none&quot; if not applicable)<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">例如：「高中資訊課讓 LED 閃爍過」、「大二做過超音波感應垃圾桶，但程式都是直接複製老師的，不太懂原理」。</span><span class="en">For example: &quot;blinked an LED in a high-school IT class&quot;, &quot;built an ultrasonic trash can in 2nd year, but copied the code without really understanding it&quot;.</span></span></div>
+                <div class="q-body">
+<input type="text" name="registration.q12_experience_detail" autocomplete="off">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q grid" data-qid="q13_familiarity" data-type="grid" data-required="1">
+                <label class="q-label"><span class="q-num">Q10</span><span class="pair"><span class="zh">對於這次工作營會玩到的 6 件事，你「目前」的熟悉程度是？<span class="req">*</span></span><span class="en">How familiar are you right now with the six things we will do in this workshop?<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">1 = 完全不會 / 2 = 聽過但不會操作 / 3 = 看著教學步驟應該能做 / 4 = 大致知道怎麼操作 / 5 = 很熟練</span><span class="en">1 = no idea / 2 = heard of it but cannot do it / 3 = could do it following a tutorial / 4 = roughly know how / 5 = proficient</span></span></div>
+                <div class="q-body">
+<div class="grid-wrap"><table class="grid"><thead><tr><th></th><th><span class="pair inline"><span>1</span></span></th><th><span class="pair inline"><span>2</span></span></th><th><span class="pair inline"><span>3</span></span></th><th><span class="pair inline"><span>4</span></span></th><th><span class="pair inline"><span>5</span></span></th></tr></thead><tbody>
+<tr data-row="r1_wiring"><td class="row-label"><span class="pair"><span class="zh">【接電路】看著線路圖，在麵包板上插線連接感測器、電阻與小燈泡。</span><span class="en">[Wiring] Connect sensors, resistors and LEDs on a breadboard from a diagram.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r1_wiring" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r1_wiring" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r1_wiring" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r1_wiring" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r1_wiring" value="5" aria-label="5"></td></tr>
+<tr data-row="r2_reading"><td class="row-label"><span class="pair"><span class="zh">【讀訊號】在電腦裡讀取感測器（如光線亮暗、有沒有人經過）傳回來的數字變化。</span><span class="en">[Reading signals] Read changing sensor values (light level, someone passing) on the computer.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r2_reading" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r2_reading" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r2_reading" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r2_reading" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r2_reading" value="5" aria-label="5"></td></tr>
+<tr data-row="r3_motor"><td class="row-label"><span class="pair"><span class="zh">【控馬達】用電腦指令控制馬達「轉到指定角度」或「改變旋轉速度與正反轉」。</span><span class="en">[Motor control] Command a motor to a given angle, or change its speed and direction.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r3_motor" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r3_motor" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r3_motor" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r3_motor" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r3_motor" value="5" aria-label="5"></td></tr>
+<tr data-row="r4_data"><td class="row-label"><span class="pair"><span class="zh">【傳資料】透過傳輸線或 Wi-Fi 遠端連線，把感測器收到的數字即時傳進電腦裡。</span><span class="en">[Data transfer] Stream sensor values to the computer in real time over cable or Wi-Fi.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r4_data" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r4_data" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r4_data" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r4_data" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r4_data" value="5" aria-label="5"></td></tr>
+<tr data-row="r5_rules"><td class="row-label"><span class="pair"><span class="zh">【定規則】在程式裡設定「當感測器數字達到某個標準，就自動觸發馬達動作」的判斷規則。</span><span class="en">[Rules] Program a rule such as &quot;when a sensor value crosses a threshold, trigger the motor&quot;.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r5_rules" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r5_rules" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r5_rules" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r5_rules" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r5_rules" value="5" aria-label="5"></td></tr>
+<tr data-row="r6_design"><td class="row-label"><span class="pair"><span class="zh">【連設計】把真實空間測到的環境數據（如光線、人流動作），拿來當作建築空間設計或 AI 輔助設計的條件。</span><span class="en">[Design link] Use environmental data measured in real space (light, movement) as conditions for architectural or AI-assisted design.</span></span></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r6_design" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r6_design" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r6_design" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r6_design" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="registration.q13_familiarity.r6_design" value="5" aria-label="5"></td></tr>
+</tbody></table></div>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q checkbox" data-qid="q14_concerns" data-type="checkbox" data-required="1">
+                <label class="q-label"><span class="q-num">Q11</span><span class="pair"><span class="zh">想到要「親手接電路、讓馬達跟感測器動起來」，你現在心裡的第一個想法或擔心是什麼？（可複選）<span class="req">*</span></span><span class="en">When you think about wiring circuits and making motors and sensors work with your own hands, what is your first thought or worry? (select all that apply)<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="怕接錯正負極會短路、冒煙或把零件燒壞"><span class="opt-text"><span class="pair"><span class="zh">怕接錯正負極會短路、冒煙或把零件燒壞</span><span class="en">Afraid of reversing polarity and shorting, smoking or burning a component</span></span></span></label>
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="看到一堆五顏六色的電線跟密密麻麻的孔洞（麵包板）就覺得眼花"><span class="opt-text"><span class="pair"><span class="zh">看到一堆五顏六色的電線跟密密麻麻的孔洞（麵包板）就覺得眼花</span><span class="en">The colourful wires and the dense breadboard holes make me dizzy</span></span></span></label>
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="擔心電腦連不上開發板，或是跳出英文程式碼錯誤不知道怎麼辦"><span class="opt-text"><span class="pair"><span class="zh">擔心電腦連不上開發板，或是跳出英文程式碼錯誤不知道怎麼辦</span><span class="en">Worried the computer will not connect to the board, or that English error messages will pop up</span></span></span></label>
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="好奇這些小小的電子零件，到底要怎麼跟「建築空間設計」結合在一起"><span class="opt-text"><span class="pair"><span class="zh">好奇這些小小的電子零件，到底要怎麼跟「建築空間設計」結合在一起</span><span class="en">Curious how these tiny electronic parts connect to architectural design</span></span></span></label>
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="覺得很酷、很期待看到自己接的機關真的動起來！"><span class="opt-text"><span class="pair"><span class="zh">覺得很酷、很期待看到自己接的機關真的動起來！</span><span class="en">It sounds cool; I cannot wait to see my own mechanism actually move!</span></span></span></label>
+<label class="opt"><input type="checkbox" name="registration.q14_concerns" value="__other__"><span class="opt-text"><span class="pair inline"><span class="zh">其他</span><span class="en">Other</span></span>：<input type="text" class="other-input" name="registration.q14_concerns__other" placeholder="…"></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q paragraph" data-qid="q15_imagine" data-type="paragraph" data-required="1">
+                <label class="q-label"><span class="q-num">Q12</span><span class="pair"><span class="zh">【直覺想像題】這次我們會發給你：可以偵測「光線亮暗」跟「有沒有人揮手/走過去」的感測器，還有「會轉動的馬達」跟「小燈泡」。如果把它們裝在建築系館的一個角落，你直覺會想做一個什麼樣的互動小機關？<span class="req">*</span></span><span class="en">[Imagination] You will receive sensors that detect light level and whether someone waves or walks past, plus a motor that turns and a small light. If you installed them in a corner of the Architecture Building, what interactive mechanism would you intuitively make?<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">不用管技術做不做得到！用 1~2 句話寫下你腦中的畫面就好。例如：「我想裝在工作室門口，有人走過去時馬達會拉動線翻開牌子」、「模型裡太暗的時候，自動轉動百葉窗並亮燈」。</span><span class="en">Ignore technical feasibility; describe the picture in your head in one or two sentences. For example: &quot;at the studio door, when someone walks past the motor pulls a string and flips a sign&quot;, or &quot;when the model gets too dark, the louvres rotate and a light turns on&quot;.</span></span></div>
+                <div class="q-body">
+<textarea name="registration.q15_imagine" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q paragraph" data-qid="q16_instruction" data-type="paragraph" data-required="1">
+                <label class="q-label"><span class="q-num">Q13</span><span class="pair"><span class="zh">【指令描述題】承上題，如果要你跟一個「完全聽不懂暗示的機器人（或 AI）」下指令，叫它控制你剛剛想的那個小機關，你會怎麼跟它說「什麼時候要動、怎麼動」？<span class="req">*</span></span><span class="en">[Instruction] Following the previous question: if you had to instruct a robot (or AI) that understands no hints at all to control the mechanism you just imagined, how would you tell it when to move and how to move?<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">用你平常講話或跟 ChatGPT 對話的方式寫下來就好（1~2 句話）！例如：「當有人靠近而且周圍很暗的時候，就幫我把馬達慢慢轉開，然後把燈打開」。</span><span class="en">Write it the way you would talk or chat with ChatGPT (one or two sentences). For example: &quot;when someone comes close and it is dark around, slowly turn the motor open, then switch on the light&quot;.</span></span></div>
+                <div class="q-body">
+<textarea name="registration.q16_instruction" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">器材借用與研究參與同意</span><span class="en">Equipment Loan and Research Participation Consent</span></span></legend>
+
+            <div class="q consent" data-qid="q17_equipment" data-type="consent" data-required="1">
+                <label class="q-label"><span class="q-num">Q14</span><span class="pair"><span class="zh">開發套件借用與安全操作確認<span class="req">*</span></span><span class="en">Development kit loan and safe-operation confirmation<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="checkbox" name="registration.q17_equipment" value="我了解工作營配發之「ESP32-S3 空間動態採樣開發套件箱」為計畫提供之教學設備，課程期間我會愛惜使用、注意用電安全，並於活動結束時清點歸還。"><span class="opt-text"><span class="pair"><span class="zh">我了解工作營配發之「ESP32-S3 空間動態採樣開發套件箱」為計畫提供之教學設備，課程期間我會愛惜使用、注意用電安全，並於活動結束時清點歸還。</span><span class="en">I understand that the ESP32-S3 Spatial Dynamic Sampling Development Kit is teaching equipment provided by the project; I will use it with care and attention to electrical safety, and return it complete at the end of the workshop.</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q consent" data-qid="q18_research_consent" data-type="consent" data-required="1">
+                <label class="q-label"><span class="q-num">Q15</span><span class="pair"><span class="zh">教學實踐研究參與同意<span class="req">*</span></span><span class="en">Teaching practice research participation consent<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="checkbox" name="registration.q18_research_consent" value="我同意工作營期間之實作紀錄與課前後問卷回饋，得匿名作為教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的AI導向建築設計教學方法》之教學成效分析與學術發表使用（所有資料僅作整體統計與匿名分析，絕不影響個人任何課業成績）。"><span class="opt-text"><span class="pair"><span class="zh">我同意工作營期間之實作紀錄與課前後問卷回饋，得匿名作為教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的AI導向建築設計教學方法》之教學成效分析與學術發表使用（所有資料僅作整體統計與匿名分析，絕不影響個人任何課業成績）。</span><span class="en">I agree that my workshop records and pre- and post-workshop survey responses may be used anonymously for teaching effectiveness analysis and academic publication under the MOE Teaching Practice Research project Spatial Context Engineering (all data are used only for aggregate, anonymous analysis and never affect any course grade).</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn primary" ><span class="pair inline"><span class="zh">送出報名</span><span class="en">Submit registration</span></span></button>
+                <span class="form-msg"></span>
+            </div>
+        </form>
+    </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="ev-modal" id="modal-feedback" data-form="feedback" hidden>
+        <div class="ev-modal-backdrop"></div>
+        <div class="ev-modal-panel" role="dialog" aria-modal="true" aria-label="課後回饋表">
+            <button type="button" class="ev-modal-close" aria-label="close">&times;</button>
+            <div class="ev-modal-body">
+
+    <section class="ev-form" id="form-feedback" data-form="feedback" data-open="0">
+        <h2><span class="zh-title">2026 空間資訊脈絡 動態採樣技術 工作營｜課後回饋與學習收穫表</span><span class="en-title">2026 Spatial Context Engineering Workshop | Post-workshop Feedback and Learning Outcomes</span></h2>
+        <div class="form-intro pair">
+            <p class="zh">恭喜大家完成了兩天半的空間動態採樣與硬體實作挑戰！請花 3~5 分鐘幫我們紀錄一下你這幾天的收穫與想法，填寫完畢即可至前方辦理開發套件清點歸還。</p>
+            <p class="en">Congratulations on completing two and a half days of spatial dynamic sampling and hardware prototyping! Please take 3 to 5 minutes to record what you learned and what you think, then bring your kit to the front for check-in and return.</p>
+        </div>
+        <div class="form-closed" ><span class="pair"><span class="zh">課後回饋表將於 11/16（一）結業時開放填寫（現場掃描 QR Code）。</span><span class="en">The feedback form opens at the closing session on Nov 16 (Mon); scan the QR code on site.</span></span></div>
+        <form novalidate class="is-closed" data-form="feedback" autocomplete="off">
+            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">基本資料</span><span class="en">Basic Information</span></span></legend>
+
+            <div class="q short" data-qid="q01_name" data-type="short" data-required="1">
+                <label class="q-label"><span class="q-num">Q1</span><span class="pair"><span class="zh">姓名<span class="req">*</span></span><span class="en">Name<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<input type="text" name="feedback.q01_name" autocomplete="off">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q short" data-qid="q02_student_id" data-type="short" data-required="1">
+                <label class="q-label"><span class="q-num">Q2</span><span class="pair"><span class="zh">學號<span class="req">*</span></span><span class="en">Student ID<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">用來與課前表單配對。</span><span class="en">Used to pair your answers with the pre-workshop survey.</span></span></div>
+                <div class="q-body">
+<input type="text" name="feedback.q02_student_id" autocomplete="off">
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">實作成果與熟悉程度</span><span class="en">Hands-on Results and Familiarity</span></span></legend>
+
+            <div class="q checkbox" data-qid="q03_completed" data-type="checkbox" data-required="1">
+                <label class="q-label"><span class="q-num">Q3</span><span class="pair"><span class="zh">這兩天半的工作營中，你親手體驗並成功完成了哪些項目？（可複選）<span class="req">*</span></span><span class="en">Which of the following did you personally complete during the workshop? (select all that apply)<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="在麵包板上插線，成功點亮並控制 LED 燈"><span class="opt-text"><span class="pair"><span class="zh">在麵包板上插線，成功點亮並控制 LED 燈</span><span class="en">Wired a breadboard and successfully lit and controlled an LED</span></span></span></label>
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="在電腦上成功讀取到「按鈕」、「光敏電阻（光線）」或「可變電阻」的數字變化"><span class="opt-text"><span class="pair"><span class="zh">在電腦上成功讀取到「按鈕」、「光敏電阻（光線）」或「可變電阻」的數字變化</span><span class="en">Read changing values from the button, LDR (light) or potentiometer on the computer</span></span></span></label>
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="成功使用「紅外線阻斷感應器」抓到揮手或物體經過的動作事件"><span class="opt-text"><span class="pair"><span class="zh">成功使用「紅外線阻斷感應器」抓到揮手或物體經過的動作事件</span><span class="en">Captured a wave or pass-through event with the infrared break-beam sensor</span></span></span></label>
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="成功接上獨立電源與驅動板，讓「伺服馬達」與「直流馬達」轉動起來"><span class="opt-text"><span class="pair"><span class="zh">成功接上獨立電源與驅動板，讓「伺服馬達」與「直流馬達」轉動起來</span><span class="en">Connected the separate power supply and driver board and made the servo and DC motor turn</span></span></span></label>
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="成功讓 ESP32-S3 連上 Wi-Fi，實現「遠端無線傳送數據」或「遠端控制」"><span class="opt-text"><span class="pair"><span class="zh">成功讓 ESP32-S3 連上 Wi-Fi，實現「遠端無線傳送數據」或「遠端控制」</span><span class="en">Connected the ESP32-S3 to Wi-Fi and achieved wireless data transfer or remote control</span></span></span></label>
+<label class="opt"><input type="checkbox" name="feedback.q03_completed" value="成功把感測器跟馬達串在一起，做出「感應到動作 → 自動觸發馬達/燈光反應」的互動機關"><span class="opt-text"><span class="pair"><span class="zh">成功把感測器跟馬達串在一起，做出「感應到動作 → 自動觸發馬達/燈光反應」的互動機關</span><span class="en">Chained sensor and motor into an interactive mechanism: motion detected → motor / light responds automatically</span></span></span></label>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q grid" data-qid="q04_familiarity" data-type="grid" data-required="1">
+                <label class="q-label"><span class="q-num">Q4</span><span class="pair"><span class="zh">經過這兩天半的親手實作，現在的你對這 6 件事的熟悉程度是？<span class="req">*</span></span><span class="en">After two and a half days of hands-on work, how familiar are you now with these six things?<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">1 = 完全不會 / 2 = 聽過但不會操作 / 3 = 看著教學步驟能做 / 4 = 大致知道怎麼操作 / 5 = 很熟練</span><span class="en">1 = no idea / 2 = heard of it but cannot do it / 3 = can do it following a tutorial / 4 = roughly know how / 5 = proficient</span></span></div>
+                <div class="q-body">
+<div class="grid-wrap"><table class="grid"><thead><tr><th></th><th><span class="pair inline"><span>1</span></span></th><th><span class="pair inline"><span>2</span></span></th><th><span class="pair inline"><span>3</span></span></th><th><span class="pair inline"><span>4</span></span></th><th><span class="pair inline"><span>5</span></span></th></tr></thead><tbody>
+<tr data-row="r1_wiring"><td class="row-label"><span class="pair"><span class="zh">【接電路】看著線路圖，在麵包板上插線連接感測器、電阻與小燈泡。</span><span class="en">[Wiring] Connect sensors, resistors and LEDs on a breadboard from a diagram.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r1_wiring" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r1_wiring" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r1_wiring" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r1_wiring" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r1_wiring" value="5" aria-label="5"></td></tr>
+<tr data-row="r2_reading"><td class="row-label"><span class="pair"><span class="zh">【讀訊號】在電腦裡讀取感測器（如光線亮暗、有沒有人經過）傳回來的數字變化。</span><span class="en">[Reading signals] Read changing sensor values (light level, someone passing) on the computer.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r2_reading" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r2_reading" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r2_reading" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r2_reading" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r2_reading" value="5" aria-label="5"></td></tr>
+<tr data-row="r3_motor"><td class="row-label"><span class="pair"><span class="zh">【控馬達】用電腦指令控制馬達「轉到指定角度」或「改變旋轉速度與正反轉」。</span><span class="en">[Motor control] Command a motor to a given angle, or change its speed and direction.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r3_motor" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r3_motor" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r3_motor" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r3_motor" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r3_motor" value="5" aria-label="5"></td></tr>
+<tr data-row="r4_data"><td class="row-label"><span class="pair"><span class="zh">【傳資料】透過傳輸線或 Wi-Fi 遠端連線，把感測器收到的數字即時傳進電腦裡。</span><span class="en">[Data transfer] Stream sensor values to the computer in real time over cable or Wi-Fi.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r4_data" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r4_data" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r4_data" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r4_data" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r4_data" value="5" aria-label="5"></td></tr>
+<tr data-row="r5_rules"><td class="row-label"><span class="pair"><span class="zh">【定規則】在程式裡設定「當感測器數字達到某個標準，就自動觸發馬達動作」的判斷規則。</span><span class="en">[Rules] Program a rule such as &quot;when a sensor value crosses a threshold, trigger the motor&quot;.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r5_rules" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r5_rules" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r5_rules" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r5_rules" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r5_rules" value="5" aria-label="5"></td></tr>
+<tr data-row="r6_design"><td class="row-label"><span class="pair"><span class="zh">【連設計】把真實空間測到的環境數據（如光線、人流動作），拿來當作建築空間設計或 AI 輔助設計的條件。</span><span class="en">[Design link] Use environmental data measured in real space (light, movement) as conditions for architectural or AI-assisted design.</span></span></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r6_design" value="1" aria-label="1"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r6_design" value="2" aria-label="2"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r6_design" value="3" aria-label="3"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r6_design" value="4" aria-label="4"></td><td class="cell"><input type="radio" name="feedback.q04_familiarity.r6_design" value="5" aria-label="5"></td></tr>
+</tbody></table></div>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <fieldset class="form-section">
+                <legend><span class="pair inline"><span class="zh">反思與回饋</span><span class="en">Reflection and Feedback</span></span></legend>
+
+            <div class="q paragraph" data-qid="q05_rule_after" data-type="paragraph" data-required="1">
+                <label class="q-label"><span class="q-num">Q5</span><span class="pair"><span class="zh">【規則描述題 — 課後對照】經過實際接線與寫程式後，現在如果要你重新跟電腦（或 AI 代理人）下指令，控制你們今天做出來的空間互動機關，你會怎麼「用感測器的數值、條件標準（Threshold）與馬達的控制參數」來精確描述這個規則？<span class="req">*</span></span><span class="en">[Rule description, post-workshop] After wiring and programming for real, if you had to instruct the computer (or an AI agent) again to control the spatial mechanism you built today, how would you describe the rule precisely in terms of sensor values, thresholds and motor control parameters?<span class="req">*</span></span></span></label>
+                <div class="q-help"><span class="pair"><span class="zh">試著用這兩天學到的邏輯寫下來（跟報名時寫的做個對比）！例如：「當紅外線感測器被擋住（訊號變 0）或是光敏電阻讀值小於 1500 時，透過 Wi-Fi 傳送觸發狀態，讓伺服馬達轉到 90 度、直流馬達正轉 3 秒」。</span><span class="en">Try to write it with the logic you learned (compare it with what you wrote at registration). For example: &quot;when the infrared sensor is blocked (signal becomes 0) or the LDR reading drops below 1500, send the trigger state over Wi-Fi, turn the servo to 90 degrees and run the DC motor forward for 3 seconds&quot;.</span></span></div>
+                <div class="q-body">
+<textarea name="feedback.q05_rule_after" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q paragraph" data-qid="q06_calibration" data-type="paragraph" data-required="1">
+                <label class="q-label"><span class="q-num">Q6</span><span class="pair"><span class="zh">【真實環境測試題】課前大家都很擔心接錯線或不會動；而在實際測試時，你有沒有發現「理想中的程式設定」跟「真實空間的狀況」有落差？（例如：現場光線太亮讓光敏電阻不靈敏、紅外線感應距離角度問題、馬達電力或轉速問題等）你是怎麼調整解決的？<span class="req">*</span></span><span class="en">[Real-environment testing] Before the workshop many of you worried about wrong wiring or things not moving. During actual testing, did you notice a gap between the ideal program settings and the real conditions of the space (bright light making the LDR insensitive, infrared range or angle issues, motor power or speed problems)? How did you adjust and solve it?<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<textarea name="feedback.q06_calibration" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q paragraph" data-qid="q07_design_insight" data-type="paragraph" data-required="1">
+                <label class="q-label"><span class="q-num">Q7</span><span class="pair"><span class="zh">【設計思考啟發題】從以前「只在電腦裡畫圖或用文字跟 AI 聊天」，到這次「親手接好感測器，把空間裡的真實動作變成數據傳進電腦」，這對你接下來做建築設計（或使用 AI 輔助設計），帶來什麼新的想法或幫助？<span class="req">*</span></span><span class="en">[Design thinking] Moving from drawing on the computer or chatting with AI in text, to wiring sensors by hand and turning real movement in space into data on the computer: what new ideas or help does this bring to your future architectural design (or AI-assisted design)?<span class="req">*</span></span></span></label>
+                
+                <div class="q-body">
+<textarea name="feedback.q07_design_insight" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+
+            <div class="q paragraph" data-qid="q08_message" data-type="paragraph" data-required="0">
+                <label class="q-label"><span class="q-num">Q8</span><span class="pair"><span class="zh">給老師與助教的回饋或悄悄話（哪個環節覺得最有成就感？哪裡可以更好？）</span><span class="en">Feedback or a private note for the instructors and TAs (which part felt most rewarding? what could be better?)</span></span></label>
+                
+                <div class="q-body">
+<textarea name="feedback.q08_message" rows="4"></textarea>
+                </div>
+                <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
+            </div>
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn primary" disabled><span class="pair inline"><span class="zh">送出回饋</span><span class="en">Submit feedback</span></span></button>
+                <span class="form-msg"></span>
+            </div>
+        </form>
+    </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.IIMA_EVENT = {"slug": "2026_sce_dynamic_sampling_workshop", "forms": {"registration": {"open": true, "success": {"zh": "報名已送出！我們將於課前寄發「錄取通知」與「軟體安裝懶人包」到你填寫的信箱。", "en": "Your registration has been submitted. The acceptance notice and software setup guide will be emailed to you before the workshop."}, "closed_note": {"zh": "報名已截止，感謝大家的參與。", "en": "Registration is closed. Thank you for your interest."}, "label": {"zh": "報名表", "en": "Registration"}, "show_count": false}, "feedback": {"open": false, "success": {"zh": "回饋已送出，謝謝你！請至前方辦理開發套件清點歸還。", "en": "Your feedback has been submitted, thank you! Please bring your kit to the front for return."}, "closed_note": {"zh": "課後回饋表將於 11/16（一）結業時開放填寫（現場掃描 QR Code）。", "en": "The feedback form opens at the closing session on Nov 16 (Mon); scan the QR code on site."}, "label": {"zh": "課後回饋表", "en": "Post-workshop Feedback"}, "show_count": false}}};
+        function setMode(mode) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const eventTarget = (typeof event !== 'undefined' && event) ? event.target : null;
+            if (eventTarget && eventTarget.classList && eventTarget.classList.contains('lang-btn')) {
+                eventTarget.classList.add('active');
+            } else {
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    if (btn.getAttribute('onclick').includes("'" + mode + "'")) btn.classList.add('active');
+                });
+            }
+            document.body.classList.remove('mode-zh', 'mode-en', 'mode-bilingual');
+            document.body.classList.add('mode-' + mode);
+            const navTitle = document.getElementById('navTitle');
+            navTitle.textContent = (mode === 'en') ? "2026 Spatial Context Engineering Worksho" : "2026 空間資訊脈絡 動態採樣技術 工作營";
+            try { localStorage.setItem('iima_event_lang', mode); } catch (e) {}
+        }
+        try { const m = localStorage.getItem('iima_event_lang'); if (m) setMode(m); } catch (e) {}
+    </script>
+<script src="event-widgets.js" defer></script>
+</body>
+</html>

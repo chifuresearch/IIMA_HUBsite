@@ -1,0 +1,795 @@
+{
+    "slug": "2026_sce_dynamic_sampling_workshop",
+    "status": "open",
+    "title": {
+        "zh": "2026 空間資訊脈絡 動態採樣技術 工作營",
+        "en": "2026 Spatial Context Engineering Workshop: Dynamic Sampling Techniques"
+    },
+    "tagline": {
+        "zh": "讓空間「看見」你的動作，讓設計「回應」真實的環境！",
+        "en": "Let space \"see\" your movement, and let design \"respond\" to the real environment."
+    },
+    "excerpt": {
+        "zh": "兩天半密集實作：從零組裝 ESP32-S3 微控制器，捕捉空間中的光線變化、人流與身體動作，經 Wi-Fi 轉譯為結構化數據流，驅動馬達與燈光完成「動態採樣 → 空間互動回饋」的虛實整合原型。教育部教學實踐研究計畫核心實作活動，現場配發開發套件，不需任何電路或程式基礎。",
+        "en": "A two-and-a-half-day intensive: assemble an ESP32-S3 microcontroller from scratch, capture light, presence and body movement in real space, stream it over Wi-Fi as structured data, and drive motors and lights to complete a cyber-physical prototype from dynamic sampling to spatial feedback. Core hands-on activity of a MOE Teaching Practice Research project; development kits provided, no electronics or coding background required."
+    },
+    "img_src": "events/img/2026_sce_dynamic_sampling_workshop.svg",
+    "img_caption": {
+        "zh": "空間動態採樣：感測 → 結構化數據流 → 實體致動",
+        "en": "Spatial dynamic sampling: sensing, structured data streams, physical actuation"
+    },
+    "date_start": "2026-11-07",
+    "date_end": "2026-11-16",
+    "schedule": [
+        {
+            "date": "2026-11-07",
+            "weekday": {
+                "zh": "六",
+                "en": "Sat"
+            },
+            "time": "13:00 - 18:00",
+            "desc": {
+                "zh": "下午：基礎感知電路、ADC 採樣與事件觸發",
+                "en": "Afternoon: basic sensing circuits, ADC sampling and event triggering"
+            }
+        },
+        {
+            "date": "2026-11-08",
+            "weekday": {
+                "zh": "日",
+                "en": "Sun"
+            },
+            "time": "13:00 - 18:00",
+            "desc": {
+                "zh": "下午：ESP32-S3 遠端連線、結構化資料流與馬達動力控制",
+                "en": "Afternoon: ESP32-S3 remote connectivity, structured data streams and motor control"
+            }
+        },
+        {
+            "date": "2026-11-16",
+            "weekday": {
+                "zh": "一",
+                "en": "Mon"
+            },
+            "time": "09:00 - 12:00",
+            "desc": {
+                "zh": "上午：空間動態採樣整合實作、原型展示與回饋",
+                "en": "Morning: integrated spatial dynamic sampling, prototype presentation and feedback"
+            }
+        }
+    ],
+    "schedule_text": {
+        "zh": "11/07（六）13:00-18:00\n11/08（日）13:00-18:00\n11/16（一）09:00-12:00",
+        "en": "Nov 7 (Sat) 13:00-18:00\nNov 8 (Sun) 13:00-18:00\nNov 16 (Mon) 09:00-12:00"
+    },
+    "location": {
+        "zh": "淡江大學建築學系系館 K102（電腦教室）",
+        "en": "Room K102 (computer classroom), Department of Architecture Building, Tamkang University"
+    },
+    "audience": {
+        "zh": "淡江大學建築學系大學部（修習建築設計四學員優先）及對空間互動、數位構築有興趣之學員。",
+        "en": "Undergraduate students of the TKU Department of Architecture (priority to students enrolled in Architectural Design IV) and anyone interested in spatial interaction and digital fabrication."
+    },
+    "bring": {
+        "zh": "個人筆記型電腦（需具備 USB 接口，若筆電僅有 Type-C 孔，請務必自備轉接頭 / Hub），並請攜帶充電器。",
+        "en": "A personal laptop with a USB port (if it only has USB-C, bring an adapter or hub) and its charger."
+    },
+    "organizer": {
+        "zh": "淡江大學建築學系｜教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的 AI 導向建築設計教學方法》",
+        "en": "Department of Architecture, Tamkang University | MOE Teaching Practice Research Project: Spatial Context Engineering, an AI-oriented architectural design pedagogy integrating digital twins and prototyping"
+    },
+    "sections": [
+        {
+            "title": {
+                "zh": "一、工作營緣起與核心目標",
+                "en": "I. Background and Core Objectives"
+            },
+            "body": {
+                "zh": "面對生成式 AI 時代，建築設計正從單向的「提示詞工程（Prompt Engineering）」邁向具備環境感知與系統思維的「空間脈絡工程（Spatial Context Engineering, SCE）」。為了克服虛擬生成常見的「脈絡真空化」困境，設計者需要讓數位模型與 AI 代理人能夠真正「看見」、「感知」並「回應」真實空間中的物理屬性與使用者行為。\n\n本工作營為教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的AI導向建築設計教學方法》之核心實作活動。在這兩天半的密集實作中，我們將帶領學員建立「建築脈絡工程循環（ACEC）」中的環境感知層（Perception Layer）與行動實踐層（Action Layer）：透過 ESP32-S3 微控制器的無線遠端連線功能，即時捕捉空間中的「光線變化、物體通過、身體動作與人為觸發」等動態數據，並將真實世界的行為轉譯為結構化數據流（JSON / Serial / Wi-Fi 通訊），最終驅動燈光與動力馬達等實體致動器，完成從「動態採樣」到「空間互動回饋」的虛實整合原型（Prototyping）。",
+                "en": "In the era of generative AI, architectural design is moving from one-directional prompt engineering toward Spatial Context Engineering (SCE), an approach grounded in environmental sensing and systems thinking. To overcome the \"context vacuum\" that so often limits virtual generation, designers need digital models and AI agents that can actually see, sense and respond to the physical properties and user behaviours of real space.\n\nThis workshop is the core hands-on activity of the MOE Teaching Practice Research project Spatial Context Engineering: An AI-oriented Architectural Design Pedagogy Integrating Digital Twins and Prototyping. Over two and a half intensive days, participants build the Perception Layer and the Action Layer of the Architectural Context Engineering Cycle (ACEC): using the wireless connectivity of the ESP32-S3 microcontroller, they capture dynamic data in space, such as changes in light, objects passing by, body movement and manual triggers, translate real-world behaviour into structured data streams (JSON / Serial / Wi-Fi), and finally drive physical actuators such as lights and motors, completing a cyber-physical prototype that runs from dynamic sampling to spatial interactive feedback."
+            }
+        },
+        {
+            "title": {
+                "zh": "二、我們將提供給你的「空間感知工具箱」",
+                "en": "II. The \"Spatial Sensing Toolkit\" We Provide"
+            },
+            "body": {
+                "zh": "你不需要自己購買零組件！工作營期間，主辦單位將為每位（或每組）學員配發一套完整規劃的「ESP32-S3 空間動態採樣開發套件（附專屬收納箱）」，內含：",
+                "en": "You do not need to buy any components. During the workshop every participant (or team) receives a fully planned ESP32-S3 Spatial Dynamic Sampling Development Kit in its own storage box, containing:"
+            },
+            "items": [
+                {
+                    "name": {
+                        "zh": "核心控制與遠端通訊",
+                        "en": "Core control and remote communication"
+                    },
+                    "desc": {
+                        "zh": "ESP32-S3 開發板（支援 Wi-Fi / 藍牙遠端連線）、USB-A to Type-C 傳輸線、外部 5V 獨立電源線。",
+                        "en": "ESP32-S3 development board (Wi-Fi / Bluetooth), USB-A to USB-C cable, separate 5 V external power cable."
+                    }
+                },
+                {
+                    "name": {
+                        "zh": "空間環境與動作感知（Sensors）",
+                        "en": "Spatial environment and motion sensing (Sensors)"
+                    },
+                    "desc": {
+                        "zh": "紅外線阻斷感應器（約 100cm 動作/通過事件偵測）、光敏電阻 LDR（空間光照度採樣）、可變電阻（類比數值映射）、瞬時按鈕（事件觸發）。",
+                        "en": "Infrared break-beam sensor (motion / pass-through events at about 100 cm), LDR photoresistor (ambient light sampling), potentiometer (analog value mapping), momentary push button (event trigger)."
+                    }
+                },
+                {
+                    "name": {
+                        "zh": "空間物理回饋與致動（Actuators）",
+                        "en": "Physical feedback and actuation (Actuators)"
+                    },
+                    "desc": {
+                        "zh": "SG90 伺服馬達（精準角度與位置控制）、TT 減速直流馬達 + TB6612FNG 驅動板（連續旋轉、PWM 調速與正反轉控制）、多色 LED 燈光回饋模組。",
+                        "en": "SG90 servo (precise angle and position control), TT geared DC motor with TB6612FNG driver (continuous rotation, PWM speed and direction control), multi-colour LED feedback module."
+                    }
+                },
+                {
+                    "name": {
+                        "zh": "快速原型搭建輔具",
+                        "en": "Rapid prototyping aids"
+                    },
+                    "desc": {
+                        "zh": "大型免焊接麵包板（830孔）、全套杜邦排線、S22R/S33R 快夾接線頭（讓你不需焊接即可快速穩定連接馬達與電源）。",
+                        "en": "Large solderless breadboard (830 points), a full set of jumper wires, S22R / S33R quick-clip connectors so motors and power can be connected securely without soldering."
+                    }
+                }
+            ]
+        },
+        {
+            "title": {
+                "zh": "三、活動資訊",
+                "en": "III. Event Information"
+            },
+            "body": {
+                "zh": "",
+                "en": ""
+            },
+            "info": true
+        }
+    ],
+    "forms": {
+        "registration": {
+            "label": {
+                "zh": "報名表",
+                "en": "Registration"
+            },
+            "title": {
+                "zh": "2026 空間資訊脈絡 動態採樣技術 工作營｜報名暨課前調查表",
+                "en": "2026 Spatial Context Engineering Workshop | Registration and Pre-workshop Survey"
+            },
+            "open": true,
+            "closed_note": {
+                "zh": "報名已截止，感謝大家的參與。",
+                "en": "Registration is closed. Thank you for your interest."
+            },
+            "show_count": false,
+            "intro": {
+                "zh": "在 AI 與數位建築時代，我們不只要在電腦裡畫出漂亮的模型，更希望設計出來的空間能夠「感知」真實世界的光線、人流與使用者動作，並做出即時的物理互動與回饋。\n\n本工作營為教育部教學實踐研究計畫之核心實作活動。在這兩天半的密集實作中，你不需要有任何電子電路或寫程式的基礎！我們將從零開始，帶你親手組裝 ESP32-S3 微控制器，學習如何偵測空間中的「光線變化、身體經過、按鈕觸發」等動態數據，並透過 Wi-Fi 遠端連線將數據即時傳回電腦，進而驅動「伺服馬達、直流馬達與燈光」做出實體空間的動態回饋。\n\n📅 活動請全程參與：{{SCHEDULE}}\n📍 地點：淡江大學建築學系系館 K102（電腦教室）。\n💻 自備物品：個人筆記型電腦與充電器；若筆電只有 Type-C 孔，請自備轉接頭 / Hub。\n📦 免買材料：現場配發「空間動態採樣開發套件箱」（內容詳見上方第二節）。",
+                "en": "In the age of AI and digital architecture, we want more than beautiful models on screen: we want designed spaces that can sense real-world light, people and movement, and respond with physical interaction in real time.\n\nThis workshop is the core hands-on activity of a MOE Teaching Practice Research project. Over two and a half intensive days you need no background in electronics or programming. Starting from zero, you will assemble an ESP32-S3 microcontroller with your own hands, learn to detect dynamic data in space such as changes in light, someone passing by or a button press, stream it to your computer over Wi-Fi, and drive servos, DC motors and lights to make physical space respond.\n\n📅 Please attend the full workshop:{{SCHEDULE}}\n📍 Venue: Room K102 (computer classroom), Department of Architecture Building, Tamkang University.\n💻 Bring: your laptop and charger; if it only has USB-C ports, bring an adapter or hub.\n📦 No materials to buy: a Spatial Dynamic Sampling Development Kit is handed out on site (see Section II above)."
+            },
+            "submit_label": {
+                "zh": "送出報名",
+                "en": "Submit registration"
+            },
+            "success": {
+                "zh": "報名已送出！我們將於課前寄發「錄取通知」與「軟體安裝懶人包」到你填寫的信箱。",
+                "en": "Your registration has been submitted. The acceptance notice and software setup guide will be emailed to you before the workshop."
+            },
+            "sections": [
+                {
+                    "title": {
+                        "zh": "基本資料與筆電設備確認",
+                        "en": "Basic Information and Laptop Check"
+                    },
+                    "desc": {
+                        "zh": "",
+                        "en": ""
+                    },
+                    "questions": [
+                        {
+                            "id": "q01_name",
+                            "type": "short",
+                            "required": true,
+                            "label": {
+                                "zh": "姓名",
+                                "en": "Name"
+                            }
+                        },
+                        {
+                            "id": "q02_student_id",
+                            "type": "short",
+                            "required": true,
+                            "label": {
+                                "zh": "學號",
+                                "en": "Student ID"
+                            },
+                            "help": {
+                                "zh": "請填寫正確學號，作為活動簽到與課後證書/回饋配對使用。",
+                                "en": "Please enter your correct student ID; it is used for check-in and to pair the pre- and post-workshop surveys."
+                            }
+                        },
+                        {
+                            "id": "q03_class",
+                            "type": "radio",
+                            "required": true,
+                            "other": true,
+                            "label": {
+                                "zh": "系級 / 身份別",
+                                "en": "Year / Affiliation"
+                            },
+                            "options": [
+                                {
+                                    "zh": "建築四",
+                                    "en": "4th-year Architecture"
+                                },
+                                {
+                                    "zh": "建築系其他年級（大一～大三、大五）",
+                                    "en": "Architecture, other years (1st to 3rd, 5th)"
+                                },
+                                {
+                                    "zh": "建築系碩士班",
+                                    "en": "Architecture, master's programme"
+                                }
+                            ],
+                            "other_label": {
+                                "zh": "其他系所",
+                                "en": "Other department"
+                            }
+                        },
+                        {
+                            "id": "q04_email",
+                            "type": "email",
+                            "required": true,
+                            "label": {
+                                "zh": "聯絡 Email",
+                                "en": "Contact email"
+                            },
+                            "help": {
+                                "zh": "用來寄發工作營雲端空間連結，請填寫常收信的信箱就好。",
+                                "en": "Used to send you the workshop cloud-drive link; just give an inbox you check regularly."
+                            }
+                        },
+                        {
+                            "id": "q07_os",
+                            "type": "radio",
+                            "required": true,
+                            "label": {
+                                "zh": "你當天攜帶的筆電作業系統是？",
+                                "en": "Which operating system is on the laptop you will bring?"
+                            },
+                            "options": [
+                                {
+                                    "zh": "Windows 10 / 11",
+                                    "en": "Windows 10 / 11"
+                                },
+                                {
+                                    "zh": "Mac（Apple M1 / M2 / M3 / M4 晶片）",
+                                    "en": "Mac (Apple M1 / M2 / M3 / M4)"
+                                },
+                                {
+                                    "zh": "Mac（舊款 Intel 晶片）",
+                                    "en": "Mac (older Intel chip)"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q08_usb",
+                            "type": "radio",
+                            "required": true,
+                            "label": {
+                                "zh": "筆電 USB 連接孔確認（重要！）",
+                                "en": "Laptop USB port check (important)"
+                            },
+                            "help": {
+                                "zh": "本次套件提供的傳輸線與馬達獨立電源線皆為「傳統方形 USB-A 接頭」（共需 2 個孔位），請確認你的筆電狀況：",
+                                "en": "Both the data cable and the separate motor power cable in the kit use the traditional rectangular USB-A plug (two ports needed). Please check your laptop:"
+                            },
+                            "options": [
+                                {
+                                    "zh": "我的筆電本身就有 2 個以上的傳統 USB-A 孔",
+                                    "en": "My laptop has two or more USB-A ports"
+                                },
+                                {
+                                    "zh": "我的筆電只有 Type-C 孔（或只有 1 個 USB 孔），我當天會自備轉接頭 / USB 擴充 Hub",
+                                    "en": "My laptop only has USB-C (or a single USB port); I will bring an adapter / USB hub"
+                                },
+                                {
+                                    "zh": "我的筆電只有 1 個 USB 孔，我當天會自備「行動電源」來插馬達的獨立電源線",
+                                    "en": "My laptop has a single USB port; I will bring a power bank for the motor power cable"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q09_hotspot",
+                            "type": "radio",
+                            "required": true,
+                            "label": {
+                                "zh": "手機個人熱點（Wi-Fi）確認",
+                                "en": "Mobile hotspot (Wi-Fi) check"
+                            },
+                            "help": {
+                                "zh": "第二天練習 ESP32-S3 遠端連線時，需讓開發板連上 Wi-Fi（校園網路因需網頁登入無法直接連，使用手機熱點最穩定）。",
+                                "en": "On day two the ESP32-S3 must join a Wi-Fi network (campus Wi-Fi requires a web login, so a phone hotspot is the most reliable option)."
+                            },
+                            "options": [
+                                {
+                                    "zh": "我的手機可以開啟個人熱點（Wi-Fi 分享）供自己測試使用",
+                                    "en": "My phone can share a personal hotspot for my own testing"
+                                },
+                                {
+                                    "zh": "我的手機沒有吃到飽或無法開熱點，需與同組同學共用",
+                                    "en": "My phone has no unlimited data or cannot share a hotspot; I will share with a teammate"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": {
+                        "zh": "課前小調查：你的經驗與對空間互動的想像",
+                        "en": "Pre-workshop Survey: Your Experience and Ideas about Spatial Interaction"
+                    },
+                    "desc": {
+                        "zh": "別擔心！這裡完全不是考試，也不會影響錄取資格。我們只想了解大家在還沒上課前，有沒有碰過類似的東西，好讓老師調整上課的速度！",
+                        "en": "Don't worry, this is not a test and it does not affect your admission. We only want to know what you have tried before so the instructors can adjust the pace."
+                    },
+                    "questions": [
+                        {
+                            "id": "q11_experience",
+                            "type": "radio",
+                            "required": true,
+                            "label": {
+                                "zh": "關於「接電路」與「微控制器（如 Arduino / ESP32）」，你之前的經驗是？",
+                                "en": "What is your prior experience with wiring circuits and microcontrollers (Arduino / ESP32)?"
+                            },
+                            "options": [
+                                {
+                                    "zh": "🌱 完全沒碰過：我是純新手，沒插過麵包板，也沒接過電子零件與電線。",
+                                    "en": "🌱 None at all: complete beginner, never used a breadboard or wired any component."
+                                },
+                                {
+                                    "zh": "👀 看過但沒自己動手：以前分組看隊友做過，或在網路上看過別人做。",
+                                    "en": "👀 Seen it but never done it: watched teammates or online videos."
+                                },
+                                {
+                                    "zh": "🔧 照著步驟接過：以前上課或工作坊，有跟著老師的圖把燈泡、感測器或馬達接起來過。",
+                                    "en": "🔧 Followed instructions: wired LEDs, sensors or motors from a diagram in a class or workshop."
+                                },
+                                {
+                                    "zh": "🚀 可以自己組裝修改：我懂基本的正負極與腳位，可以自己查資料把想要的零件接起來並改程式。",
+                                    "en": "🚀 Can build and modify on my own: I understand polarity and pinouts, can look things up, wire parts and edit code."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q12_experience_detail",
+                            "type": "short",
+                            "required": true,
+                            "label": {
+                                "zh": "承上題，如果你以前有碰過（選第 2~4 項的人），當時大概做過什麼東西？做到什麼程度？（沒碰過請填「無」）",
+                                "en": "If you chose options 2 to 4 above, what did you build and how far did you get? (Enter \"none\" if not applicable)"
+                            },
+                            "help": {
+                                "zh": "例如：「高中資訊課讓 LED 閃爍過」、「大二做過超音波感應垃圾桶，但程式都是直接複製老師的，不太懂原理」。",
+                                "en": "For example: \"blinked an LED in a high-school IT class\", \"built an ultrasonic trash can in 2nd year, but copied the code without really understanding it\"."
+                            }
+                        },
+                        {
+                            "id": "q13_familiarity",
+                            "type": "grid",
+                            "required": true,
+                            "label": {
+                                "zh": "對於這次工作營會玩到的 6 件事，你「目前」的熟悉程度是？",
+                                "en": "How familiar are you right now with the six things we will do in this workshop?"
+                            },
+                            "help": {
+                                "zh": "1 = 完全不會 / 2 = 聽過但不會操作 / 3 = 看著教學步驟應該能做 / 4 = 大致知道怎麼操作 / 5 = 很熟練",
+                                "en": "1 = no idea / 2 = heard of it but cannot do it / 3 = could do it following a tutorial / 4 = roughly know how / 5 = proficient"
+                            },
+                            "columns": [
+                                {
+                                    "zh": "1",
+                                    "en": "1"
+                                },
+                                {
+                                    "zh": "2",
+                                    "en": "2"
+                                },
+                                {
+                                    "zh": "3",
+                                    "en": "3"
+                                },
+                                {
+                                    "zh": "4",
+                                    "en": "4"
+                                },
+                                {
+                                    "zh": "5",
+                                    "en": "5"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "id": "r1_wiring",
+                                    "zh": "【接電路】看著線路圖，在麵包板上插線連接感測器、電阻與小燈泡。",
+                                    "en": "[Wiring] Connect sensors, resistors and LEDs on a breadboard from a diagram."
+                                },
+                                {
+                                    "id": "r2_reading",
+                                    "zh": "【讀訊號】在電腦裡讀取感測器（如光線亮暗、有沒有人經過）傳回來的數字變化。",
+                                    "en": "[Reading signals] Read changing sensor values (light level, someone passing) on the computer."
+                                },
+                                {
+                                    "id": "r3_motor",
+                                    "zh": "【控馬達】用電腦指令控制馬達「轉到指定角度」或「改變旋轉速度與正反轉」。",
+                                    "en": "[Motor control] Command a motor to a given angle, or change its speed and direction."
+                                },
+                                {
+                                    "id": "r4_data",
+                                    "zh": "【傳資料】透過傳輸線或 Wi-Fi 遠端連線，把感測器收到的數字即時傳進電腦裡。",
+                                    "en": "[Data transfer] Stream sensor values to the computer in real time over cable or Wi-Fi."
+                                },
+                                {
+                                    "id": "r5_rules",
+                                    "zh": "【定規則】在程式裡設定「當感測器數字達到某個標準，就自動觸發馬達動作」的判斷規則。",
+                                    "en": "[Rules] Program a rule such as \"when a sensor value crosses a threshold, trigger the motor\"."
+                                },
+                                {
+                                    "id": "r6_design",
+                                    "zh": "【連設計】把真實空間測到的環境數據（如光線、人流動作），拿來當作建築空間設計或 AI 輔助設計的條件。",
+                                    "en": "[Design link] Use environmental data measured in real space (light, movement) as conditions for architectural or AI-assisted design."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q14_concerns",
+                            "type": "checkbox",
+                            "required": true,
+                            "other": true,
+                            "label": {
+                                "zh": "想到要「親手接電路、讓馬達跟感測器動起來」，你現在心裡的第一個想法或擔心是什麼？（可複選）",
+                                "en": "When you think about wiring circuits and making motors and sensors work with your own hands, what is your first thought or worry? (select all that apply)"
+                            },
+                            "options": [
+                                {
+                                    "zh": "怕接錯正負極會短路、冒煙或把零件燒壞",
+                                    "en": "Afraid of reversing polarity and shorting, smoking or burning a component"
+                                },
+                                {
+                                    "zh": "看到一堆五顏六色的電線跟密密麻麻的孔洞（麵包板）就覺得眼花",
+                                    "en": "The colourful wires and the dense breadboard holes make me dizzy"
+                                },
+                                {
+                                    "zh": "擔心電腦連不上開發板，或是跳出英文程式碼錯誤不知道怎麼辦",
+                                    "en": "Worried the computer will not connect to the board, or that English error messages will pop up"
+                                },
+                                {
+                                    "zh": "好奇這些小小的電子零件，到底要怎麼跟「建築空間設計」結合在一起",
+                                    "en": "Curious how these tiny electronic parts connect to architectural design"
+                                },
+                                {
+                                    "zh": "覺得很酷、很期待看到自己接的機關真的動起來！",
+                                    "en": "It sounds cool; I cannot wait to see my own mechanism actually move!"
+                                }
+                            ],
+                            "other_label": {
+                                "zh": "其他",
+                                "en": "Other"
+                            }
+                        },
+                        {
+                            "id": "q15_imagine",
+                            "type": "paragraph",
+                            "required": true,
+                            "label": {
+                                "zh": "【直覺想像題】這次我們會發給你：可以偵測「光線亮暗」跟「有沒有人揮手/走過去」的感測器，還有「會轉動的馬達」跟「小燈泡」。如果把它們裝在建築系館的一個角落，你直覺會想做一個什麼樣的互動小機關？",
+                                "en": "[Imagination] You will receive sensors that detect light level and whether someone waves or walks past, plus a motor that turns and a small light. If you installed them in a corner of the Architecture Building, what interactive mechanism would you intuitively make?"
+                            },
+                            "help": {
+                                "zh": "不用管技術做不做得到！用 1~2 句話寫下你腦中的畫面就好。例如：「我想裝在工作室門口，有人走過去時馬達會拉動線翻開牌子」、「模型裡太暗的時候，自動轉動百葉窗並亮燈」。",
+                                "en": "Ignore technical feasibility; describe the picture in your head in one or two sentences. For example: \"at the studio door, when someone walks past the motor pulls a string and flips a sign\", or \"when the model gets too dark, the louvres rotate and a light turns on\"."
+                            }
+                        },
+                        {
+                            "id": "q16_instruction",
+                            "type": "paragraph",
+                            "required": true,
+                            "label": {
+                                "zh": "【指令描述題】承上題，如果要你跟一個「完全聽不懂暗示的機器人（或 AI）」下指令，叫它控制你剛剛想的那個小機關，你會怎麼跟它說「什麼時候要動、怎麼動」？",
+                                "en": "[Instruction] Following the previous question: if you had to instruct a robot (or AI) that understands no hints at all to control the mechanism you just imagined, how would you tell it when to move and how to move?"
+                            },
+                            "help": {
+                                "zh": "用你平常講話或跟 ChatGPT 對話的方式寫下來就好（1~2 句話）！例如：「當有人靠近而且周圍很暗的時候，就幫我把馬達慢慢轉開，然後把燈打開」。",
+                                "en": "Write it the way you would talk or chat with ChatGPT (one or two sentences). For example: \"when someone comes close and it is dark around, slowly turn the motor open, then switch on the light\"."
+                            },
+                            "note": "課前基準：與回饋表 q05_rule_after 對照（提示詞工程 → 空間脈絡工程）"
+                        }
+                    ]
+                },
+                {
+                    "title": {
+                        "zh": "器材借用與研究參與同意",
+                        "en": "Equipment Loan and Research Participation Consent"
+                    },
+                    "desc": {
+                        "zh": "",
+                        "en": ""
+                    },
+                    "questions": [
+                        {
+                            "id": "q17_equipment",
+                            "type": "consent",
+                            "required": true,
+                            "label": {
+                                "zh": "開發套件借用與安全操作確認",
+                                "en": "Development kit loan and safe-operation confirmation"
+                            },
+                            "options": [
+                                {
+                                    "zh": "我了解工作營配發之「ESP32-S3 空間動態採樣開發套件箱」為計畫提供之教學設備，課程期間我會愛惜使用、注意用電安全，並於活動結束時清點歸還。",
+                                    "en": "I understand that the ESP32-S3 Spatial Dynamic Sampling Development Kit is teaching equipment provided by the project; I will use it with care and attention to electrical safety, and return it complete at the end of the workshop."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q18_research_consent",
+                            "type": "consent",
+                            "required": true,
+                            "label": {
+                                "zh": "教學實踐研究參與同意",
+                                "en": "Teaching practice research participation consent"
+                            },
+                            "options": [
+                                {
+                                    "zh": "我同意工作營期間之實作紀錄與課前後問卷回饋，得匿名作為教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的AI導向建築設計教學方法》之教學成效分析與學術發表使用（所有資料僅作整體統計與匿名分析，絕不影響個人任何課業成績）。",
+                                    "en": "I agree that my workshop records and pre- and post-workshop survey responses may be used anonymously for teaching effectiveness analysis and academic publication under the MOE Teaching Practice Research project Spatial Context Engineering (all data are used only for aggregate, anonymous analysis and never affect any course grade)."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "feedback": {
+            "label": {
+                "zh": "課後回饋表",
+                "en": "Post-workshop Feedback"
+            },
+            "title": {
+                "zh": "2026 空間資訊脈絡 動態採樣技術 工作營｜課後回饋與學習收穫表",
+                "en": "2026 Spatial Context Engineering Workshop | Post-workshop Feedback and Learning Outcomes"
+            },
+            "open": false,
+            "closed_note": {
+                "zh": "課後回饋表將於 11/16（一）結業時開放填寫（現場掃描 QR Code）。",
+                "en": "The feedback form opens at the closing session on Nov 16 (Mon); scan the QR code on site."
+            },
+            "show_count": false,
+            "intro": {
+                "zh": "恭喜大家完成了兩天半的空間動態採樣與硬體實作挑戰！請花 3~5 分鐘幫我們紀錄一下你這幾天的收穫與想法，填寫完畢即可至前方辦理開發套件清點歸還。",
+                "en": "Congratulations on completing two and a half days of spatial dynamic sampling and hardware prototyping! Please take 3 to 5 minutes to record what you learned and what you think, then bring your kit to the front for check-in and return."
+            },
+            "submit_label": {
+                "zh": "送出回饋",
+                "en": "Submit feedback"
+            },
+            "success": {
+                "zh": "回饋已送出，謝謝你！請至前方辦理開發套件清點歸還。",
+                "en": "Your feedback has been submitted, thank you! Please bring your kit to the front for return."
+            },
+            "sections": [
+                {
+                    "title": {
+                        "zh": "基本資料",
+                        "en": "Basic Information"
+                    },
+                    "desc": {
+                        "zh": "",
+                        "en": ""
+                    },
+                    "questions": [
+                        {
+                            "id": "q01_name",
+                            "type": "short",
+                            "required": true,
+                            "label": {
+                                "zh": "姓名",
+                                "en": "Name"
+                            }
+                        },
+                        {
+                            "id": "q02_student_id",
+                            "type": "short",
+                            "required": true,
+                            "label": {
+                                "zh": "學號",
+                                "en": "Student ID"
+                            },
+                            "help": {
+                                "zh": "用來與課前表單配對。",
+                                "en": "Used to pair your answers with the pre-workshop survey."
+                            },
+                            "note": "與報名表 q02_student_id 配對跑成對樣本"
+                        }
+                    ]
+                },
+                {
+                    "title": {
+                        "zh": "實作成果與熟悉程度",
+                        "en": "Hands-on Results and Familiarity"
+                    },
+                    "desc": {
+                        "zh": "",
+                        "en": ""
+                    },
+                    "questions": [
+                        {
+                            "id": "q03_completed",
+                            "type": "checkbox",
+                            "required": true,
+                            "label": {
+                                "zh": "這兩天半的工作營中，你親手體驗並成功完成了哪些項目？（可複選）",
+                                "en": "Which of the following did you personally complete during the workshop? (select all that apply)"
+                            },
+                            "options": [
+                                {
+                                    "zh": "在麵包板上插線，成功點亮並控制 LED 燈",
+                                    "en": "Wired a breadboard and successfully lit and controlled an LED"
+                                },
+                                {
+                                    "zh": "在電腦上成功讀取到「按鈕」、「光敏電阻（光線）」或「可變電阻」的數字變化",
+                                    "en": "Read changing values from the button, LDR (light) or potentiometer on the computer"
+                                },
+                                {
+                                    "zh": "成功使用「紅外線阻斷感應器」抓到揮手或物體經過的動作事件",
+                                    "en": "Captured a wave or pass-through event with the infrared break-beam sensor"
+                                },
+                                {
+                                    "zh": "成功接上獨立電源與驅動板，讓「伺服馬達」與「直流馬達」轉動起來",
+                                    "en": "Connected the separate power supply and driver board and made the servo and DC motor turn"
+                                },
+                                {
+                                    "zh": "成功讓 ESP32-S3 連上 Wi-Fi，實現「遠端無線傳送數據」或「遠端控制」",
+                                    "en": "Connected the ESP32-S3 to Wi-Fi and achieved wireless data transfer or remote control"
+                                },
+                                {
+                                    "zh": "成功把感測器跟馬達串在一起，做出「感應到動作 → 自動觸發馬達/燈光反應」的互動機關",
+                                    "en": "Chained sensor and motor into an interactive mechanism: motion detected → motor / light responds automatically"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "q04_familiarity",
+                            "type": "grid",
+                            "required": true,
+                            "label": {
+                                "zh": "經過這兩天半的親手實作，現在的你對這 6 件事的熟悉程度是？",
+                                "en": "After two and a half days of hands-on work, how familiar are you now with these six things?"
+                            },
+                            "help": {
+                                "zh": "1 = 完全不會 / 2 = 聽過但不會操作 / 3 = 看著教學步驟能做 / 4 = 大致知道怎麼操作 / 5 = 很熟練",
+                                "en": "1 = no idea / 2 = heard of it but cannot do it / 3 = can do it following a tutorial / 4 = roughly know how / 5 = proficient"
+                            },
+                            "columns": [
+                                {
+                                    "zh": "1",
+                                    "en": "1"
+                                },
+                                {
+                                    "zh": "2",
+                                    "en": "2"
+                                },
+                                {
+                                    "zh": "3",
+                                    "en": "3"
+                                },
+                                {
+                                    "zh": "4",
+                                    "en": "4"
+                                },
+                                {
+                                    "zh": "5",
+                                    "en": "5"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "id": "r1_wiring",
+                                    "zh": "【接電路】看著線路圖，在麵包板上插線連接感測器、電阻與小燈泡。",
+                                    "en": "[Wiring] Connect sensors, resistors and LEDs on a breadboard from a diagram."
+                                },
+                                {
+                                    "id": "r2_reading",
+                                    "zh": "【讀訊號】在電腦裡讀取感測器（如光線亮暗、有沒有人經過）傳回來的數字變化。",
+                                    "en": "[Reading signals] Read changing sensor values (light level, someone passing) on the computer."
+                                },
+                                {
+                                    "id": "r3_motor",
+                                    "zh": "【控馬達】用電腦指令控制馬達「轉到指定角度」或「改變旋轉速度與正反轉」。",
+                                    "en": "[Motor control] Command a motor to a given angle, or change its speed and direction."
+                                },
+                                {
+                                    "id": "r4_data",
+                                    "zh": "【傳資料】透過傳輸線或 Wi-Fi 遠端連線，把感測器收到的數字即時傳進電腦裡。",
+                                    "en": "[Data transfer] Stream sensor values to the computer in real time over cable or Wi-Fi."
+                                },
+                                {
+                                    "id": "r5_rules",
+                                    "zh": "【定規則】在程式裡設定「當感測器數字達到某個標準，就自動觸發馬達動作」的判斷規則。",
+                                    "en": "[Rules] Program a rule such as \"when a sensor value crosses a threshold, trigger the motor\"."
+                                },
+                                {
+                                    "id": "r6_design",
+                                    "zh": "【連設計】把真實空間測到的環境數據（如光線、人流動作），拿來當作建築空間設計或 AI 輔助設計的條件。",
+                                    "en": "[Design link] Use environmental data measured in real space (light, movement) as conditions for architectural or AI-assisted design."
+                                }
+                            ],
+                            "note": "題目與報名表 q13_familiarity 完全相同，成對樣本 t 檢定"
+                        }
+                    ]
+                },
+                {
+                    "title": {
+                        "zh": "反思與回饋",
+                        "en": "Reflection and Feedback"
+                    },
+                    "desc": {
+                        "zh": "",
+                        "en": ""
+                    },
+                    "questions": [
+                        {
+                            "id": "q05_rule_after",
+                            "type": "paragraph",
+                            "required": true,
+                            "label": {
+                                "zh": "【規則描述題 — 課後對照】經過實際接線與寫程式後，現在如果要你重新跟電腦（或 AI 代理人）下指令，控制你們今天做出來的空間互動機關，你會怎麼「用感測器的數值、條件標準（Threshold）與馬達的控制參數」來精確描述這個規則？",
+                                "en": "[Rule description, post-workshop] After wiring and programming for real, if you had to instruct the computer (or an AI agent) again to control the spatial mechanism you built today, how would you describe the rule precisely in terms of sensor values, thresholds and motor control parameters?"
+                            },
+                            "help": {
+                                "zh": "試著用這兩天學到的邏輯寫下來（跟報名時寫的做個對比）！例如：「當紅外線感測器被擋住（訊號變 0）或是光敏電阻讀值小於 1500 時，透過 Wi-Fi 傳送觸發狀態，讓伺服馬達轉到 90 度、直流馬達正轉 3 秒」。",
+                                "en": "Try to write it with the logic you learned (compare it with what you wrote at registration). For example: \"when the infrared sensor is blocked (signal becomes 0) or the LDR reading drops below 1500, send the trigger state over Wi-Fi, turn the servo to 90 degrees and run the DC motor forward for 3 seconds\"."
+                            },
+                            "note": "與報名表 q16_instruction 對照"
+                        },
+                        {
+                            "id": "q06_calibration",
+                            "type": "paragraph",
+                            "required": true,
+                            "label": {
+                                "zh": "【真實環境測試題】課前大家都很擔心接錯線或不會動；而在實際測試時，你有沒有發現「理想中的程式設定」跟「真實空間的狀況」有落差？（例如：現場光線太亮讓光敏電阻不靈敏、紅外線感應距離角度問題、馬達電力或轉速問題等）你是怎麼調整解決的？",
+                                "en": "[Real-environment testing] Before the workshop many of you worried about wrong wiring or things not moving. During actual testing, did you notice a gap between the ideal program settings and the real conditions of the space (bright light making the LDR insensitive, infrared range or angle issues, motor power or speed problems)? How did you adjust and solve it?"
+                            },
+                            "note": "虛實誤差校準 Calibration 質性資料"
+                        },
+                        {
+                            "id": "q07_design_insight",
+                            "type": "paragraph",
+                            "required": true,
+                            "label": {
+                                "zh": "【設計思考啟發題】從以前「只在電腦裡畫圖或用文字跟 AI 聊天」，到這次「親手接好感測器，把空間裡的真實動作變成數據傳進電腦」，這對你接下來做建築設計（或使用 AI 輔助設計），帶來什麼新的想法或幫助？",
+                                "en": "[Design thinking] Moving from drawing on the computer or chatting with AI in text, to wiring sensors by hand and turning real movement in space into data on the computer: what new ideas or help does this bring to your future architectural design (or AI-assisted design)?"
+                            },
+                            "note": "提示詞工程 → 空間脈絡工程 反思資料"
+                        },
+                        {
+                            "id": "q08_message",
+                            "type": "paragraph",
+                            "required": false,
+                            "label": {
+                                "zh": "給老師與助教的回饋或悄悄話（哪個環節覺得最有成就感？哪裡可以更好？）",
+                                "en": "Feedback or a private note for the instructors and TAs (which part felt most rewarding? what could be better?)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

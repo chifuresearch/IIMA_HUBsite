@@ -1,0 +1,20 @@
+[
+    {
+        "slug": "2026_sce_dynamic_sampling_workshop",
+        "page": "events/2026_sce_dynamic_sampling_workshop.html",
+        "title": "2026 空間資訊脈絡 動態採樣技術 工作營",
+        "title_en": "2026 Spatial Context Engineering Workshop: Dynamic Sampling Techniques",
+        "excerpt": "兩天半密集實作：從零組裝 ESP32-S3 微控制器，捕捉空間中的光線變化、人流與身體動作，經 Wi-Fi 轉譯為結構化數據流，驅動馬達與燈光完成「動態採樣 → 空間互動回饋」的虛實整合原型。教育部教學實踐研究計畫核心實作活動，現場配發開發套件，不需任何電路或程式基礎。",
+        "excerpt_en": "A two-and-a-half-day intensive: assemble an ESP32-S3 microcontroller from scratch, capture light, presence and body movement in real space, stream it over Wi-Fi as structured data, and drive motors and lights to complete a cyber-physical prototype from dynamic sampling to spatial feedback. Core hands-on activity of a MOE Teaching Practice Research project; development kits provided, no electronics or coding background required.",
+        "img_src": "events/img/2026_sce_dynamic_sampling_workshop.svg",
+        "date_start": "2026-11-07",
+        "date_end": "2026-11-16",
+        "schedule_text": "11/07（六）13:00-18:00\n11/08（日）13:00-18:00\n11/16（一）09:00-12:00",
+        "schedule_text_en": "Nov 7 (Sat) 13:00-18:00\nNov 8 (Sun) 13:00-18:00\nNov 16 (Mon) 09:00-12:00",
+        "location": "淡江大學建築學系系館 K102（電腦教室）",
+        "location_en": "Room K102 (computer classroom), Department of Architecture Building, Tamkang University",
+        "status": "open",
+        "registration_open": true,
+        "feedback_open": false
+    }
+]

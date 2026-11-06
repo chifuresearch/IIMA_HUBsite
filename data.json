@@ -8,12 +8,14 @@
             "tagline": "A hub integrating M+A essays, design methodologies and computational tools.\nArchitecture / Computation / Philosophy",
             "menu": [
                 "About",
+                "Events",
                 "Blog",
                 "Tutorials",
                 "Resources"
             ],
             "menu_tw": [
                 "網站介紹",
+                "活動",
                 "文章",
                 "教學專欄",
                 "其他資源"
@@ -40,7 +42,8 @@
         "construction": {
             "intro_cards": true,
             "tutorials": true,
-            "resources": true
+            "resources": true,
+            "events": false
         },
         "scene": {
             "mode": "auto",
