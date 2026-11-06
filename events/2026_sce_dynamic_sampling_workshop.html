@@ -714,7 +714,15 @@
             navTitle.textContent = (mode === 'en') ? "2026 Spatial Context Engineering Worksho" : "2026 空間資訊脈絡 動態採樣技術 工作營";
             try { localStorage.setItem('iima_event_lang', mode); } catch (e) {}
         }
-        try { const m = localStorage.getItem('iima_event_lang'); if (m) setMode(m); } catch (e) {}
+        // 預設語系：網址 ?lang=zh|en|bi（優先）→ 這個瀏覽器上次選的 → 雙語對照
+        (function () {
+            var map = { zh: 'zh', tw: 'zh', 'zh-tw': 'zh', en: 'en', bi: 'bilingual', both: 'bilingual', bilingual: 'bilingual' };
+            var q = '';
+            try { q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch (e) {}
+            var m = map[q] || null;
+            if (!m) { try { m = localStorage.getItem('iima_event_lang'); } catch (e) {} }
+            if (m && m !== 'bilingual') setMode(m); else if (m) setMode('bilingual');
+        })();
     </script>
 <script src="event-widgets.js" defer></script>
 </body>

@@ -1,4 +1,4 @@
-import{r as q,g as X,s as Re,j as G,H as ke,h as ue,N as Ue}from"./index-CA_L_STT.js";import{E as ye,S as Be,C as We,A as $e,V as F,H as Oe,D as je,a as Ge,b as Ye,T as He,M as Ke,c as Ze,d as qe,e as xe,f as Xe,g as Je}from"./babylon-EhJCSAGv.js";const Qe=`
+import{r as q,g as X,s as Re,j as G,H as ke,h as ue,N as Ue}from"./index-Dy8d_moK.js";import{E as ye,S as Be,C as We,A as $e,V as F,H as Oe,D as je,a as Ge,b as Ye,T as He,M as Ke,c as Ze,d as qe,e as xe,f as Xe,g as Je}from"./babylon-EhJCSAGv.js";const Qe=`
     precision highp float;
     attribute vec3 position;
     attribute vec3 pcolor;
