@@ -151,7 +151,10 @@
         body.mode-en .abstract-title.zh, body.mode-en .abstract-text.zh, body.mode-en .caption-zh { display: none !important; }
 
         /* ---------- 報名／回饋按鈕列（活動資訊段落底部） ---------- */
-        .ev-cta { margin-top: 26px; padding-top: 22px; border-top: 1px dashed #e5e0d6; }
+        .ev-cta { margin-top: 26px; padding-top: 22px; border-top: 1px dashed #e5e0d6; display: flex; gap: 12px; flex-wrap: wrap; }
+        .ev-cta-top { margin-top: 16px; padding-top: 0; border-top: none; }
+        .ev-cta-top .btn { padding: 10px 20px; }
+        .btn .done-mark { margin-left: 4px; }
         .btn.closed { border-color: #cbd5e1; color: #94a3b8; background: #f8fafc; }
         .btn.closed:hover { background: #f1f5f9; }
         .btn.primary.closed { background: #e2e8f0; color: #64748b; border-color: #cbd5e1; }
@@ -303,6 +306,7 @@
             <h1 class="main-title">2026 空間資訊脈絡 動態採樣技術 工作營</h1>
             <div class="subtitle">2026 Spatial Context Engineering Workshop: Dynamic Sampling Techniques</div>
             <p class="ev-tagline pair"><span class="zh">讓空間「看見」你的動作，讓設計「回應」真實的環境！</span><span class="en">Let space &quot;see&quot; your movement, and let design &quot;respond&quot; to the real environment.</span></p>
+            <div class="ev-cta ev-cta-top" id="cta-top"><button type="button" class="btn primary" data-open-form="registration"><span class="pair inline"><span class="zh">填寫報名表</span><span class="en">Registration</span></span></button><button type="button" class="btn closed" data-open-form="feedback"><span class="pair inline"><span class="zh">填寫課後回饋表</span><span class="en">Post-workshop Feedback</span></span></button></div>
             <div class="ev-facts">
             <div class="fact"><div class="k pair inline"><span class="zh">活動時間</span><span class="en">Dates</span></div><div class="v"><span class="pair"><span class="zh"><span class="sched-lines"><span class="sched-line">11/07（六） 13:00-18:00</span><span class="sched-line">11/08（日） 13:00-18:00</span><span class="sched-line">11/16（一） 09:00-12:00</span></span></span><span class="en"><span class="sched-lines"><span class="sched-line">Nov 7 (Sat) 13:00-18:00</span><span class="sched-line">Nov 8 (Sun) 13:00-18:00</span><span class="sched-line">Nov 16 (Mon) 09:00-12:00</span></span></span></span></div></div>
             <div class="fact"><div class="k pair inline"><span class="zh">活動地點</span><span class="en">Venue</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系系館 K102（電腦教室）</span><span class="en">Room K102 (computer classroom), Department of Architecture Building, Tamkang University</span></span></div></div>
@@ -377,7 +381,7 @@
             <div class="ev-info-row"><div class="k pair"><span class="zh">招收對象</span><span class="en">Audience</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系大學部（修習建築設計四學員優先）及對空間互動、數位構築有興趣之學員。</span><span class="en">Undergraduate students of the TKU Department of Architecture (priority to students enrolled in Architectural Design IV) and anyone interested in spatial interaction and digital fabrication.</span></span></div></div>
             <div class="ev-info-row"><div class="k pair"><span class="zh">自備設備</span><span class="en">Bring</span></div><div class="v"><span class="pair"><span class="zh">個人筆記型電腦（需具備 USB 接口，若筆電僅有 Type-C 孔，請務必自備轉接頭 / Hub），並請攜帶充電器。</span><span class="en">A personal laptop with a USB port (if it only has USB-C, bring an adapter or hub) and its charger.</span></span></div></div>
             <div class="ev-info-row"><div class="k pair"><span class="zh">主辦單位</span><span class="en">Organizer</span></div><div class="v"><span class="pair"><span class="zh">淡江大學建築學系｜教育部教學實踐研究計畫《空間脈絡工程：融合數位孿生與原型實踐的 AI 導向建築設計教學方法》</span><span class="en">Department of Architecture, Tamkang University | MOE Teaching Practice Research Project: Spatial Context Engineering, an AI-oriented architectural design pedagogy integrating digital twins and prototyping</span></span></div></div>
-            <div class="ev-cta" id="cta"><button type="button" class="btn primary" data-open-form="registration"><span class="pair inline"><span class="zh">報名表</span><span class="en">Registration</span></span></button><button type="button" class="btn closed" data-open-form="feedback"><span class="pair inline"><span class="zh">課後回饋表</span><span class="en">Post-workshop Feedback</span></span></button></div>
+            <div class="ev-cta" id="cta"><button type="button" class="btn primary" data-open-form="registration"><span class="pair inline"><span class="zh">填寫報名表</span><span class="en">Registration</span></span></button><button type="button" class="btn closed" data-open-form="feedback"><span class="pair inline"><span class="zh">填寫課後回饋表</span><span class="en">Post-workshop Feedback</span></span></button></div>
         </section>
     </div>
 
