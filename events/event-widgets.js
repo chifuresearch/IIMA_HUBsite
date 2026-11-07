@@ -220,6 +220,7 @@
       var form = panel.querySelector('form');
       if (!form) return;
       var open = panel.getAttribute('data-open') === '1' || FORCE_OPEN;
+      initOtherSelects(form);
       if (FORCE_OPEN) {
         form.classList.remove('is-closed');
         var sbtn = form.querySelector('button[type="submit"]');
@@ -318,6 +319,22 @@
     });
   }
 
+  /* 選了「其他」時：純文字欄要有字；下拉要選到值，自填選項還要填字 */
+  function otherOk(q) {
+    var sel = q.querySelector('select.other-select');
+    if (sel) {
+      if (!sel.value) return false;
+      var opt = sel.options[sel.selectedIndex];
+      if (opt && opt.getAttribute('data-free') === '1') {
+        var free = q.querySelector('.other-free');
+        return !!(free && free.value.trim());
+      }
+      return true;
+    }
+    var ro = q.querySelector('.other-input');
+    return !(ro && !ro.value.trim());
+  }
+
   /* 捲到缺填的題目（在 modal 面板內）並 focus 第一個輸入元件 */
   function jumpTo(q) {
     q.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -331,15 +348,16 @@
   }
 
   function markButtonDone(id) {
-    var btn = document.querySelector('[data-open-form="' + id + '"]');
-    if (!btn) return;
-    btn.classList.add('done');
-    if (!btn.querySelector('.done-mark')) {
-      var s = document.createElement('span');
-      s.className = 'done-mark';
-      s.textContent = '✓';
-      btn.appendChild(s);
-    }
+    // 同一表單的按鈕可能有多顆（頁首 + 活動資訊底部）
+    document.querySelectorAll('[data-open-form="' + id + '"]').forEach(function (btn) {
+      btn.classList.add('done');
+      if (!btn.querySelector('.done-mark')) {
+        var s = document.createElement('span');
+        s.className = 'done-mark';
+        s.textContent = '✓';
+        btn.appendChild(s);
+      }
+    });
   }
 
   function collect(form, formId) {
@@ -354,14 +372,14 @@
       } else if (type === 'radio') {
         var r = q.querySelector('input[type="radio"][name="' + name + '"]:checked');
         out[qid] = r ? r.value : '';
-        var ro = q.querySelector('[name="' + name + '__other"]');
-        if (ro && ro.value.trim()) out[qid + '__other'] = ro.value.trim().slice(0, 300);
+        var ov = otherValue(q, name);
+        if (ov) out[qid + '__other'] = ov;
       } else if (type === 'checkbox' || type === 'consent') {
         var arr = [];
         q.querySelectorAll('input[type="checkbox"][name="' + name + '"]:checked').forEach(function (c) { arr.push(c.value); });
         out[qid] = type === 'consent' ? (arr.length > 0) : arr;
-        var co = q.querySelector('[name="' + name + '__other"]');
-        if (co && co.value.trim()) out[qid + '__other'] = co.value.trim().slice(0, 300);
+        var cv = otherValue(q, name);
+        if (cv) out[qid + '__other'] = cv;
       } else if (type === 'grid') {
         var g = {};
         q.querySelectorAll('tr[data-row]').forEach(function (tr) {
@@ -373,6 +391,40 @@
       }
     });
     return out;
+  }
+
+  /* 「其他」的值：純文字欄 → 文字；下拉選單 → 選項（自填選項時為「選項：自填內容」） */
+  function otherValue(q, name) {
+    var sel = q.querySelector('select[name="' + name + '__other"]');
+    if (sel) {
+      var v = sel.value.trim();
+      if (!v) return '';
+      var opt = sel.options[sel.selectedIndex];
+      var free = q.querySelector('[name="' + name + '__other_text"]');
+      if (opt && opt.getAttribute('data-free') === '1' && free && free.value.trim()) {
+        return (v + '：' + free.value.trim()).slice(0, 300);
+      }
+      return v.slice(0, 300);
+    }
+    var ro = q.querySelector('[name="' + name + '__other"]');
+    return ro && ro.value.trim() ? ro.value.trim().slice(0, 300) : '';
+  }
+
+  /* 下拉「其他」選到自填選項時才顯示文字欄 */
+  function initOtherSelects(form) {
+    form.querySelectorAll('select.other-select').forEach(function (sel) {
+      var free = sel.parentNode.querySelector('.other-free');
+      var radio = sel.closest('label') && sel.closest('label').querySelector('input[type=radio], input[type=checkbox]');
+      function sync() {
+        var opt = sel.options[sel.selectedIndex];
+        var isFree = opt && opt.getAttribute('data-free') === '1';
+        if (free) { free.hidden = !isFree; if (!isFree) free.value = ''; }
+        if (radio && sel.value) radio.checked = true;   // 動到下拉就等於選了「其他」
+      }
+      sel.addEventListener('change', sync);
+      sel.addEventListener('click', function (e) { e.stopPropagation(); });
+      sync();
+    });
   }
 
   function validate(form) {
@@ -389,18 +441,12 @@
       } else if (type === 'radio') {
         var r = q.querySelector('input[type="radio"]:checked');
         if (required && !r) ok = false;
-        if (r && r.value === '__other__') {
-          var ro = q.querySelector('.other-input');
-          if (ro && !ro.value.trim()) ok = false;
-        }
+        if (r && r.value === '__other__' && !otherOk(q)) ok = false;
       } else if (type === 'checkbox' || type === 'consent') {
         var n = q.querySelectorAll('input[type="checkbox"]:checked').length;
         if (required && n === 0) ok = false;
         var oc = q.querySelector('input[value="__other__"]:checked');
-        if (oc) {
-          var co = q.querySelector('.other-input');
-          if (co && !co.value.trim()) ok = false;
-        }
+        if (oc && !otherOk(q)) ok = false;
       } else if (type === 'grid') {
         q.querySelectorAll('tr[data-row]').forEach(function (tr) {
           var c = tr.querySelector('input[type="radio"]:checked');

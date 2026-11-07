@@ -220,27 +220,50 @@
                             "required": true,
                             "other": true,
                             "label": {
-                                "zh": "系級 / 身份別",
-                                "en": "Year / Affiliation"
+                                "zh": "身份別",
+                                "en": "Affiliation"
                             },
                             "options": [
                                 {
-                                    "zh": "建築四",
-                                    "en": "4th-year Architecture"
+                                    "zh": "建築系高年級（四、五）",
+                                    "en": "Architecture, senior years (4th and 5th)"
                                 },
                                 {
-                                    "zh": "建築系其他年級（大一～大三、大五）",
-                                    "en": "Architecture, other years (1st to 3rd, 5th)"
+                                    "zh": "建築系低年級（一、二、三）",
+                                    "en": "Architecture, junior years (1st to 3rd)"
                                 },
                                 {
-                                    "zh": "建築系碩士班",
-                                    "en": "Architecture, master's programme"
+                                    "zh": "建築系研究所以上",
+                                    "en": "Architecture, graduate level and above"
                                 }
                             ],
                             "other_label": {
-                                "zh": "其他系所",
-                                "en": "Other department"
-                            }
+                                "zh": "其他",
+                                "en": "Other"
+                            },
+                            "other_select": [
+                                {
+                                    "zh": "教師",
+                                    "en": "Teacher / faculty"
+                                },
+                                {
+                                    "zh": "系友",
+                                    "en": "Alumni"
+                                },
+                                {
+                                    "zh": "建築師",
+                                    "en": "Architect"
+                                },
+                                {
+                                    "zh": "建築相關從業人員",
+                                    "en": "Architecture industry professional"
+                                },
+                                {
+                                    "zh": "其他",
+                                    "en": "Other (please specify)",
+                                    "free": true
+                                }
+                            ]
                         },
                         {
                             "id": "q04_email",

@@ -204,6 +204,10 @@
         .opt:hover { background: var(--card-bg); }
         .opt input { margin-top: 6px; flex-shrink: 0; accent-color: var(--hub-orange); width: 16px; height: 16px; }
         .opt .other-input { margin-left: 8px; width: auto; min-width: 180px; padding: 4px 10px; display: inline-block; }
+        .opt .other-select { margin-left: 6px; padding: 5px 10px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; font-size: 0.9rem; background: #fff; color: var(--text-color); max-width: 100%; }
+        .opt .other-select:focus { outline: none; border-color: var(--hub-orange); box-shadow: 0 0 0 3px rgba(255,95,0,0.12); }
+        .opt .other-free { margin-top: 6px; }
+        .opt .other-free[hidden] { display: none; }
         .q.consent .opt { background: var(--card-bg); border: 1px solid #f1ede4; }
         .grid-wrap { overflow-x: auto; }
         .grid { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
@@ -300,7 +304,7 @@
         <header class="ev-header">
             <div class="ev-kicker">
                 <span class="pair inline"><span class="zh">活動</span><span class="en">Event</span></span>
-                <span class="ev-status pair inline" data-status="open"><span class="zh">報名中</span><span class="en">Registration open</span></span>
+                <span class="ev-status pair inline" data-status="ongoing"><span class="zh">進行中</span><span class="en">In progress</span></span>
                 <span>2026-11-07 → 2026-11-16</span>
             </div>
             <h1 class="main-title">2026 空間資訊脈絡 動態採樣技術 工作營</h1>
@@ -426,13 +430,13 @@
             </div>
 
             <div class="q radio" data-qid="q03_class" data-type="radio" data-required="1">
-                <label class="q-label"><span class="q-num">Q3</span><span class="pair"><span class="zh">系級 / 身份別<span class="req">*</span></span><span class="en">Year / Affiliation<span class="req">*</span></span></span></label>
+                <label class="q-label"><span class="q-num">Q3</span><span class="pair"><span class="zh">身份別<span class="req">*</span></span><span class="en">Affiliation<span class="req">*</span></span></span></label>
                 
                 <div class="q-body">
-<label class="opt"><input type="radio" name="registration.q03_class" value="建築四"><span class="opt-text"><span class="pair"><span class="zh">建築四</span><span class="en">4th-year Architecture</span></span></span></label>
-<label class="opt"><input type="radio" name="registration.q03_class" value="建築系其他年級（大一～大三、大五）"><span class="opt-text"><span class="pair"><span class="zh">建築系其他年級（大一～大三、大五）</span><span class="en">Architecture, other years (1st to 3rd, 5th)</span></span></span></label>
-<label class="opt"><input type="radio" name="registration.q03_class" value="建築系碩士班"><span class="opt-text"><span class="pair"><span class="zh">建築系碩士班</span><span class="en">Architecture, master&#x27;s programme</span></span></span></label>
-<label class="opt"><input type="radio" name="registration.q03_class" value="__other__"><span class="opt-text"><span class="pair inline"><span class="zh">其他系所</span><span class="en">Other department</span></span>：<input type="text" class="other-input" name="registration.q03_class__other" placeholder="…"></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築系高年級（四、五）"><span class="opt-text"><span class="pair"><span class="zh">建築系高年級（四、五）</span><span class="en">Architecture, senior years (4th and 5th)</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築系低年級（一、二、三）"><span class="opt-text"><span class="pair"><span class="zh">建築系低年級（一、二、三）</span><span class="en">Architecture, junior years (1st to 3rd)</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="建築系研究所以上"><span class="opt-text"><span class="pair"><span class="zh">建築系研究所以上</span><span class="en">Architecture, graduate level and above</span></span></span></label>
+<label class="opt"><input type="radio" name="registration.q03_class" value="__other__"><span class="opt-text"><span class="pair inline"><span class="zh">其他</span><span class="en">Other</span></span>：<select class="other-select" name="registration.q03_class__other"><option value="" data-zh="請選擇" data-en="Please select">請選擇 / Please select</option><option value="教師" data-zh="教師" data-en="Teacher / faculty">教師 / Teacher / faculty</option><option value="系友" data-zh="系友" data-en="Alumni">系友 / Alumni</option><option value="建築師" data-zh="建築師" data-en="Architect">建築師 / Architect</option><option value="建築相關從業人員" data-zh="建築相關從業人員" data-en="Architecture industry professional">建築相關從業人員 / Architecture industry professional</option><option value="其他" data-zh="其他" data-en="Other (please specify)" data-free="1">其他 / Other (please specify)</option></select> <input type="text" class="other-input other-free" name="registration.q03_class__other_text" placeholder="…" hidden></span></label>
                 </div>
                 <div class="q-err pair inline"><span class="zh">此題必填</span><span class="en">Required</span></div>
             </div>
